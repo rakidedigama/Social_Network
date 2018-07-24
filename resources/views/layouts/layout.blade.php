@@ -125,7 +125,7 @@
 		<div class="gototop js-top">
 			<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 		</div>
-		<script src="{{ asset('js/app.js') }}"></script>
+		{{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 		<!-- jQuery -->
 		<script src="{{ url('/js/jquery.min.js') }}"></script>
 		<!-- jQuery Easing -->

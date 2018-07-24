@@ -7,24 +7,35 @@
 	<div class="fh5co-loader"></div>
 	
 	<div id="page">
-		@include('layouts.nav', ['some' => 'data'])
+		@include('layouts.nav', ['active' => 'login'])
 	<div id="fh5co-counter" class="fh5co-counters fh5co-bg-section" style="background-image: url({{ url('/images/BoysWithPhone.jpg') }});">
 		<div class="container">
 			<div class="row">
 				<div class="login-box">
 					<h3>LOGIN FORM</h3>
-					<form>
+					<form method="post" action="{{ route('login') }}">
 						{{ csrf_field() }}
 						<div class="row form-group">
-							<div class="col-md-12">
-								<label for="username">User Name</label>
-								<input type="text" id="username" name="username" class="form-control" required placeholder="User Name">
+							<div class="col-md-12 {{ $errors->has('email')?'has-error':'' }}">
+								<label for="email">Email</label>
+								<input type="email" id="email" name="email" class="form-control" required placeholder="User Name" value="{{ old('email') }}" autofocus>
+								@if ($errors->has('email'))
+									<span class="help-block">
+									<strong>{{ $errors->first('email') }}</strong>
+								</span>
+								@endif
 							</div>
 						</div>
 						<div class="row form-group">
-							<div class="col-md-12 ">
+							<div class="col-md-12 {{ $errors->has('password')?'has-error':'' }}">
 								<label for="password">Password</label>
 								<input type="password" id="password" name="password" class="form-control" required placeholder="Password">
+
+								@if ($errors->has('password'))
+									<span class="help-block">
+									<strong>{{ $errors->first('password') }}</strong>
+								</span>
+								@endif
 							</div>
 						</div>
 						<div class="checkbox checkbox-danger">

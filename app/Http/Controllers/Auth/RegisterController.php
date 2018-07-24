@@ -27,7 +27,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -48,14 +48,14 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username' => 'required|string|max:30|min:3|unique:users',
-            'fname' => 'required|string|max:60|min:3',
+            'name' => 'required|string|max:60|min:3',
             'lname' => 'required|string|max:60|min:3',
             'email' => 'required|string|email|max:50|unique:users',
             'password' => 'required|string|min:6|max:30|confirmed',
-            'country_id' => 'required|integer',
+            'phone' => 'required|numeric|regex:/(3589)[0-9]{6}/|digits:10',
             'city_id' => 'required|integer',
-            'gender' => 'required|string|min:5|max:7',
+            'gender' => 'required|in:male,female',
+            'agreeterm'=>'required',
         ]);
     }
 
@@ -68,12 +68,11 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'username' => $data['username'],
-            'fname' => $data['fname'],
+            'name' => $data['name'],
             'lname' => $data['lname'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'country_id' => $data['country_id'],
+            'phone' => $data['phone'],
             'city_id' => $data['city_id'],
             'gender' => $data['gender'],
         ]);
