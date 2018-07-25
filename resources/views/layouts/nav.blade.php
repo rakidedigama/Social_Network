@@ -27,6 +27,7 @@
 								<li class="btn-cta {{ $active=='register'?'active':'' }}"><a href="{{ route('register') }}"><span class="btn-top-log">Sign Up</span></a></li>
 							
 							@else
+								<li class="{{ $active =='dashboard'?'active':'' }}"><a href="{{ route('dashboard') }}"><span>Dashboard</span></a></li>
 								<li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" {{-- aria-expanded="false"  aria-haspopup="true" v-pre --}}>
                                     <img src="{{ url('/images/profile-img.png') }}" class="img-circle" height="25" width="25">
