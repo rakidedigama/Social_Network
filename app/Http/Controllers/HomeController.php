@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\User;
 use App\City;
+use App\Product;
 
 class HomeController extends Controller
 {
@@ -29,4 +30,19 @@ class HomeController extends Controller
         $city = City::select('name')->where('id', Auth::user()->city_id )->get();
         return view('dashboard')->with('city',$city[0]['name']);
     }
+
+    public function owneditem()
+    {
+        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
+        return view('owned_item')->with('city',$city[0]['name']);
+    }
+
+    public function lentitem()
+    {
+        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
+        $total_products = Product::where('status',1)->where('id', Auth::user()->id )->get();
+        return view('lent_item')->with('city',$city[0]['name'],'total_products',$total_products);
+    }
+
+
 }

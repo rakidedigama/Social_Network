@@ -55,9 +55,11 @@
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <span class="help-block" id="errors" style="display: none;">
-                                    <strong></strong>
-                                </span>
+                                <div class="col-md-12 btn-center">
+                                    <span class="help-block" id="errors" style="display: none;">
+                                        <strong></strong>
+                                    </span>
+                                </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-12 btn-center">
@@ -74,9 +76,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" id="rows">
                 
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                         <div class="p-box-lent">
                         <p class="person-name">Category: Name Here</p>
                         <img src="images/Iron.jpg" class="img-responsive">
@@ -96,7 +98,7 @@
                         <img src="images/Iron.jpg" class="img-responsive">
                         <p>Product Name</p>
                     </div>
-                </div>
+                </div> --}}
                 
             </div>
         </div>
@@ -140,6 +142,30 @@
             }
             loadCategories();
 
+            function loadData()
+            {
+                $.ajax({
+                    url: '/userproducts/{{Auth::user()->id}}/3',
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success:function(data){
+
+                        $('#rows').html('');
+                        $.each(data,function(index, value) {
+                            $('#rows').append('<div class="col-md-4">'+
+                                '<div class="p-box-lent">'+
+                                    '<p class="person-name">Category: '+value['category_name']+'</p>'+
+                                    '<img src="/images/uploads/'+value['image']+'" class="img-responsive">'+
+                                    '<p>'+value['name']+'</p>'+
+                                '</div>'+
+                            '</div>'); 
+                        });
+                    },
+                    error:function(){}
+                }); 
+            }            
+            loadData();
+
             function add()
             {
                 var fdata = new FormData( $('#pform')[0] ); 
@@ -155,11 +181,15 @@
                         {
                             $('#errors').show().html('');
                             $.each(data,function(index, value) {
-                                $('#errors').append('<strong>'+value+'</strong>');
+                                $.each(value,function(index1, el) {
+                                    $('#errors').append('<strong>'+el[0]+'</strong>');
+                                });
                             });
                         }
                         else
-                        {}
+                        {
+                            loadData();
+                        }
                     },
                     error:function(){}
                 });                

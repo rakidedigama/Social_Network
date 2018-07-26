@@ -11,16 +11,50 @@ use Auth;
 
 class ProductController extends Controller
 {
-    public function getProducts()
+    public function getProducts($skip,$limit,$city_id,$sub_category_id,$name)
     {
-    	$data = Product::where('status','1')->orderBy('id','DESC')->get();
-    	return json_encode($data);
+    	$data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id')->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')->join('users', 'products.user_id', '=', 'users.id')->where('products.status','1');
+      
+        if(is_numeric($city_id))
+            $data=$data->where('city_id',$city_id);
+
+        if(is_numeric($sub_category_id))
+            $data=$data->where('products.sub_category_id',$sub_category_id);
+  
+        if($name != 'null')
+            $data=$data->where('products.name', 'LIKE', '%'.$name.'%');
+        
+        $data=$data->orderBy('id','DESC')->skip($skip)->take($limit)->get();
+        
+        if( !$data->first()  )
+        {
+            if( is_numeric($city_id) || is_numeric($sub_category_id) || $name != 'null' )
+            {
+                $data=array('msg'=>'Sorry No Data Found.','searched'=>'1');
+            }
+            else
+                $data=array('msg'=>'The End.','searched'=>'0');
+        }
+
+        return json_encode($data);
     }
 
     public function getProductsUser($id)
     {
-    	$data = Product::where('status','1')->where('user_id',$id)->orderBy('id','DESC')->get();
+    	$data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name')->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')->where('products.status','1')->where('products.user_id',$id)->orderBy('id','DESC')->get();
     	return json_encode($data);
+    }
+
+    public function getProductsUserLimit($id,$limit)
+    {
+        $data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name')->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')->where('products.status','1')->where('products.user_id',$id)->orderBy('id','DESC')->limit($limit)->get();
+        return json_encode($data);
+    }
+
+    public function getProductsUserSkipLimit($id,$skip,$limit)
+    {
+        $data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name')->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')->where('products.status','1')->where('products.user_id',$id)->orderBy('id','DESC')->skip($skip)->take($limit)->get();
+        return json_encode($data);
     }
 
     public function addProduct(Request $req)

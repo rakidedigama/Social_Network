@@ -18,7 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
-
+Route::get('/owneditem', 'HomeController@owneditem')->name('owneditem');
+Route::get('/lentitem', 'HomeController@lentitem')->name('lentitem');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,8 @@ Route::get('/subcategories/{id}','subCategoryController@subCategories');
 |--------------------------------------------------------------------------
 |
 */
-Route::get('/products','ProductController@getProducts');
+Route::get('/products/{skip}/{limit}/{city_id}/{sub_category_id}/{name}','ProductController@getProducts');
 Route::get('/userproducts/{id}','ProductController@getProductsUser');
+Route::get('/userproducts/{id}/{limit}','ProductController@getProductsUserLimit');
+Route::get('/userproducts/{id}/{skip}/{limit}','ProductController@getProductsUserSkipLimit');
 Route::post('/addproduct','ProductController@addProduct')->middleware('auth');

@@ -83,50 +83,6 @@
 								<label for="city_id">City/Town</label>
 								<select data-placeholder="Select City" class="chosen-select" id="city_id" name="city_id" tabindex="7">
 						      		<option value=""></option>
-								    {{-- <optgroup label="Finland">
-								      <option>All</option>
-								      <option>Helsinki</option>
-								      <option>Espoo</option>
-								      <option>Tampere</option>
-								      <option>Vantaa</option>
-								      <option>Turku</option>
-								      <option>Oulu</option>
-								      <option>Lahti</option>
-								      <option>Kuopio</option>
-								      <option>Jyväskylä</option>
-								      <option>Pori</option>
-								      <option>Lappeenranta, 	</option>
-								      <option>Vaasa</option>
-								      <option>Kotka</option>
-								      <option>Science</option>
-								      <option>History</option>
-								      <option>Math</option>
-								      <option>Joensuu</option>
-								      <option>Hämeenlinna</option>
-								      <option>Porvoo</option>
-								      <option>Mikkeli</option>
-								      <option>Hyvinge</option>
-								      <option>Järvenpää</option>
-								      <option>Hyvinge</option>
-								      <option>Nurmijärvi</option>
-								      <option>Rauma</option>
-								      <option>Lohja</option>
-								      <option>Kokkola</option>
-								      <option>Kajaani</option>
-								      <option>Rovaniemi</option>
-								      <option>Tuusula</option>
-								      <option>Kirkkonummi</option>
-								      <option>Seinäjoki</option>
-								      <option>Kerava</option>
-								      <option>Kouvola</option>
-								      <option>Imatra</option>
-								      <option>Nokia</option>
-								      <option>Savonlinna</option>
-								      <option>Riihimäki</option>
-								      <option>Vihti</option>
-								      <option>Salo</option>
-								      <option>Kangasala</option>
-								    </optgroup> --}}
 						  		</select>
 						  		@if ($errors->has('city_id'))
 									<span class="help-block">
