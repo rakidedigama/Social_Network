@@ -191,6 +191,8 @@
                         {
                             alertMessage('Added Successfully.','success');
                             $('#name,#imgInp').val('');
+                            $("#urlname").val(" ");
+                            $("#img-upload").attr("src","{{url('/images/placeholder-img.jpg')}}");
                             $('#sub_category_id').val('').trigger('chosen:updated');
                             loadData();
                         }
