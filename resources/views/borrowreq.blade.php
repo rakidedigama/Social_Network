@@ -72,7 +72,8 @@
             $(document).on('click','.accept_btn,.reject_btn',function(e) {
             	
             	var request_id = $(this).attr('request_id'),
-            		status 	   = 2;
+            		status 	   = 2,
+            		btn 	   = $(this);
 
             	if( $(this).hasClass('accept_btn') )
             		status = 1;
@@ -85,7 +86,7 @@
         			success:function(data){
         				if( data["updated"] == "true" )
         				{
-        					$(this).hide();
+        					btn.parent('div').slideUp();
         					
         					if(status == 1)
         						alertMessage('Request Accepted Successfully.','success');

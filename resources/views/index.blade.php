@@ -217,7 +217,6 @@ with like-minded readers </h2>
 			}
 			loadCountries();
 
-
 			function loadData(reset,skip,limit,city_id,sub_category_id,name)
             {
             	$('#rows').append('<div class="col-md-12">'+
@@ -238,7 +237,6 @@ with like-minded readers </h2>
                 			$('#rows').append('<div class="col-md-12">'+
                 				'<p class="text text-danger center-block">'+data['msg']+'</p>'+
             				'</div>');
-
                     	}
                     	else
                     	{
@@ -303,10 +301,9 @@ with like-minded readers </h2>
         			data: {_token: '{{ csrf_token() }}',lent_user:lent_user,product_id:product_id },
         			success:function(data){
         				if( data["inserted"] == "true" )
-        				{
-        					$(this).remove();
-        					alertMessage('Request Sent Successfully.','success');
-        				}
+    						alertMessage('Request Sent Successfully.','success');
+        				else if ( data["error"] )
+        					alertMessage(data["error"],'error');
     					else
     						alertMessage('Error occured while Borrowing request.','error');
         			},

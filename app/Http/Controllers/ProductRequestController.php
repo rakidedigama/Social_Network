@@ -18,12 +18,21 @@ class ProductRequestController extends Controller
     public function borrowReq(Request $req)
     {
     	$json['inserted'] = 'false';
-    	$data = new Product_Request();
-		$data->borrow_user = Auth::user()->id;
-    	$data->lent_user   = $req->lent_user;
-		$data->product_id  = $req->product_id; 
-    	$data->save(); 
-    	$json['inserted'] = 'true';
+
+    	$checkData = Product_Request::where('borrow_user',Auth::user()->id)->where('lent_user',$req->lent_user)->where('product_id',$req->product_id)->get();
+    	if($checkData->first())
+    	{
+    		$json['error'] = 'Request Already Sent.';
+    	}
+    	else
+    	{
+	    	$data = new Product_Request();
+			$data->borrow_user = Auth::user()->id;
+	    	$data->lent_user   = $req->lent_user;
+			$data->product_id  = $req->product_id; 
+	    	$data->save(); 
+	    	$json['inserted'] = 'true';
+    	}
     	return response()->json($json);
     }
 
