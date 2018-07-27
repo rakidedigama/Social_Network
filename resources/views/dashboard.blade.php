@@ -123,7 +123,7 @@
             function loadCategories()
             {
                 $.ajax({
-                    url: '/categories',
+                    url: '{{ route('categories') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     success:function(data){
@@ -145,7 +145,8 @@
             function loadData()
             {
                 $.ajax({
-                    url: '/userproducts/{{Auth::user()->id}}/3',
+                    // url: '/userproducts/{{--Auth::user()->id--}}/3',
+                    url:'{{ url('userproducts/'.Auth::user()->id.'/3') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     success:function(data){
@@ -155,7 +156,7 @@
                             $('#rows').append('<div class="col-md-4">'+
                                 '<div class="p-box-lent">'+
                                     '<p class="person-name">Category: '+value['category_name']+'</p>'+
-                                    '<img src="/images/uploads/'+value['image']+'" class="img-responsive">'+
+                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
                                     '<p>'+value['name']+'</p>'+
                                 '</div>'+
                             '</div>'); 
@@ -170,7 +171,7 @@
             {
                 var fdata = new FormData( $('#pform')[0] ); 
                 $.ajax({
-                    url: '/addproduct',
+                    url: '{{ route('addproduct') }}',
                     type: 'POST',
                     dataType: 'JSON',
                     data: fdata,
@@ -188,10 +189,13 @@
                         }
                         else
                         {
+                            alertMessage('Added Successfully.','success');
+                            $('#name,#imgInp').val('');
+                            $('#sub_category_id').val('').trigger('chosen:updated');
                             loadData();
                         }
                     },
-                    error:function(){}
+                    error:function(){ alertMessage('Error occured while adding product.','error'); }
                 });                
             }
 

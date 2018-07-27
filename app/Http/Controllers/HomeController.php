@@ -44,5 +44,16 @@ class HomeController extends Controller
         return view('lent_item')->with('city',$city[0]['name'],'total_products',$total_products);
     }
 
+    public function borroweditem()
+    {
+        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
+        return view('borrowed_item')->with('city',$city[0]['name']);
+    }
+
+    public function borrowreq()
+    {
+        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
+        return view('borrowreq')->with('city',$city[0]['name']);
+    }
 
 }

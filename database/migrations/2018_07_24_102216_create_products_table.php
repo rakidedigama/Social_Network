@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->integer('sub_category_id')->unsigned();
             $table->string('image','120');
             $table->integer('user_id')->unsigned()->index();
+            $table->tinyInteger('viewstatus')->default('0');
             $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });

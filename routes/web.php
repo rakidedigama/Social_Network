@@ -13,13 +13,15 @@
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('index');
 
 Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 Route::get('/owneditem', 'HomeController@owneditem')->name('owneditem');
 Route::get('/lentitem', 'HomeController@lentitem')->name('lentitem');
+Route::get('/borroweditem', 'HomeController@borroweditem')->name('borroweditem');
+Route::get('/borrowreq', 'HomeController@borrowreq')->name('borrowreq');
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +31,7 @@ Route::get('/lentitem', 'HomeController@lentitem')->name('lentitem');
 */
 // Route::get('/addcountries','CountryController@addCountries');
 // Route::get('/addcities','CityController@addCities');
-Route::get('/countries','CountryController@Countries');
+Route::get('/countries','CountryController@Countries')->name('countries');
 Route::get('/cities/{id}','CityController@CCities');
 
 /*
@@ -40,7 +42,7 @@ Route::get('/cities/{id}','CityController@CCities');
 */
 // Route::get('/addcategories','CategoryController@addCategories');
 // Route::get('/addsubcategories','subCategoryController@addSubCategories');
-Route::get('/categories','CategoryController@Categories');
+Route::get('/categories','CategoryController@Categories')->name('categories');
 Route::get('/subcategories/{id}','subCategoryController@subCategories');
 
 
@@ -54,4 +56,18 @@ Route::get('/products/{skip}/{limit}/{city_id}/{sub_category_id}/{name}','Produc
 Route::get('/userproducts/{id}','ProductController@getProductsUser');
 Route::get('/userproducts/{id}/{limit}','ProductController@getProductsUserLimit');
 Route::get('/userproducts/{id}/{skip}/{limit}','ProductController@getProductsUserSkipLimit');
-Route::post('/addproduct','ProductController@addProduct')->middleware('auth');
+Route::get('/userborrowrequest/{id}/{skip}/{limit}','ProductController@getBorrowRequestProducts');
+Route::get('/userlentproducts/{id}/{skip}/{limit}','ProductController@getLentProducts');
+Route::get('/userborrowedproducts/{id}/{skip}/{limit}','ProductController@getBorrowedProducts');
+Route::post('/addproduct','ProductController@addProduct')->name('addproduct')->middleware('auth');
+
+
+/*
+|--------------------------------------------------------------------------
+| Product Request
+|--------------------------------------------------------------------------
+|
+*/
+
+Route::post('/reqborrow', 'ProductRequestController@borrowReq')->name('reqborrow');
+Route::post('/updatereqborrow', 'ProductRequestController@updateBorrowReq')->name('updatereqborrow');

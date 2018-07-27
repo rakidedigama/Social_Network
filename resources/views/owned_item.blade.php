@@ -16,9 +16,7 @@
 							<p class="person-name">Person Name Here</p>
 							<img src="images/Iron.jpg" class="img-responsive">
 							<p>Product Name</p>
-						</div>
-					</div>
-					 --}}
+						</div>--}}
 
 				</div>
 			</div>
@@ -34,23 +32,35 @@
 
             function loadData(skip,limit)
             {
-            	$('#rows').append('<img src="/images/loader.gif" class="img-circle center-block loader" height="50" width="50" >');
+            	$('#rows').append('<div class="col-md-12">'+
+            		'<img src="{{ url('/images/loader.gif') }}" class="img-circle center-block loader" height="50" width="50" >'+
+        		'</div>');
                 $.ajax({
-                    url: '/userproducts/{{Auth::user()->id}}/'+skip+'/'+limit,
-                    type: 'GET',
+                    url: '{{ url('userproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
                     dataType: 'JSON',
                     success:function(data){
 
-                        $.each(data,function(index, value) {
-                            $('#rows').append('<div class="col-md-4">'+
-                                '<div class="p-box-lent">'+
-                                    '<p class="person-name">Category: '+value['category_name']+'</p>'+
-                                    '<img src="/images/uploads/'+value['image']+'" class="img-responsive">'+
-                                    '<p>'+value['name']+'</p>'+
-                                '</div>'+
-                            '</div>'); 
-                        });
-                        $('.loader').remove();
+                    	if(data['msg'])
+                    	{
+                    		$('.loader').remove();
+                    	
+                			$('#rows').append('<div class="col-md-12">'+
+                				'<p class="text text-danger center-block">'+data['msg']+'</p>'+
+            				'</div>');
+                    	}
+                    	else
+                    	{
+	                        $.each(data,function(index, value) {
+	                            $('#rows').append('<div class="col-md-4">'+
+	                                '<div class="p-box-lent">'+
+	                                    '<p class="person-name">Category: '+value['category_name']+'</p>'+
+	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222" >'+
+	                                    '<p>'+value['name']+'</p>'+
+	                                '</div>'+
+	                            '</div>'); 
+	                        });
+	                        $('.loader').remove();
+                        }
                     },
                     error:function(){ $('.loader').remove(); }
                 }); 

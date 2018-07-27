@@ -73,6 +73,16 @@
 	<body>
 	
 	@yield('content')
+	
+	<!-- BEGIN MESSAGE -->
+    <div id="message" style="display: none;">
+        <div style="padding: 5px;">
+            <div id="inner-message" class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <span></span>
+            </div>
+        </div>
+    </div>
 
 	<div class="footer" style="background-color: #000">
 		<footer >
@@ -154,6 +164,27 @@
 		<script type="text/javascript" src="{{ url('/js/chosen/chosen.js') }}"></script>
 		<!-- Main -->
 		<script src="{{ url('/js/main.js') }}"></script>
+
+		<script type="text/javascript">
+		    //Alert Message FUNCTION
+		    function alertMessage(msg,behave)
+		        {
+		            $('#message').hide();
+		            if(behave == 'success')
+		            {
+		                $('#inner-message').removeClass('alert-danger');
+		                $('#inner-message').addClass('alert-success');
+		            }
+		            else
+		            {
+		                $('#inner-message').removeClass('alert-success');
+		                $('#inner-message').addClass('alert-danger');
+		            }
+
+		            $('#inner-message').find('span').html(msg);
+		            $('#message').show().delay(6000).fadeOut();
+		        }
+		</script>
 	</body>
 </html>
 

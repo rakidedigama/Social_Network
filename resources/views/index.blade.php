@@ -165,7 +165,7 @@ with like-minded readers </h2>
             function loadCategories()
             {
                 $.ajax({
-                    url: '/categories',
+                    url: '{{ route('categories') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     success:function(data){
@@ -195,7 +195,7 @@ with like-minded readers </h2>
 			function loadCountries()
 			{
 				$.ajax({
-					url: '/countries',
+					url: '{{ route('countries') }}',
 					type: 'GET',
 					dataType: 'JSON',
 					success:function(data){
@@ -220,9 +220,12 @@ with like-minded readers </h2>
 
 			function loadData(reset,skip,limit,city_id,sub_category_id,name)
             {
-            	$('#rows').append('<img src="/images/loader.gif" class="img-circle center-block loader" height="50" width="50" >');
+            	$('#rows').append('<div class="col-md-12">'+
+            		'<img src="{{ url('/images/loader.gif') }}" class="img-circle center-block loader" height="50" width="50" >'+
+        		'</div>');
+
                 $.ajax({
-                    url: '/products/'+skip+'/'+limit+'/'+city_id+'/'+sub_category_id+'/'+name,
+                    url: '{{ url('products/') }}/'+skip+'/'+limit+'/'+city_id+'/'+sub_category_id+'/'+name,
                     dataType: 'JSON',
                     success:function(data){
                     	if(data['msg'])
@@ -243,11 +246,21 @@ with like-minded readers </h2>
 	                    		$('#rows').html('');
 
 	                        $.each(data,function(index, value) {
+
+	                        	var code = '';
+	                        	@if( $user = Auth::user() )
+	    	    	        		if( value['user_id'] != {{$user->id}} )
+	    	    	        		{
+	    	    	        			code ='<button type="button" class="btn btn-primary borrow_btn" style="margin-left:28%;" lent_user="'+value['user_id']+'" product_id="'+value['id']+'" >Borrow</button>';
+	    	    	        		}
+    	    	        		@endif
+
 	                            $('#rows').append('<div class="col-md-4">'+
 	                                '<div class="p-box-lent">'+
 	                                    '<p class="person-name">Category: '+value['category_name']+'</p>'+
-	                                    '<img src="/images/uploads/'+value['image']+'" class="img-responsive">'+
+	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
 	                                    '<p>'+value['name']+'</p>'+
+	                                    code+
 	                                '</div>'+
 	                            '</div>'); 
 	                        });
@@ -277,6 +290,28 @@ with like-minded readers </h2>
         			name="null";
 
         		loadData(1,0,12,city_id,sub_category_id,name);
+            });
+
+            $(document).on('click','.borrow_btn',function(e) {
+            	var lent_user  = $(this).attr('lent_user'),
+            		product_id = $(this).attr('product_id');
+
+        		$.ajax({
+        			url: '{{ route('reqborrow') }}',
+        			type: 'POST',
+        			dataType: 'JSON',
+        			data: {_token: '{{ csrf_token() }}',lent_user:lent_user,product_id:product_id },
+        			success:function(data){
+        				if( data["inserted"] == "true" )
+        				{
+        					$(this).remove();
+        					alertMessage('Request Sent Successfully.','success');
+        				}
+    					else
+    						alertMessage('Error occured while Borrowing request.','error');
+        			},
+        			error:function(){ alertMessage('Error occured while Borrowing request.','error'); }
+        		});
             });
 
 			$(".content").mCustomScrollbar({

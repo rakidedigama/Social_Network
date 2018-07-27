@@ -1,10 +1,10 @@
 @extends('layouts.dlayout')
 
-@section('pageTitle','Lent Items')
+@section('pageTitle','Borrow Request')
 
 @section('content')
 
-@include('layouts.dnav', ['active' => 'lent_item'])
+@include('layouts.dnav', ['active' => 'borrowreq'])
 
 <div class="col-md-9">
 	<div class="content" style="height:900px; width: auto;">
@@ -16,8 +16,8 @@
 							<p class="person-name">Person Name Here</p>
 							<img src="images/Iron.jpg" class="img-responsive">
 							<p>Product Name</p>
-						</div>
-					</div> --}}
+						</div>--}}
+
 				</div>
 			</div>
 		</div>
@@ -36,7 +36,7 @@
             		'<img src="{{ url('/images/loader.gif') }}" class="img-circle center-block loader" height="50" width="50" >'+
         		'</div>');
                 $.ajax({
-                    url: '{{ url('userlentproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
+                    url: '{{ url('/userborrowrequest/'.Auth::user()->id) }}/'+skip+'/'+limit,
                     dataType: 'JSON',
                     success:function(data){
 
@@ -56,6 +56,8 @@
 	                                    '<p class="person-name">Borrower: '+value['borrower_name']+'</p>'+
 	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
 	                                    '<p>'+value['name']+'</p>'+
+	                                    '<button type="button" class="btn btn-success accept_btn"  request_id="'+value['request_id']+'" >Accept</button>'+
+	                                    '<button type="button" class="btn btn-danger pull-right reject_btn"  request_id="'+value['request_id']+'" >Reject</button>'+
 	                                '</div>'+
 	                            '</div>'); 
 	                        });
@@ -66,6 +68,36 @@
                 }); 
             }            
             loadData(0,12);
+
+            $(document).on('click','.accept_btn,.reject_btn',function(e) {
+            	
+            	var request_id = $(this).attr('request_id'),
+            		status 	   = 2;
+
+            	if( $(this).hasClass('accept_btn') )
+            		status = 1;
+
+        		$.ajax({
+        			url: '{{ route('updatereqborrow') }}',
+        			type: 'POST',
+        			dataType: 'JSON',
+        			data: {_token: '{{ csrf_token() }}',request_id:request_id,status:status },
+        			success:function(data){
+        				if( data["updated"] == "true" )
+        				{
+        					$(this).hide();
+        					
+        					if(status == 1)
+        						alertMessage('Request Accepted Successfully.','success');
+        					else
+        						alertMessage('Request Rejected.','success');
+        				}
+    					else
+    						alertMessage('Error occured while updating request status.','error');
+        			},
+        			error:function(){ alertMessage('Error occured while updating request status.','error'); }
+        		});
+            });
 
 			$(".content").mCustomScrollbar({
 				scrollButtons:{

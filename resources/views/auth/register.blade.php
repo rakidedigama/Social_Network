@@ -159,7 +159,7 @@
 			function loadCountries()
 			{
 				$.ajax({
-					url: '/countries',
+					url: '{{ url('countries') }}',
 					type: 'GET',
 					dataType: 'JSON',
 					success:function(data){

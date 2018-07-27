@@ -1,10 +1,10 @@
 @extends('layouts.dlayout')
 
-@section('pageTitle','Lent Items')
+@section('pageTitle','Borrowed Items')
 
 @section('content')
 
-@include('layouts.dnav', ['active' => 'lent_item'])
+@include('layouts.dnav', ['active' => 'borrowed_item'])
 
 <div class="col-md-9">
 	<div class="content" style="height:900px; width: auto;">
@@ -16,8 +16,8 @@
 							<p class="person-name">Person Name Here</p>
 							<img src="images/Iron.jpg" class="img-responsive">
 							<p>Product Name</p>
-						</div>
-					</div> --}}
+						</div>--}}
+
 				</div>
 			</div>
 		</div>
@@ -36,7 +36,7 @@
             		'<img src="{{ url('/images/loader.gif') }}" class="img-circle center-block loader" height="50" width="50" >'+
         		'</div>');
                 $.ajax({
-                    url: '{{ url('userlentproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
+                    url: '{{ url('/userborrowedproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
                     dataType: 'JSON',
                     success:function(data){
 
@@ -53,8 +53,8 @@
 	                        $.each(data,function(index, value) {
 	                            $('#rows').append('<div class="col-md-4">'+
 	                                '<div class="p-box-lent">'+
-	                                    '<p class="person-name">Borrower: '+value['borrower_name']+'</p>'+
-	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
+	                                    '<p class="person-name">Lender: '+value['lent_name']+'</p>'+
+	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222" >'+
 	                                    '<p>'+value['name']+'</p>'+
 	                                '</div>'+
 	                            '</div>'); 
