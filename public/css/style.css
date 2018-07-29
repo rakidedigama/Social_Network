@@ -10,6 +10,11 @@
 * 	Template Style 
 *
 * ======================================================= */
+@media only screen and (min-width: 800px) {
+    .product-list .col-md-4:nth-child(1), .product-list .col-md-4:nth-child(2), .product-list .col-md-4:nth-child(3), .product-list .col-md-4:nth-child(4) {
+    margin-top: 0px;
+}
+}
 body {
   font-family: "Poppins", Roboto, sans-serif;
   font-weight: 400;
@@ -1683,13 +1688,30 @@ input.ftr-news-mail {
     background-color: #fff;
 }
 p.person-name {
-    text-align: left;
+    text-align: center;
     color: #753339;
-    margin: 0px;
+    margin: 0px 0px 10px;
 }
 .p-box-lent {
     box-shadow: 0 0 9px 2px #e8e8e8;
     padding: 10px 10px;
+    overflow: hidden;
+        text-align: center;
+}
+.p-img-al {
+    height: 150px;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+button.btn.btn-primary.borrow_btn {
+    margin-top: 6px;
+    border-radius: 4px;
+    padding: 6px 35px;
+    background-color: #753339;
+    border: none;
+    margin-left: 0px !important;
 }
 button.btn.btn-add-item {
     background-color: #753339;
@@ -1967,12 +1989,59 @@ input:focus{
   top: 0;
   left: 0;
   width: 100%;
-  margin-top: 55px;
 }
 #inner-message {
   margin: 0 auto;
 }
+.text-right.menu-1 .dropdown img {
+    -webkit-filter: brightness(5);
+    filter: brightness(5);
+}
 
+.text-right.menu-1 .dropdown ul {
+    background-color: #753339;
+    padding: 10px 0px;
+}
+.p-box-lent img {
+    width: 100%;
+    height: auto;
+    border: solid 1px #0000000f;
+}
+
+.p-box-lent {
+    text-align:  center;
+}
+.left-side-home button#searchbtn {
+    background-color: #b19a70;
+    border-color: #b19a70;
+    border-radius: 4px;
+    padding: 6px 30px;
+}
+.col-loader-img {
+    position: absolute;
+    bottom: 0px;
+    margin-left: Calc(50% - 50px);
+    /*background-color: #ffffff;*/
+    /*border: solid 2px #753339;*/
+    padding: 10px 40px;
+}
+a.btn.btn-add-item {
+    background-color: #753339;
+    border-radius: 5px;
+    box-shadow:  none;
+    color: #fff;
+    width:  100%;
+    margin-bottom:  15px;
+    padding: 10px 10px;
+    text-align:  center;
+}
+a.btn.btn-add-item i {
+    margin-right:10px;
+}
+a.btn.btn-add-item.active {
+    background-color:  #fff;
+    color: #753339;
+}
 /*# sourceMappingURL=style.css.map 
 
   font-family: "Poppins", Roboto, sans-serif;

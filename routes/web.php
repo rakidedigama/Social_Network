@@ -13,15 +13,15 @@
 
 Route::get('/', function () {
     return view('index');
-})->name('index');
+})->name('index')->middleware('goodUser');
 
 Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
-Route::get('/owneditem', 'HomeController@owneditem')->name('owneditem');
-Route::get('/lentitem', 'HomeController@lentitem')->name('lentitem');
-Route::get('/borroweditem', 'HomeController@borroweditem')->name('borroweditem');
-Route::get('/borrowreq', 'HomeController@borrowreq')->name('borrowreq');
+Route::get('/owneditem', 'HomeController@owneditem')->name('owneditem')->middleware('goodUser');
+Route::get('/lentitem', 'HomeController@lentitem')->name('lentitem')->middleware('goodUser');
+Route::get('/borroweditem', 'HomeController@borroweditem')->name('borroweditem')->middleware('goodUser');
+Route::get('/borrowreq', 'HomeController@borrowreq')->name('borrowreq')->middleware('goodUser');
 
 /*
 |--------------------------------------------------------------------------

@@ -110,14 +110,14 @@
 					<div class="col-md-2">
 						<ul class="ftr-menu">
 							<li>Home</li>
-							<li>About Us</li>
-							<li>Platform</li>
-							<li>More</li>
-							<li>Contact Us</li>
-							<li>Privacy Policy</li>
-							<li>terms of Use</li>
-							<li>Feedback</li>
-							<li>Help & Support</li>
+							<!--<li>About Us</li>-->
+							<!--<li>Platform</li>-->
+							<!--<li>More</li>-->
+							<!--<li>Contact Us</li>-->
+							<!--<li>Privacy Policy</li>-->
+							<!--<li>terms of Use</li>-->
+							<!--<li>Feedback</li>-->
+							<!--<li>Help & Support</li>-->
 						</ul>
 					</div>
 					<div class="col-md-3">
@@ -162,10 +162,14 @@
 		<!-- Chosen js -->
 		<script type="text/javascript" src="{{ url('/js/chosen/init.js') }}"></script>
 		<script type="text/javascript" src="{{ url('/js/chosen/chosen.js') }}"></script>
+		<!--<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>-->
+		<script type="text/javascript" src="{{ url('/js/masonry.pkgd.min.js') }}"></script>
 		<!-- Main -->
 		<script src="{{ url('/js/main.js') }}"></script>
 
 		<script type="text/javascript">
+
+
 		    //Alert Message FUNCTION
 		    function alertMessage(msg,behave)
 		        {

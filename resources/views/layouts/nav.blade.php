@@ -8,8 +8,8 @@
 					<div class="col-xs-10 text-right menu-1">
 						<ul>
 							<li class="{{ $active == 'index'?'active':'' }}"><a href="{{ route('index') }}">Home</a></li>
-							<li class="{{ $active=='about'?'active':''}}"><a href="#">About Us</a></li>
-							<li ><a href="#">Platform</a></li>
+							<!--<li class="{{ $active=='about'?'active':''}}"><a href="#">About Us</a></li>-->
+							<!--<li ><a href="#">Platform</a></li>-->
 							<!-- <li class="has-dropdown">
 								<a href="blog.html">Blog</a>
 								<ul class="dropdown">
@@ -19,8 +19,8 @@
 									<li><a href="#">API</a></li>
 								</ul>
 							</li> -->
-							<li><a href="#">More</a></li>
-							<li><a href="#">Contact</a></li>
+							<!--<li><a href="#">More</a></li>-->
+							<!--<li><a href="#">Contact</a></li>-->
 
 							@guest
 								<li class="{{ $active =='login'?'active':'' }}"><a href="{{ route('login') }}"><span>Login</span></a></li>

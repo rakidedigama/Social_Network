@@ -116,7 +116,7 @@ with like-minded readers </h2>
 						</div>
 						<br/>
 						<div class="content" style="height:900px; width: auto;">
-							<div class="right-side-home">
+							<div class="right-side-home loader-right-side">
 								<div class="product-list">
 									<div class="row" id="rows">
 									</div>
@@ -219,7 +219,7 @@ with like-minded readers </h2>
 
 			function loadData(reset,skip,limit,city_id,sub_category_id,name)
             {
-            	$('#rows').append('<div class="col-md-12">'+
+                $('.loader-right-side').append('<div class="col-loader-img">'+
             		'<img src="{{ url('/images/loader.gif') }}" class="img-circle center-block loader" height="50" width="50" >'+
         		'</div>');
 
@@ -255,13 +255,36 @@ with like-minded readers </h2>
 
 	                            $('#rows').append('<div class="col-md-4">'+
 	                                '<div class="p-box-lent">'+
-	                                    '<p class="person-name">Category: '+value['category_name']+'</p>'+
-	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
+	                                	'<p class="person-name">'+value['owner_name']+'</p>'+
+	                                    '<p class="person-name">'+value['city']+'</p>'+
+	                                   // '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
+	                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
 	                                    '<p>'+value['name']+'</p>'+
 	                                    code+
 	                                '</div>'+
 	                            '</div>'); 
+	                            
 	                        });
+ $.fn.equalHeights = function() {
+        var maxHeight = 0,
+            $this = $(this);
+
+        $this.each( function() {
+            var height = $(this).innerHeight();
+
+            if ( height > maxHeight ) { maxHeight = height; }
+        });
+
+        return $this.css('height', maxHeight);
+    };
+
+    // auto-initialize plugin
+    $('[data-equal]').each(function(){
+        var $this = $(this),
+            target = $this.data('equal');
+        $this.find(target).equalHeights();
+    });
+$('.p-box-lent').equalHeights();
 	                        $('.loader').remove();
                     	}
                     },

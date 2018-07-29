@@ -62,8 +62,13 @@
                                 </div>
                             </div>
                             <div class="row form-group">
+                                <div class="col-md-12">
+                                    <img src="{{ url('/images/loader.gif') }}" class="img-circle center-block " id="loader" style="display: none;" height="50" width="50" >
+                                </div>
+                            </div>
+                            <div class="row form-group">
                                 <div class="col-md-12 btn-center">
-                                    <button type="submit" class="btn btn-login" tabindex="4">Add Item</button>
+                                    <button type="submit" class="btn btn-login" id="submit_btn" tabindex="4">Add Item</button>
                                 </div>
                             </div>
                         </form>
@@ -111,6 +116,18 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
+            function blshow()
+            {
+                $('#loader').show();
+                $('#submit_btn').attr('disabled', 'disabled');
+            }
+
+            function blhide()
+            {
+                $('#loader').hide();
+                $('#submit_btn').removeAttr('disabled');
+            }
+
             function loadSubCategories(data)
             {
                 var rows = '';
@@ -145,7 +162,6 @@
             function loadData()
             {
                 $.ajax({
-                    // url: '/userproducts/{{--Auth::user()->id--}}/3',
                     url:'{{ url('userproducts/'.Auth::user()->id.'/3') }}',
                     type: 'GET',
                     dataType: 'JSON',
@@ -169,6 +185,7 @@
 
             function add()
             {
+                blshow();
                 var fdata = new FormData( $('#pform')[0] ); 
                 $.ajax({
                     url: '{{ route('addproduct') }}',
@@ -196,8 +213,12 @@
                             $('#sub_category_id').val('').trigger('chosen:updated');
                             loadData();
                         }
+                        blhide();
                     },
-                    error:function(){ alertMessage('Error occured while adding product.','error'); }
+                    error:function(){ 
+                        alertMessage('Error occured while adding product.','error');
+                        blhide();
+                        }
                 });                
             }
 

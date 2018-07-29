@@ -7,7 +7,7 @@
 <div class="fh5co-loader"></div>
     
     <div id="page">
-        @include('layouts.nav', ['some' => 'data'])
+        @include('layouts.nav', ['active' => 'forgot_pass'])
     <div id="fh5co-counter" class="fh5co-counters fh5co-bg-section" style="background-image: url({{ url('/images/BoysWithPhone.jpg') }});">
         <div class="container">
             <div class="row">
