@@ -142,6 +142,7 @@
                 $.ajax({
                     url: '{{ route('categories') }}',
                     type: 'GET',
+                    cache: true,
                     dataType: 'JSON',
                     success:function(data){
                         var sub_category_id = $('#sub_category_id');
@@ -164,6 +165,7 @@
                 $.ajax({
                     url:'{{ url('userproducts/'.Auth::user()->id.'/3') }}',
                     type: 'GET',
+                    cache: true,
                     dataType: 'JSON',
                     success:function(data){
 
@@ -190,6 +192,7 @@
                 $.ajax({
                     url: '{{ route('addproduct') }}',
                     type: 'POST',
+                    cache: true,
                     dataType: 'JSON',
                     data: fdata,
                     contentType: false,

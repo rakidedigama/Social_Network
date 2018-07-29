@@ -167,6 +167,7 @@ with like-minded readers </h2>
                 $.ajax({
                     url: '{{ route('categories') }}',
                     type: 'GET',
+                    cache: true,
                     dataType: 'JSON',
                     success:function(data){
                         var sub_category_id = $('#sub_category_id');
@@ -197,6 +198,7 @@ with like-minded readers </h2>
 				$.ajax({
 					url: '{{ route('countries') }}',
 					type: 'GET',
+					cache: true,
 					dataType: 'JSON',
 					success:function(data){
 						var city_id = $('#city_id');
@@ -226,6 +228,7 @@ with like-minded readers </h2>
                 $.ajax({
                     url: '{{ url('products/') }}/'+skip+'/'+limit+'/'+city_id+'/'+sub_category_id+'/'+name,
                     dataType: 'JSON',
+                    cache: true,
                     success:function(data){
                     	if(data['msg'])
                     	{
@@ -320,6 +323,7 @@ $('.p-box-lent').equalHeights();
         		$.ajax({
         			url: '{{ route('reqborrow') }}',
         			type: 'POST',
+        			cache: true,
         			dataType: 'JSON',
         			data: {_token: '{{ csrf_token() }}',lent_user:lent_user,product_id:product_id },
         			success:function(data){

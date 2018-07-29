@@ -38,6 +38,7 @@
                 $.ajax({
                     url: '{{ url('/userborrowrequest/'.Auth::user()->id) }}/'+skip+'/'+limit,
                     dataType: 'JSON',
+                    cache: true,
                     success:function(data){
 
                     	if(data['msg'])
@@ -82,6 +83,7 @@
         			url: '{{ route('updatereqborrow') }}',
         			type: 'POST',
         			dataType: 'JSON',
+        			cache: true,
         			data: {_token: '{{ csrf_token() }}',request_id:request_id,status:status },
         			success:function(data){
         				if( data["updated"] == "true" )

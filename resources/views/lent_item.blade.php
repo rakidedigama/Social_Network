@@ -38,6 +38,7 @@
                 $.ajax({
                     url: '{{ url('userlentproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
                     dataType: 'JSON',
+                    cache: true,
                     success:function(data){
 
                     	if(data['msg'])
