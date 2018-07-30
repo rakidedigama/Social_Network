@@ -14,11 +14,10 @@ class ProductController extends Controller
 {
     public function getProducts($skip,$limit,$city_id,$sub_category_id,$name)
     {
-    	$data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id','users.name as owner_name','cities.name as city','countries.name as country')
+    	$data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id','users.name as owner_name','cities.name as city')
         ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
         ->join('users', 'products.user_id', '=', 'users.id')
         ->join('cities','users.city_id','cities.id')
-        ->join('countries','cities.id','countries.id')
         ->where('products.status','1')->where('products.viewstatus','1');
       
         if(is_numeric($city_id))

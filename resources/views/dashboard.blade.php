@@ -71,6 +71,16 @@
                                     <button type="submit" class="btn btn-login" id="submit_btn" tabindex="4">Add Item</button>
                                 </div>
                             </div>
+                            
+                        	<!-- BEGIN MESSAGE -->
+                            <div id="fmessage" style="display: none;">
+                                <div style="padding: 5px;">
+                                    <div id="inner-message" class="alert alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="col-md-6">
@@ -115,7 +125,26 @@
 @section('footer')
     <script type="text/javascript">
         $(document).ready(function(){
+            
+            //Alert Message FUNCTION
+		    function alertMessage1(msg,behave)
+	        {
+	            $('#fmessage').hide();
+	            if(behave == 'success')
+	            {
+	                $('#inner-message').removeClass('alert-danger');
+	                $('#inner-message').addClass('alert-success');
+	            }
+	            else
+	            {
+	                $('#inner-message').removeClass('alert-success');
+	                $('#inner-message').addClass('alert-danger');
+	            }
 
+	            $('#inner-message').find('span').html(msg);
+	            $('#fmessage').show().delay(6000).fadeOut();
+	        }
+            
             function blshow()
             {
                 $('#loader').show();
@@ -209,7 +238,7 @@
                         }
                         else
                         {
-                            alertMessage('Added Successfully.','success');
+                            alertMessage1('Added Successfully.','success');
                             $('#name,#imgInp').val('');
                             $("#urlname").val(" ");
                             $("#img-upload").attr("src","{{url('/images/placeholder-img.jpg')}}");
@@ -219,7 +248,7 @@
                         blhide();
                     },
                     error:function(){ 
-                        alertMessage('Error occured while adding product.','error');
+                        alertMessage1('Error occured while adding product.','error');
                         blhide();
                         }
                 });                

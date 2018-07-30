@@ -71,6 +71,7 @@ with like-minded readers </h2>
 	</aside>
 	<div id="fh5co-counter" class="fh5co-counters fh5co-bg-section">
 		<div class="container">
+		<form class="custom-search-form">
 			<div class="row">
 				<div class="col-md-3">
 					<div class="left-side-home">
@@ -97,21 +98,22 @@ with like-minded readers </h2>
 
             <div class="row form-group">
                 <div class="col-md-12 btn-center">
-                    <button type="button" class="btn btn-success" id="searchbtn" tabindex="">Search</button>
+                    <button type="submit" class="btn btn-success" id="searchbtn" tabindex="">Search</button>
                 </div>
             </div>
+            </form>
 					</div>
 				</div>
 				<div class="col-md-9">
 					<div class="right-side-home">
 						<div id="custom-search-input">
               <div class="span12">
-				        <form id="custom-search-form" class="form-search form-horizontal">
+				        <form2 id="custom-search-form" class="form-search form-horizontal custom-search-form">
 				            <div class="input-append span12">
 				                <input type="text" class="search-query" id="name" placeholder="Search">
 				                <button type="button" class="btn"><i class="icon-search"></i></button>
 				            </div>
-				        </form>
+				        </form2>
       				</div>
 						</div>
 						<br/>
@@ -154,6 +156,26 @@ with like-minded readers </h2>
 @section('footer')
 	<script type="text/javascript">
 		$(document).ready(function($) {
+		    
+		    //Alert Message FUNCTION
+		    function alertMessage1(msg,behave,id,inner_id)
+	        {
+	            $('#'+id).hide();
+	            if(behave == 'success')
+	            {
+	                $('#'+inner_id).removeClass('alert-danger');
+	                $('#'+inner_id).addClass('alert-success');
+	            }
+	            else
+	            {
+	                $('#'+inner_id).removeClass('alert-success');
+	                $('#'+inner_id).addClass('alert-danger');
+	            }
+
+	            $('#'+inner_id).find('span').html(msg);
+	            $('#'+id).show().delay(6000).fadeOut();
+	        }
+		    
 			function loadSubCategories(data)
             {
                 var rows = '';
@@ -248,46 +270,56 @@ with like-minded readers </h2>
 
 	                        $.each(data,function(index, value) {
 
-	                        	var code = '';
+	                        	var code = '',
+	                        	    mssg = '';
 	                        	@if( $user = Auth::user() )
 	    	    	        		if( value['user_id'] != {{$user->id}} )
 	    	    	        		{
-	    	    	        			code ='<button type="button" class="btn btn-primary borrow_btn" style="margin-left:28%;" lent_user="'+value['user_id']+'" product_id="'+value['id']+'" >Borrow</button>';
+	    	    	        			code ='<button type="button" class="btn btn-primary borrow_btn" style="margin-left:28%;" lent_user="'+value['user_id']+'" product_id="'+value['id']+'" mssg_id="message'+value['id']+'" mssg_inner_id="inner-message'+value['id']+'" >Borrow</button>';
+	    	    	        			mssg ='<div id="message'+value['id']+'" style="display: none;">'+
+                                                    '<div style="padding: 5px;">'+
+                                                        '<div id="inner-message'+value['id']+'" class="alert alert-success">'+
+                                                            '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+                                                            '<span></span>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                                                '</div>'; 
 	    	    	        		}
     	    	        		@endif
 
 	                            $('#rows').append('<div class="col-md-4">'+
 	                                '<div class="p-box-lent">'+
-	                                	'<p class="person-name">'+value['owner_name']+'</p>'+
-	                                    '<p class="person-name">'+value['city']+'</p>'+
-	                                   // '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
+	                                	'<p class="person-name"><i class="icon-man"></i> '+value['owner_name']+'</p>'+
+	                                    '<p class="person-name"><i class="icon-location2"></i> '+value['city']+'</p>'+
 	                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
 	                                    '<p>'+value['name']+'</p>'+
 	                                    code+
+	                                    mssg+
 	                                '</div>'+
 	                            '</div>'); 
 	                            
 	                        });
- $.fn.equalHeights = function() {
-        var maxHeight = 0,
-            $this = $(this);
+                             $.fn.equalHeights = function() {
+                                    var maxHeight = 0,
+                                        $this = $(this);
+                            
+                                    $this.each( function() {
+                                        var height = $(this).innerHeight();
+                            
+                                        if ( height > maxHeight ) { maxHeight = height; }
+                                    });
+                            
+                                    return $this.css('height', maxHeight);
+                                };
 
-        $this.each( function() {
-            var height = $(this).innerHeight();
-
-            if ( height > maxHeight ) { maxHeight = height; }
-        });
-
-        return $this.css('height', maxHeight);
-    };
-
-    // auto-initialize plugin
-    $('[data-equal]').each(function(){
-        var $this = $(this),
-            target = $this.data('equal');
-        $this.find(target).equalHeights();
-    });
-$('.p-box-lent').equalHeights();
+                            // auto-initialize plugin
+                            $('[data-equal]').each(function(){
+                                var $this = $(this),
+                                    target = $this.data('equal');
+                                $this.find(target).equalHeights();
+                            });
+                            $('.p-box-lent').equalHeights();
+	                        
 	                        $('.loader').remove();
                     	}
                     },
@@ -300,8 +332,9 @@ $('.p-box-lent').equalHeights();
         		name = "null";
 
     		loadData(0,0,12,city_id,sub_category_id,name);
-
-            $('#searchbtn').click(function(e) {
+    
+            $('.custom-search-form').submit(function(e) {
+                e.preventDefault();
             	city_id = $('#city_id').val();
         		sub_category_id = $('#sub_category_id').val();
         		name = $('#name').val();
@@ -317,8 +350,11 @@ $('.p-box-lent').equalHeights();
             });
 
             $(document).on('click','.borrow_btn',function(e) {
-            	var lent_user  = $(this).attr('lent_user'),
-            		product_id = $(this).attr('product_id');
+            	var lent_user        = $(this).attr('lent_user'),
+            		product_id       = $(this).attr('product_id'),
+            		mssg_id          = $(this).attr('mssg_id'),
+            		mssg_inner_id    = $(this).attr('mssg_inner_id'),
+            		borrowBtn        = $(this);
 
         		$.ajax({
         			url: '{{ route('reqborrow') }}',
@@ -328,13 +364,19 @@ $('.p-box-lent').equalHeights();
         			data: {_token: '{{ csrf_token() }}',lent_user:lent_user,product_id:product_id },
         			success:function(data){
         				if( data["inserted"] == "true" )
-    						alertMessage('Request Sent Successfully.','success');
+        				{
+    						alertMessage1('Request Sent .','success',mssg_id,mssg_inner_id);
+    						borrowBtn.remove();
+        				}
         				else if ( data["error"] )
-        					alertMessage(data["error"],'error');
+        				{
+        					alertMessage1(data["error"],'error',mssg_id,mssg_inner_id);
+        				    borrowBtn.remove();
+        				}
     					else
-    						alertMessage('Error occured while Borrowing request.','error');
+    						alertMessage1('Error occured while Borrowing request.','error',mssg_id,mssg_inner_id);
         			},
-        			error:function(){ alertMessage('Error occured while Borrowing request.','error'); }
+        			error:function(){ alertMessage1('Error occured while Borrowing request.','error',mssg_id,mssg_inner_id); }
         		});
             });
 

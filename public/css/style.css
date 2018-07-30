@@ -11,7 +11,7 @@
 *
 * ======================================================= */
 @media only screen and (min-width: 800px) {
-    .product-list .col-md-4:nth-child(1), .product-list .col-md-4:nth-child(2), .product-list .col-md-4:nth-child(3), .product-list .col-md-4:nth-child(4) {
+    .product-list .col-md-4:nth-child(1), .product-list .col-md-4:nth-child(2), .product-list .col-md-4:nth-child(3) {
     margin-top: 0px;
 }
 }
@@ -1688,9 +1688,12 @@ input.ftr-news-mail {
     background-color: #fff;
 }
 p.person-name {
-    text-align: center;
+    text-align: left;
+    margin: 0px 0px 5px;
+}
+p.person-name i {
+    margin-right: 4px;
     color: #753339;
-    margin: 0px 0px 10px;
 }
 .p-box-lent {
     box-shadow: 0 0 9px 2px #e8e8e8;
@@ -1945,6 +1948,7 @@ button.btn.btn-add-item.active {
 .add-item-box {
     background-color: #00000008;
     padding: 15px;
+        margin-bottom: 40px;
 }
 .add-item-box h2 {
     color: #753339;
@@ -2041,6 +2045,38 @@ a.btn.btn-add-item i {
 a.btn.btn-add-item.active {
     background-color:  #fff;
     color: #753339;
+}
+.flex-center.position-ref.full-height {
+    height: 70vh;
+}
+.flex-center.position-ref.full-height h4 {
+    font-size: 60px;
+    /* text-align:  center; */
+    color: #00000045;
+    font-weight: 300 !important;
+}
+
+.flex-center.position-ref.full-height h4 span {
+    font-size: 4em;
+    color: #753339;
+}
+.p-box-lent .alert {
+    margin: auto;
+    position: absolute;
+    bottom: 0px;
+    left: 15px;
+    width: calc(100% - 30px );
+}
+button.close {
+    opacity: 1;
+    color: #753339 !important;
+    /* margin-top: -15px; */
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.close:hover, .close:focus {
+    opacity: 1;
 }
 /*# sourceMappingURL=style.css.map 
 
