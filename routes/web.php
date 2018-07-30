@@ -13,15 +13,15 @@
 
 Route::get('/', function () {
     return view('index');
-})->name('index')->middleware('goodUser');
+})->name('index');
 
 Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
-Route::get('/owneditem', 'HomeController@owneditem')->name('owneditem')->middleware('goodUser');
-Route::get('/lentitem', 'HomeController@lentitem')->name('lentitem')->middleware('goodUser');
-Route::get('/borroweditem', 'HomeController@borroweditem')->name('borroweditem')->middleware('goodUser');
-Route::get('/borrowreq', 'HomeController@borrowreq')->name('borrowreq')->middleware('goodUser');
+Route::get('/owneditem', 'HomeController@owneditem')->name('owneditem');
+Route::get('/lentitem', 'HomeController@lentitem')->name('lentitem');
+Route::get('/borroweditem', 'HomeController@borroweditem')->name('borroweditem');
+Route::get('/borrowreq', 'HomeController@borrowreq')->name('borrowreq');
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ Route::get('/userborrowrequest/{id}/{skip}/{limit}','ProductController@getBorrow
 Route::get('/userlentproducts/{id}/{skip}/{limit}','ProductController@getLentProducts');
 Route::get('/userborrowedproducts/{id}/{skip}/{limit}','ProductController@getBorrowedProducts');
 Route::post('/addproduct','ProductController@addProduct')->name('addproduct')->middleware('auth');
-
+Route::post('/deleteproduct','ProductController@delProduct')->name('deleteproduct')->middleware('auth');
 
 /*
 |--------------------------------------------------------------------------

@@ -157,6 +157,7 @@ with like-minded readers </h2>
 	<script type="text/javascript">
 		$(document).ready(function($) {
 		    
+		    //data-dismiss="alert"
 		    //Alert Message FUNCTION
 		    function alertMessage1(msg,behave,id,inner_id)
 	        {
@@ -241,6 +242,12 @@ with like-minded readers </h2>
 			}
 			loadCountries();
 
+			$(document).on('click','.close',function(e){
+				e.preventDefault();
+				var id = $(this).attr('data_id');
+				$('#'+id).hide();
+			});
+
 			function loadData(reset,skip,limit,city_id,sub_category_id,name)
             {
                 $('.loader-right-side').append('<div class="col-loader-img">'+
@@ -277,13 +284,13 @@ with like-minded readers </h2>
 	    	    	        		{
 	    	    	        			code ='<button type="button" class="btn btn-primary borrow_btn" style="margin-left:28%;" lent_user="'+value['user_id']+'" product_id="'+value['id']+'" mssg_id="message'+value['id']+'" mssg_inner_id="inner-message'+value['id']+'" >Borrow</button>';
 	    	    	        			mssg ='<div id="message'+value['id']+'" style="display: none;">'+
-                                                    '<div style="padding: 5px;">'+
-                                                        '<div id="inner-message'+value['id']+'" class="alert alert-success">'+
-                                                            '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
-                                                            '<span></span>'+
-                                                        '</div>'+
-                                                    '</div>'+
-                                                '</div>'; 
+                                            '<div style="padding: 5px;">'+
+                                                '<div id="inner-message'+value['id']+'" class="alert alert-success">'+
+                                                    '<button type="button" class="close" data_id="message'+value['id']+'" >&times;</button>'+
+                                                    '<span></span>'+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div>'; 
 	    	    	        		}
     	    	        		@endif
 
@@ -299,22 +306,22 @@ with like-minded readers </h2>
 	                            '</div>'); 
 	                            
 	                        });
-                             $.fn.equalHeights = function() {
-                                    var maxHeight = 0,
-                                        $this = $(this);
-                            
-                                    $this.each( function() {
-                                        var height = $(this).innerHeight();
-                            
-                                        if ( height > maxHeight ) { maxHeight = height; }
-                                    });
-                            
-                                    return $this.css('height', maxHeight);
-                                };
+                            $.fn.equalHeights = function() {
+                                var maxHeight = 0,
+                                    $this = $(this);
+                        
+                                $this.each( function() {
+                                    var height = $(this).innerHeight();
+                        
+                                    if ( height > maxHeight ) { maxHeight = height; }
+                                });
+                        
+                                return $this.css('height', maxHeight);
+                            };
 
                             // auto-initialize plugin
                             $('[data-equal]').each(function(){
-                                var $this = $(this),
+                                var $this  = $(this),
                                     target = $this.data('equal');
                                 $this.find(target).equalHeights();
                             });
@@ -373,6 +380,8 @@ with like-minded readers </h2>
         					alertMessage1(data["error"],'error',mssg_id,mssg_inner_id);
         				    borrowBtn.remove();
         				}
+        				else if ( data["errorr"] )
+        					alertMessage1(data["errorr"],'error',mssg_id,mssg_inner_id);
     					else
     						alertMessage1('Error occured while Borrowing request.','error',mssg_id,mssg_inner_id);
         			},

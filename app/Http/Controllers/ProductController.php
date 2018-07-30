@@ -151,4 +151,34 @@ class ProductController extends Controller
 
         return json_encode($data);
     }
+
+    public function delProduct(Request $req)
+    {
+        $json['deleted'] = 'false';
+        
+        if(Auth::check())
+        {
+            $checkData = Product::where('id',$req->id)->where('user_id',Auth::user()->id)->get();
+            if($checkData->first())
+            {
+                $vdata = Product_Request::where('product_id',$req->id)->get();
+
+                if($vdata->first())
+                    $json['error'] = 'First take back this item from borrower.';
+                else
+                {
+                    $data = Product::find($req->id);
+                    $data->status = 0;
+                    $data->save();
+                    $json['deleted'] = 'true';
+                }
+            }
+            else
+                $json['error'] = 'Can not delete others item.';
+        }
+        else
+            $json['error'] = 'Can not delete this item. Incorrect credentials.';
+
+        return json_encode($json);
+    }
 }
