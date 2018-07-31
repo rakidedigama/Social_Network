@@ -161,7 +161,7 @@ class ProductController extends Controller
             $checkData = Product::where('id',$req->id)->where('user_id',Auth::user()->id)->get();
             if($checkData->first())
             {
-                $vdata = Product_Request::where('product_id',$req->id)->get();
+                $vdata = Product_Request::where('product_id',$req->id)->where('status',1)->get();
 
                 if($vdata->first())
                     $json['error'] = 'First take back this item from borrower.';
