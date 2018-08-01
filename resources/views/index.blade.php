@@ -261,7 +261,7 @@ with like-minded readers </h2>
                     success:function(data){
                     	if(data['msg'])
                     	{
-                    		$('.loader').remove();
+                    		$('.loader').parent('div').remove();
                     	
                     		if( data['searched']==1 )
                     			$('#rows').html('');
@@ -327,10 +327,10 @@ with like-minded readers </h2>
                             });
                             $('.p-box-lent').equalHeights();
 	                        
-	                        $('.loader').remove();
+	                        $('.loader').parent('div').remove();
                     	}
                     },
-                    error:function(){ $('.loader').remove(); }
+                    error:function(){ $('.loader').parent('div').remove(); }
                 }); 
             }            
             

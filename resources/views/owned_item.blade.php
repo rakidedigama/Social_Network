@@ -30,31 +30,6 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
-        	//Masonry Function
-        	function mm()
-        	{
-        		$.fn.equalHeights = function() {
-                    var maxHeight = 0,
-                        $this = $(this);
-            
-                    $this.each( function() {
-                        var height = $(this).innerHeight();
-            
-                        if ( height > maxHeight ) { maxHeight = height; }
-                    });
-            
-                    return $this.css('height', maxHeight);
-                };
-
-                // auto-initialize plugin
-                $('[data-equal]').each(function(){
-                    var $this  = $(this),
-                        target = $this.data('equal');
-                    $this.find(target).equalHeights();
-                });
-                $('.p-box-lent').equalHeights();
-        	}
-
         	//data-dismiss="alert"
 		    //Alert Message FUNCTION
 		    function alertMessage1(msg,behave,id,inner_id)
@@ -116,7 +91,7 @@
 	                            $('#rows').append('<div class="col-md-4 no-mrg-b" id="p'+value['id']+'">'+
 	                                '<div class="p-box-lent">'+
 	                                    '<p class="person-name">Category: '+value['category_name']+'</p>'+
-	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222" >'+
+	                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
 	                                    '<p>'+value['name']+'</p>'+
 
                                     	'<!-- Trigger the modal with a button -->'+                                        
@@ -152,7 +127,6 @@
 	                            '</div>'); 
 	                        });
 
-	                        mm();
 	                        $('.loader').parent('div').remove();
                         }
                     },

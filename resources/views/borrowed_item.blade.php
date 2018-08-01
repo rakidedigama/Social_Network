@@ -43,7 +43,7 @@
 
                     	if(data['msg'])
                     	{
-                    		$('.loader').remove();
+                    		$('.loader').parent('div').remove();
                     	
                 			$('#rows').append('<div class="col-md-12">'+
                 				'<p class="text text-danger center-block">'+data['msg']+'</p>'+
@@ -55,15 +55,15 @@
 	                            $('#rows').append('<div class="col-md-4">'+
 	                                '<div class="p-box-lent">'+
 	                                    '<p class="person-name">Lender: '+value['lent_name']+'</p>'+
-	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222" >'+
+	                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
 	                                    '<p>'+value['name']+'</p>'+
 	                                '</div>'+
 	                            '</div>'); 
 	                        });
-	                        $('.loader').remove();
+	                        $('.loader').parent('div').remove();
                         }
                     },
-                    error:function(){ $('.loader').remove(); }
+                    error:function(){ $('.loader').parent('div').remove(); }
                 }); 
             }            
             loadData(0,12);

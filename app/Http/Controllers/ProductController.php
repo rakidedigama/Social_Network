@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Intervention\Image\ImageManagerStatic as Image;
+// use Intervention\Image\Image as Image; 
 use Validator;
 use Response;
 use Illuminate\Support\Facades\Input;
@@ -105,7 +107,20 @@ class ProductController extends Controller
             {
                 $path = public_path().'/images/uploads/';
                 $filename = time().'.'.$image->getClientOriginalExtension();
-                $image->move($path,$filename);
+                
+                $image_resize = Image::make($image->getRealPath());
+                $size = $image_resize->filesize();
+                if( $size>250000 )
+                {
+                    $image_resize->resize(1000,1000, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    $image_resize->resizeCanvas(1000, 1000, 'center', false, array(255, 255, 255, 0));
+                    $image_resize->save($path.$filename);
+                }
+                else
+                    $image->move($path,$filename);   
+
                 $product->image = $filename;
                 $product->save();
             }

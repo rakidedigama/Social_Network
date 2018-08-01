@@ -1702,11 +1702,13 @@ p.person-name i {
         text-align: center;
 }
 .p-img-al {
-    height: 150px;
+    height: 260px;
     width: 100%;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
+    border: solid 1px #f7f7f7;
+    background-color: #f7f7f7;
 }
 button.btn.btn-primary.borrow_btn {
     margin-top: 6px;

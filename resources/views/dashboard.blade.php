@@ -203,7 +203,7 @@
                             $('#rows').append('<div class="col-md-4">'+
                                 '<div class="p-box-lent">'+
                                     '<p class="person-name">Category: '+value['category_name']+'</p>'+
-                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
+                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
                                     '<p>'+value['name']+'</p>'+
                                 '</div>'+
                             '</div>'); 
