@@ -11,9 +11,13 @@
 *
 * ======================================================= */
 @media only screen and (min-width: 800px) {
-    .product-list .col-md-4:nth-child(1), .product-list .col-md-4:nth-child(2), .product-list .col-md-4:nth-child(3) {
+  .product-list .col-md-4:nth-child(1), .product-list .col-md-4:nth-child(2), .product-list .col-md-4:nth-child(3), .product-list .col-md-4:nth-child(4) {
     margin-top: 0px;
 }
+
+  .product-list .col-md-3:nth-child(1), .product-list .col-md-3:nth-child(2), .product-list .col-md-3:nth-child(3), .product-list .col-md-3:nth-child(4) {
+    margin-top: 0px;
+  }
 }
 body {
   font-family: "Poppins", Roboto, sans-serif;
@@ -26,7 +30,7 @@ body {
 
 #page {
   position: relative;
-  overflow-x: hidden;
+  /*overflow-x: hidden;*/
   width: 100%;
   height: 100%;
   -webkit-transition: 0.5s;
@@ -130,7 +134,19 @@ h1, h2, h3, h4, h5, h6, figure {
   padding: 0px 15px;
 }
 .fh5co-nav ul li a:hover, .fh5co-nav ul li a:focus, .fh5co-nav ul li a:active {
-  color: #753339;
+  color: #fff;
+}
+.col-md-2-cutm {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    float: left;
+    width: 20%;
+    margin-bottom: 30px;
+}
+.col-md-2-cutm .p-img-al {
+    height: 220px !important;
 }
 .fh5co-nav ul li.has-dropdown {
   position: relative;
@@ -466,7 +482,7 @@ h1, h2, h3, h4, h5, h6, figure {
 #fh5co-counter {
   padding: 1em 0;
   clear: both;
-  background-color: #b19a70;
+  background-color: #ffffff;
 }
 
 .fh5co-counters {
@@ -1539,7 +1555,12 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 .fh5co-nav .top-menu {
     padding: 28px 0;
-    background-color: #b19a70;
+    /*background-color: #b19a70;*/
+}
+nav.fh5co-nav {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .fh5co-nav ul li:nth-last-child(2) a,.fh5co-nav ul li:nth-last-child(1) a {
     border: none !important;
@@ -1579,7 +1600,6 @@ h1, h2, h3, h4, h5, h6, figure {
   border: none;
 }
 .right-side-home {
-    padding: 15px;
     background-color: #fff;
 }
 .input-append.span12 {
@@ -1618,7 +1638,7 @@ input.search-query {
     color: #753339;
 }
 footer{
-  background-color: #262626 !important;
+  /*background-color: #262626 !important;*/
   padding: 40px 0px;
 }
 ul.ftr-social {
@@ -1665,13 +1685,13 @@ footer h3{
   font-weight: 400;
 }
 .ftr-info p {
-    color: #6c2026;
+    color: #cccccc;
     font-size: 25px;
     margin-bottom: 0px;
 }
 .ftr-info a {
     font-size: 20px;
-    color: #6c2026;
+    color: #cccccc;
 }
 input.ftr-news-mail {
     background-color: #171616;
@@ -1696,10 +1716,67 @@ p.person-name i {
     color: #753339;
 }
 .p-box-lent {
-    box-shadow: 0 0 9px 2px #e8e8e8;
-    padding: 10px 10px;
+    border: solid 1px #e6e5e55e;;
+    padding: 0px;
     overflow: hidden;
-        text-align: center;
+    text-align: center;
+    position: relative;
+}
+.p-box-lent.owned-books .p-img-al {
+    height: 200px;
+}
+.product-list{
+  padding:10px;
+}
+.owned-book-blck {
+    background-color:  #000;
+}
+.p-box-lent.owned-books:hover .p-img-al {
+    opacity:  0.8;
+}
+.p-box-lent.owned-books .owned-book-del {
+    position:  absolute;
+    top: 50%;
+    left: 50%;
+    margin-left:  -58px;
+    margin-top: -20px;
+    display: none;
+}
+.p-box-lent.owned-books:hover .owned-book-del {
+    display:  block;
+}
+.p-box-lent.owned-books .product-list p {
+    margin-bottom: 10px;
+}
+.books-inof {
+    padding: 0px 10px;
+}
+.p-box-lent.owned-books {
+    margin-bottom: 15px;
+}
+.book-hover-btn {
+    position:  absolute;
+    top: 50%;
+    margin-top: -25px;
+    left:  50%;
+    display:  none;
+    margin-left: -60px;
+}
+.p-box-lent:hover .book-hover-btn {
+    display:  block;
+}
+.p-box-lent:hover .p-img-al {
+    opacity: 0.8;
+    transition: 0.3s;
+}
+.book-img-blck {
+    background-color: #000;
+}
+.p-box-lent:hover {
+    cursor:  pointer;
+}
+.p-box-lent.lent-books .p-img-al {
+    height: 150px;
 }
 .p-img-al {
     height: 260px;
@@ -1754,17 +1831,28 @@ button.btn.btn-add-item i {
     color: #753339;
 }
 .profile-info-box ul li {
-    border-top: solid 2px #c1c1c1;
-    padding: 10px 0px;
+    border: 0px;
+    padding: 0px 0px;
 }
 .profile-info-box ul {
     list-style: none;
     padding-left: 0px;
     color: #753339;
+     margin-bottom: 0px;
+}
+.profile-info-box > p {
+    margin-bottom: 5px;
+}
+.profile-info-box ul li p {
+    margin-bottom: 5px;
+}
+.profile-info-box ul li p span {
+    color: #565656;
 }
 .profile-info-box {
     background-color: #fff;
-    padding: 30px 40px 15px;
+    padding: 10px 10px 12px;
+    margin-bottom: 15px;
 }
 .login-box {
     width: 70%;
@@ -1889,7 +1977,6 @@ font-size: 20px;
 .profile-info-box ul li ul li {
     border: 0px;
     display: inline-block;
-    margin-left: 50px;
     padding: 0px !important;
 }
 .profile-info-box ul li ul li p {
@@ -1933,6 +2020,37 @@ button.btn.btn-add-item.active {
 }
 #img-upload{
     width: 100%;
+}
+#img-upload-bg {
+    width: 100%;
+    height: 200px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../images/placeholder-img.jpg');
+    background-color: #e4e4e4;
+}
+span.btn.btn-default.btn-file.btn-pro-cus {
+    border: 0px;
+    border-radius: 0px;
+    margin-top: -3px;
+    margin-bottom: 10px;
+    width: 48%;
+}
+span.btn-up-mrg {
+    padding-top: 10px;
+}
+button.btn-pro-up {
+    height: 39px;
+    font-size: 17px;
+    background-color: #fff;
+    border: 0px;
+    margin-left: 4%;
+    width: 48%;
+    color: #333;
+}
+span.btn-up-mrg {
+    padding-top: 10px;
 }
 .add-item-box label {
     font-size: 16px;
@@ -2079,6 +2197,38 @@ button.close {
 }
 .close:hover, .close:focus {
     opacity: 1;
+}
+div#fmessage {
+    position:  relative;
+}
+div#fmessage button.close {padding: 2px 6px 0px 0px;}
+.p-box-lent.dasboard-boxes {
+    padding:  5px;
+}
+.p-box-lent.dasboard-boxes .p-img-al {
+    height: 150px;
+    border:0px; 
+}
+.p-box-lent.borrow-books .p-img-al{
+  height: 180px;
+  background-size: contain;
+}
+.borrow-books-img {
+    background-color: #000;
+}
+.borrow-books-btn {
+    position:  absolute;
+    top: 50%;
+    margin-top: -50px;
+    display: none;
+}
+.p-box-lent.borrow-books:hover  .borrow-books-btn {
+    display:  block;
+}
+.p-box-lent.borrowed-itm .p-img-al {
+    background-size: contain;
+    height: 180px;
+    border: 0px;
 }
 /*# sourceMappingURL=style.css.map 
 

@@ -1,5 +1,8 @@
 <?php
 
+use App\Product;
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +17,34 @@
 Route::get('/', function () {
     return view('index');
 })->name('index');
+
+Route::get('/view-gallery', function (Request $req) {
+    $data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id','users.name as owner_name','cities.name as city')
+        ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
+        ->join('users', 'products.user_id', '=', 'users.id')
+        ->join('cities','users.city_id','cities.id')
+        ->where('products.status','1')->where('products.viewstatus','1');
+        
+        if($req->name) {
+            // $sub_categories = $data->where('sub_categories.name', 'LIKE', '%'.$name.'%');
+            // $cities=$data->where('cities.name', 'LIKE', '%'.$name.'%');
+            $data = $data->where('products.name', 'LIKE', '%'.$req->name.'%')->orWhere('cities.name', 'LIKE', '%'.$req->name.'%')->orWhere('products.author', 'LIKE', '%'.$req->name.'%');
+        }
+        
+        $data=$data->orderBy('id','DESC')->paginate(10);
+        
+        if( !$data->first() ) {
+            if( $req->name ){
+                $data['msg'] = 'Sorry No Data Found.';
+                if ( $req->page )
+                	return abort(404);
+            }
+            else
+            	return abort(404);
+        }
+
+    return view('gallery')->with('data',$data);
+})->name('gallery');
 
 Auth::routes();
 
@@ -45,6 +76,13 @@ Route::get('/cities/{id}','CityController@CCities');
 Route::get('/categories','CategoryController@Categories')->name('categories');
 Route::get('/subcategories/{id}','subCategoryController@subCategories');
 
+/*
+|--------------------------------------------------------------------------
+| Users
+|--------------------------------------------------------------------------
+|
+*/
+Route::post('/change-user-image','UserController@ChangeImage')->name('change-user-image');
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +90,7 @@ Route::get('/subcategories/{id}','subCategoryController@subCategories');
 |--------------------------------------------------------------------------
 |
 */
-Route::get('/products/{skip}/{limit}/{city_id}/{sub_category_id}/{name}','ProductController@getProducts');
+Route::get('/products/{skip}/{limit}/{name}','ProductController@getProducts');
 Route::get('/userproducts/{id}','ProductController@getProductsUser');
 Route::get('/userproducts/{id}/{limit}','ProductController@getProductsUserLimit');
 Route::get('/userproducts/{id}/{skip}/{limit}','ProductController@getProductsUserSkipLimit');

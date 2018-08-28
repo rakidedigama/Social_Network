@@ -61,13 +61,13 @@
 	<link rel="stylesheet" type="text/css" href="{{ url('/css/chosen.css') }}">
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="{{ url('/css/style.css') }}">
-
 	<!-- Modernizr JS -->
 	<script src="{{ url('/js/modernizr-2.6.2.min.js') }}"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
+	
 
 	</head>
 	<body>
@@ -84,7 +84,7 @@
         </div>
     </div>
 
-	<div class="footer" style="background-color: #000">
+	<div class="footer" style="background-image: url({{ url('/images/word-bg.jpg') }});">
 		<footer >
 			<div class="container">
 				<div class="row">

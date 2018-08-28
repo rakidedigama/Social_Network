@@ -11,7 +11,7 @@
 		<div class="right-side-home">
 			<div class="product-list">
 				<div class="row" id="rows">
-					{{-- <div class="col-md-4">
+					{{-- <div class="col-md-3">
 							<div class="p-box-lent">
 							<p class="person-name">Person Name Here</p>
 							<img src="images/Iron.jpg" class="img-responsive">
@@ -27,6 +27,7 @@
 @endsection
 
 @section('footer')
+	<script src="{{ url('/js/userImage.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
 
@@ -52,13 +53,17 @@
                     	else
                     	{
 	                        $.each(data,function(index, value) {
-	                            $('#rows').append('<div class="col-md-4">'+
-	                                '<div class="p-box-lent">'+
+	                            $('#rows').append('<div class="col-md-3">'+
+	                                '<div class="p-box-lent borrow-books">'+
 	                                    '<p class="person-name">Borrower: '+value['borrower_name']+'</p>'+
-	                                    '<img src="{{ url('/images/uploads') }}/'+value['image']+'" class="" height="150" width="222">'+
+	                                    '<div class="borrow-books-img">'+
+	                                    '<div class="p-img-al" style="background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'")\'></div>'+
+	                                    '</div>'+
 	                                    '<p>'+value['name']+'</p>'+
+	                                    '<div class="borrow-books-btn">'+
 	                                    '<button type="button" class="btn btn-success accept_btn"  request_id="'+value['request_id']+'" >Accept</button>'+
-	                                    '<button type="button" class="btn btn-danger pull-right reject_btn"  request_id="'+value['request_id']+'" >Reject</button>'+
+	                                    '<button type="button" class="btn btn-danger  reject_btn"  request_id="'+value['request_id']+'" >Reject</button>'+
+	                                    '</div>'+
 	                                '</div>'+
 	                            '</div>'); 
 	                        });
@@ -150,6 +155,11 @@
 					}
 				}
 			});
+
+			$('#user_image_form').submit(function(e) {
+                e.preventDefault();
+                changeImage('{{ route('change-user-image') }}');
+            });
         });  
     </script>
     

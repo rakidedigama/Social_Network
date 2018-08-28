@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('phone','11');
             $table->integer('city_id')->unsigned();
             $table->string('gender','7');
+            $table->string('pimage','120')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

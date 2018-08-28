@@ -27,6 +27,7 @@
 @endsection
 
 @section('footer')
+	<script src="{{ url('/js/userImage.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
 
@@ -88,16 +89,21 @@
                                             '</div>'+
                                         '</div>'; 
 
-	                            $('#rows').append('<div class="col-md-4 no-mrg-b" id="p'+value['id']+'">'+
-	                                '<div class="p-box-lent">'+
+	                            $('#rows').append('<div class="col-md-3 no-mrg-b" id="p'+value['id']+'">'+
+	                                '<div class="p-box-lent owned-books">'+
 	                                    '<p class="person-name">Category: '+value['category_name']+'</p>'+
+	                                    '<div class="owned-book-blck">'+
 	                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
+	                                    '</div>'+
 	                                    '<p>'+value['name']+'</p>'+
 
-                                    	'<!-- Trigger the modal with a button -->'+                                        
+                                    	'<!-- Trigger the modal with a button -->'+
+
+                                    	'<div class="owned-book-del">'+                                      
                                         '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal'+value['id']+'" >'+
                                         '<i class="fa fa-minus-square"></i> Delete'+
                                         '</button>'+
+                                        '</div>'+
 
                                         '<!-- Modal -->'+
                                         '<div id="myModal'+value['id']+'" class="modal fade" role="dialog">'+
@@ -213,6 +219,11 @@
 					}
 				}
 			});
+
+			$('#user_image_form').submit(function(e) {
+                e.preventDefault();
+                changeImage('{{ route('change-user-image') }}');
+            });
         });  
     </script>
     

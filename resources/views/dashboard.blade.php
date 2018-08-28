@@ -33,9 +33,15 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-12">
+                                    <label for="author">Author's Name</label>
+                                    <input type="text" id="author" name="author" class="form-control" placeholder="Author's Name Here" required tabindex="2">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
                                     <label for="">Category</label>
                                     <div>
-                                      <select data-placeholder="Select Item Category" class="chosen-select" id="sub_category_id" name="sub_category_id" required tabindex="2">
+                                      <select data-placeholder="Select Item Category" class="chosen-select" id="sub_category_id" name="sub_category_id" required tabindex="3">
                                         <option value=""></option>
                                       </select>
                                     </div>
@@ -47,7 +53,7 @@
                                 <div class="input-group">
                                     <span class="input-group-btn">
                                         <span class="btn btn-default btn-file">
-                                            Browse… <input type="file" accept="image/png, image/jpeg" id="imgInp" name="image" required tabindex="3">
+                                            Browse… <input type="file" accept="image/png, image/jpeg" id="imgInp" name="image" required tabindex="4">
                                         </span>
                                     </span>
                                     <input id='urlname'type="text" class="form-control" readonly>
@@ -68,14 +74,14 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-12 btn-center">
-                                    <button type="submit" class="btn btn-login" id="submit_btn" tabindex="4">Add Item</button>
+                                    <button type="submit" class="btn btn-login" id="submit_btn" tabindex="5">Add Item</button>
                                 </div>
                             </div>
                             
                         	<!-- BEGIN MESSAGE -->
                             <div id="fmessage" style="display: none;">
                                 <div style="padding: 5px;">
-                                    <div id="inner-message" class="alert alert-success">
+                                    <div id="finner-message" class="alert alert-success">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                                         <span></span>
                                     </div>
@@ -86,7 +92,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             
-                            <img id='img-upload' src="images/placeholder-img.jpg" />
+                            <img id='img-upload' src="{{ url('/images/placeholder-img.jpg') }}" />
                         </div>
                     </div>
                 </div>
@@ -123,6 +129,7 @@
 @endsection
 
 @section('footer')
+    <script src="{{ url('/js/userImage.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             
@@ -132,16 +139,16 @@
 	            $('#fmessage').hide();
 	            if(behave == 'success')
 	            {
-	                $('#inner-message').removeClass('alert-danger');
-	                $('#inner-message').addClass('alert-success');
+	                $('#finner-message').removeClass('alert-danger');
+	                $('#finner-message').addClass('alert-success');
 	            }
 	            else
 	            {
-	                $('#inner-message').removeClass('alert-success');
-	                $('#inner-message').addClass('alert-danger');
+	                $('#finner-message').removeClass('alert-success');
+	                $('#finner-message').addClass('alert-danger');
 	            }
 
-	            $('#inner-message').find('span').html(msg);
+	            $('#finner-message').find('span').html(msg);
 	            $('#fmessage').show().delay(6000).fadeOut();
 	        }
             
@@ -200,8 +207,8 @@
 
                         $('#rows').html('');
                         $.each(data,function(index, value) {
-                            $('#rows').append('<div class="col-md-4">'+
-                                '<div class="p-box-lent">'+
+                            $('#rows').append('<div class="col-md-3">'+
+                                '<div class="p-box-lent dasboard-boxes">'+
                                     '<p class="person-name">Category: '+value['category_name']+'</p>'+
                                     '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
                                     '<p>'+value['name']+'</p>'+
@@ -239,7 +246,7 @@
                         else
                         {
                             alertMessage1('Added Successfully.','success');
-                            $('#name,#imgInp').val('');
+                            $('#name,#author,#imgInp').val('');
                             $("#urlname").val(" ");
                             $("#img-upload").attr("src","{{url('/images/placeholder-img.jpg')}}");
                             $('#sub_category_id').val('').trigger('chosen:updated');
@@ -247,10 +254,10 @@
                         }
                         blhide();
                     },
-                    error:function(){ 
+                    error: function () { 
                         alertMessage1('Error occured while adding product.','error');
                         blhide();
-                        }
+                    }
                 });                
             }
 
@@ -258,6 +265,12 @@
                 e.preventDefault();
                 add();
             });
+
+            $('#user_image_form').submit(function(e) {
+                e.preventDefault();
+                changeImage('{{ route('change-user-image') }}');
+            });
+
         });  
     </script>
     

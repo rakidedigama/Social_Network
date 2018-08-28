@@ -14,7 +14,7 @@ use Auth;
 
 class ProductController extends Controller
 {
-    public function getProducts($skip,$limit,$city_id,$sub_category_id,$name)
+    public function getProducts($skip,$limit,$name)
     {
     	$data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id','users.name as owner_name','cities.name as city')
         ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
@@ -22,28 +22,28 @@ class ProductController extends Controller
         ->join('cities','users.city_id','cities.id')
         ->where('products.status','1')->where('products.viewstatus','1');
       
-        if(is_numeric($city_id))
-            $data=$data->where('city_id',$city_id);
+        // if(is_numeric($city_id))
+        //     $data=$data->where('city_id',$city_id);
 
-        if(is_numeric($sub_category_id))
-            $data=$data->where('products.sub_category_id',$sub_category_id);
+        // if(is_numeric($sub_category_id))
+        //     $data=$data->where('products.sub_category_id',$sub_category_id);
   
-        if($name != 'null')
-            $data=$data->where('products.name', 'LIKE', '%'.$name.'%');
+        if($name != 'null') {
+            // $sub_categories = $data->where('sub_categories.name', 'LIKE', '%'.$name.'%');
+            // $cities=$data->where('cities.name', 'LIKE', '%'.$name.'%');
+            $data = $data->where('products.name', 'LIKE', '%'.$name.'%');
+        }
         
-        $data=$data->orderBy('id','DESC')->skip($skip)->take($limit)->get();
+        $data=$data->orderBy('id','DESC')->skip($skip)->take($limit)->paginate(15);
         
-        if( !$data->first()  )
-        {
-            if( is_numeric($city_id) || is_numeric($sub_category_id) || $name != 'null' )
-            {
+        if( !$data->first() ) {
+            if( $name != 'null' )
                 $data=array('msg'=>'Sorry No Data Found.','searched'=>'1');
-            }
             else
                 $data=array('msg'=>'The End.','searched'=>'0');
         }
 
-        return json_encode($data);
+        return $data;
     }
 
     public function getProductsUser($id)
@@ -72,6 +72,7 @@ class ProductController extends Controller
     {
         $rules = [
             'name'=>'required|string|max:60|min:3',
+            'author'=>'required|string|max:60|min:3',
             'sub_category_id'=>'required|integer',
             'image'=>'required|mimes:jpeg,jpg,png'  
         ];
@@ -84,6 +85,7 @@ class ProductController extends Controller
         {
             $product = new Product();
             $product->name = $req->name;
+            $product->author = $req->author;
             $product->sub_category_id = $req->sub_category_id;
             $product->user_id = Auth::user()->id;
             

@@ -78,9 +78,9 @@
 
 	    <div id="fh5co-counter" class="fh5co-counters fh5co-bg-section" style="background-image: url({{ url('/images/Background.jpg') }});">
 	        <div class="container">
-	            <div class="row" style="margin-bottom: 15px;">
+	            <!-- <div class="row" style="margin-bottom: 15px;">
 	                <div class="col-md-3">
-	                    <img src="{{ url('/images/profile-img.png') }}" class="img-responsive">
+	                    
 	                </div>
 	                <div class="col-md-9">
 	                    <div class="profile-info-box">
@@ -109,7 +109,7 @@
 	                        </ul>
 	                    </div>
 	                </div>
-	            </div>
+	            </div> -->
 	            <div class="row">	                
 	                @yield('content')
 	            </div>
@@ -118,7 +118,7 @@
 
 	    </div>
 
-	<div class="footer" style="background-color: #000">
+	<div class="footer" style="background-image: url('{{ url('/images/word-bg.jpg') }}');">
 		<footer >
 			<div class="container">
 				<div class="row">

@@ -27,6 +27,7 @@
 @endsection
 
 @section('footer')
+	<script src="{{ url('/js/userImage.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
 
@@ -52,8 +53,8 @@
                     	else
                     	{
 	                        $.each(data,function(index, value) {
-	                            $('#rows').append('<div class="col-md-4">'+
-	                                '<div class="p-box-lent">'+
+	                            $('#rows').append('<div class="col-md-3">'+
+	                                '<div class="p-box-lent lent-books">'+
 	                                    '<p class="person-name">Borrower: '+value['borrower_name']+'</p>'+
 	                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
 	                                    '<p>'+value['name']+'</p>'+
@@ -116,6 +117,11 @@
 					}
 				}
 			});
+
+			$('#user_image_form').submit(function(e) {
+                e.preventDefault();
+                changeImage('{{ route('change-user-image') }}');
+            });
         });  
     </script>
     
