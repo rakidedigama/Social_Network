@@ -67,7 +67,24 @@
 	                                '</div>'+
 	                            '</div>'); 
 	                        });
-	                        $('.loader').remove();
+
+	                        //Products Height Code
+					        $.fn.equalHeights = function() {
+				                var maxHeight = 0,
+				                    $this = $(this);
+				        
+				                $this.each( function() {
+				                	console.log('loop');
+				                    var height = $(this).innerHeight();
+				        
+				                    if ( height > maxHeight ) { maxHeight = height; }
+				                });
+				        
+				                return $this.css('height', maxHeight);
+				            };                
+				            $('.p-box-lent').equalHeights();
+
+	                        $('.loader').parent('div').remove();
                         }
                     },
                     error:function(){ $('.loader').remove(); }
