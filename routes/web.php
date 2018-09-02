@@ -31,7 +31,7 @@ Route::get('/view-gallery', function (Request $req) {
             $data = $data->where('products.name', 'LIKE', '%'.$req->name.'%')->orWhere('cities.name', 'LIKE', '%'.$req->name.'%')->orWhere('products.author', 'LIKE', '%'.$req->name.'%');
         }
         
-        $data=$data->orderBy('id','DESC')->paginate(10);
+        $data=$data->orderBy('id','DESC')->paginate(16);
         
         if( !$data->first() ) {
             if( $req->name ){

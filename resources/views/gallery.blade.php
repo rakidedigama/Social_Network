@@ -70,8 +70,33 @@
 			  	</div>
 			</aside> 
 		--}}
-		<div id="fh5co-counter" class="fh5co-counters fh5co-bg-section">
+		<div id="fh5co-counter" class="fh5co-counters fh5co-bg-section" style="padding-top: 0px;">
+			<div class="cat-lst-bg">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<ul class="mega-ul-lst">
+								<li><a href="">Biographies</a></li>
+								<li><a href="">Business</a></li>
+								<li><a href="">Children's</a></li>
+								<li><a href="">
+									<div class="form-group">
+										<div class="">
+											<div>
+											  <select data-placeholder="All Categories" class="chosen-select" id="sub_category_id" name="sub_category_id" required tabindex="3">
+											    <option value=""></option>
+											  </select>
+											</div>
+										</div>
+									</div>
+								</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="container-fluid">
+
 				<div class="row">
 					
 					{{-- <div class="col-md-3">
@@ -110,15 +135,185 @@
 					<div class="col-md-12">
 						<div class="right-side-home">
 							<div id="custom-search-input">
-        				<div class="span12">
-					        <form id="custom-search-form" class="form-search form-horizontal "> {{--custom-search-form--}}
-					            <div class="input-append span12">
-					                <input type="text" class="search-query" name="name" id="name" placeholder="Search Books by Title, Neighborhood or Author" value="{{ isset($_GET['name'])?$_GET['name']:'' }}">
-					                <button type="submit" class="btn"><i class="icon-search"></i></button>
-					            </div>
-					        </form>
-    						</div>
+	        					<div class="span12">
+						        <form id="custom-search-form" class="form-search form-horizontal "> {{--custom-search-form--}}
+						            <div class="input-append span12">
+						                <input type="text" class="search-query" name="name" id="name" placeholder="Search Books by Title, Neighborhood or Author" value="{{ isset($_GET['name'])?$_GET['name']:'' }}">
+						                <button type="submit" class="btn"><i class="icon-search"></i></button>
+						            </div>
+						        </form>
+	    						</div>
 							</div>
+							<!-- <div class="row">
+								<div class="col-md-3">
+									<div class="category-book-box">
+										<div class="cat-bok">
+											<img src="images/book-cat1.jpg" class="img-reponsive">
+										</div>
+										<div class="cat-lst">
+											<a href="" class="cat-main">Biographies</a>
+											<ul>
+												<li><a href="">Arts & Literature</a></li>
+												<li><a href="">Cultural</a></li>
+												<li><a href="">European</a></li>
+												<li><a href="">Historical</a></li>
+												<li><a href="">Leaders & Notable People</a></li>
+												<li><a href="">Military</a></li>
+												<li><a href="">Modern</a></li>
+												<li><a href="">Sports</a></li>
+												<li><a href="">Women</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="category-book-box">
+										<div class="cat-bok">
+											<img src="images/book-cat2.jpg" class="img-reponsive">
+										</div>
+										<div class="cat-lst">
+											<a href="" class="cat-main">Business</a>
+											<ul>
+												<li><a href="">Careers</a></li>
+												<li><a href="">Economics</a></li>
+												<li><a href="">Finance</a></li>
+												<li><a href="">Industries</a></li>
+												<li><a href="">International</a></li>
+												<li><a href="">Management</a></li>
+												<li><a href="">Marketing</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="category-book-box">
+										<div class="cat-bok">
+											<img src="images/book-cat3.jpg" class="img-reponsive">
+										</div>
+										<div class="cat-lst">
+											<a href="" class="cat-main">Children's</a>
+											<ul>
+												<li><a href="">Action & Adventure</a></li>
+												<li><a href="">Activity Books</a></li>
+												<li><a href="">Animals</a></li>
+												<li><a href="">Cars & Trucks</a></li>
+												<li><a href="">Classics</a></li>
+												<li><a href="">Comedy</a></li>
+												<li><a href="">Cookbooks</a></li>
+												<li><a href="">Education & Reference</a></li>
+												<li><a href="">Fairy Tales</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="category-book-box">
+										<div class="cat-bok">
+											<img src="images/book-cat4.jpg" class="img-reponsive">
+										</div>
+										<div class="cat-lst">
+											<a href="" class="cat-main">History</a>
+											<ul>
+												<li><a href="">Ancient</a></li>
+												<li><a href="">Asian</a></li>
+												<li><a href="">Caribbean</a></li>
+												<li><a href="">European</a></li>
+												<li><a href="">Exploration</a></li>
+												<li><a href="">Medieval</a></li>
+												<li><a href="">Modern</a></li>
+												<li><a href="">Native</a></li>
+												<li><a href="">Religious</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<div class="category-book-box">
+										<div class="cat-bok">
+											<img src="images/book-cat5.jpg" class="img-reponsive">
+										</div>
+										<div class="cat-lst">
+											<a href="" class="cat-main">Religion & Spirituality</a>
+											<ul>
+												<li><a href="">Agnosticism</a></li>
+												<li><a href="">Astrology</a></li>
+												<li><a href="">Atheism</a></li>
+												<li><a href="">Buddhism</a></li>
+												<li><a href="">Christian</a></li>
+												<li><a href="">Christian Living</a></li>
+												<li><a href="">Comparative Religion</a></li>
+												<li><a href="">Earth-Based Religions</a></li>
+												<li><a href="">Hinduism</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="category-book-box">
+										<div class="cat-bok">
+											<img src="images/book-cat6.jpg" class="img-reponsive">
+										</div>
+										<div class="cat-lst">
+											<a href="" class="cat-main">Self-Help</a>
+											<ul>
+												<li><a href="">Abuse</a></li>
+												<li><a href="">Addictions</a></li>
+												<li><a href="">Anger Management</a></li>
+												<li><a href="">Death & Grief</a></li>
+												<li><a href="">Depression</a></li>
+												<li><a href="">Meditation</a></li>
+												<li><a href="">Mid-Life</a></li>
+												<li><a href="">Motivational</a></li>
+												<li><a href="">Personal Transformation</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="category-book-box">
+										<div class="cat-bok">
+											<img src="images/book-cat7.jpg" class="img-reponsive">
+										</div>
+										<div class="cat-lst">
+											<a href="" class="cat-main">Literature & Fiction</a>
+											<ul>
+												<li><a href="">Anthologies</a></li>
+												<li><a href="">Classics</a></li>
+												<li><a href="">Contemporary</a></li>
+												<li><a href="">Foreign Language</a></li>
+												<li><a href="">History & Criticism</a></li>
+												<li><a href="">Poetry</a></li>
+												<li><a href="">World Literature</a></li>
+												<li><a href="">Crime & Detective</a></li>
+												<li><a href="">Mysteries & Conspiracy</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="category-book-box">
+										<div class="cat-bok">
+											<img src="images/book-cat4.jpg" class="img-reponsive">
+										</div>
+										<div class="cat-lst">
+											<a href="" class="cat-main">Educational Textbooks</a>
+											<ul>
+												<li><a href="">Arts</a></li>
+												<li><a href="">Architecture & Design</a></li>
+												<li><a href="">Business & Finance</a></li>
+												<li><a href="">Business & Investing</a></li>
+												<li><a href="">Computer Science</a></li>
+												<li><a href="">Computers & Technology</a></li>
+												<li><a href="">Education</a></li>
+												<li><a href="">Economics</a></li>
+												<li><a href="">History</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div> -->
 							<br/>
 							{{-- <div class="content" style="height:900px; width: auto;"> --}}
 							<div>
