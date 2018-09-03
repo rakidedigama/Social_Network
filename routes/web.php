@@ -1,5 +1,6 @@
 <?php
 
+use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -19,22 +20,42 @@ Route::get('/', function () {
 })->name('index');
 
 Route::get('/view-gallery', function (Request $req) {
+    $search['name'] = '';
+    $search['category_id'] = '';
+    $search['sub_category_id'] = '';
     $data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id','users.name as owner_name','cities.name as city')
         ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
         ->join('users', 'products.user_id', '=', 'users.id')
         ->join('cities','users.city_id','cities.id')
         ->where('products.status','1')->where('products.viewstatus','1');
-        
+   
         if($req->name) {
-            // $sub_categories = $data->where('sub_categories.name', 'LIKE', '%'.$name.'%');
-            // $cities=$data->where('cities.name', 'LIKE', '%'.$name.'%');
             $data = $data->where('products.name', 'LIKE', '%'.$req->name.'%')->orWhere('cities.name', 'LIKE', '%'.$req->name.'%')->orWhere('products.author', 'LIKE', '%'.$req->name.'%');
+            array_push($search, array('name'=>$req->name));
         }
+
+        if ( $req->category_id ) 
+            $data = $data->where('sub_categories.category_id', $req->category_id );
+
+        else if ( $req->sub_category_id ) 
+            $data = $data->where('sub_categories.id', $req->sub_category_id );
+
         
         $data=$data->orderBy('id','DESC')->paginate(16);
+
+        // For Search Query
+        if ( $req->category_id ) 
+            $data->appends(['category_id' => $req->category_id]);
+
+        else if ( $req->sub_category_id ) 
+            $data->appends(['sub_category_id' => $req->sub_category_id]);
+
+        if ( $req->name ) 
+            $data->appends(['name' => $req->name]);
         
+
         if( !$data->first() ) {
-            if( $req->name ){
+            if ( $req->name || $req->category_id || $req->sub_category_id ) {
                 $data['msg'] = 'Sorry No Data Found.';
                 if ( $req->page )
                 	return abort(404);
@@ -43,7 +64,8 @@ Route::get('/view-gallery', function (Request $req) {
             	return abort(404);
         }
 
-    return view('gallery')->with('data',$data);
+    $categories = Category::all();
+    return view('gallery')->with(['data'=>$data,'categories'=>$categories]);
 })->name('gallery');
 
 Auth::routes();
@@ -71,8 +93,6 @@ Route::get('/cities/{id}','CityController@CCities');
 |--------------------------------------------------------------------------
 |
 */
-// Route::get('/addcategories','CategoryController@addCategories');
-// Route::get('/addsubcategories','subCategoryController@addSubCategories');
 Route::get('/categories','CategoryController@Categories')->name('categories');
 Route::get('/subcategories/{id}','subCategoryController@subCategories');
 
@@ -106,6 +126,5 @@ Route::post('/deleteproduct','ProductController@delProduct')->name('deleteproduc
 |--------------------------------------------------------------------------
 |
 */
-
 Route::post('/reqborrow', 'ProductRequestController@borrowReq')->name('reqborrow');
 Route::post('/updatereqborrow', 'ProductRequestController@updateBorrowReq')->name('updatereqborrow');

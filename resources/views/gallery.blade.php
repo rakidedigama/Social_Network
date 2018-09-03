@@ -71,25 +71,51 @@
 			</aside> 
 		--}}
 		<div id="fh5co-counter" class="fh5co-counters fh5co-bg-section" style="padding-top: 0px;">
+			
+			<div class="container-fluid">
+			    <div class="row">
+			        <div class="col-md-12" style="margin-top: 10px;>
+			            <div id="custom-search-input">
+        					<div class="span12">
+					        <form id="custom-search-form" class="form-search form-horizontal "> {{--custom-search-form--}}
+					            <div class="input-append span12">
+					                <input type="text" class="search-query" name="name" id="name" placeholder="Search Books by Title, Neighborhood or Author" value="{{ isset($_GET['name'])?$_GET['name']:'' }}">
+					                <button type="submit" class="btn"><i class="icon-search"></i></button>
+					            </div>
+					        </form>
+    						</div>
+						</div>
+			        </div>
+			    </div>
+			</div>
 			<div class="cat-lst-bg">
-				<div class="container">
+				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-12">
-							<ul class="mega-ul-lst">
-								<li><a href="">Biographies</a></li>
-								<li><a href="">Business</a></li>
-								<li><a href="">Children's</a></li>
-								<li><a href="">
+							<ul class="mega-ul-lst" id="cids">
+								@foreach ($categories as $val)									
+									<?php  $cclass = ''; ?>
+									@if ( isset( $_GET['category_id'] ) && $_GET['category_id'] != NULL )
+										@php
+											if ( $val['id'] == $_GET['category_id'] )
+												$cclass = 'active';
+											else
+												$cclass = '';
+										@endphp
+									@endif
+									<li><a href="#" cid="{{ $val['id'] }}" class="{{ $cclass!=''?$cclass:'' }}" >{{ $val['name'] }}</a></li>	
+								@endforeach
+								<li>
 									<div class="form-group">
 										<div class="">
 											<div>
-											  <select data-placeholder="All Categories" class="chosen-select" id="sub_category_id" name="sub_category_id" required tabindex="3">
+											  <select data-placeholder="All Categories" class="chosen-select" id="sub_category_id" name="sub_category_id" >
 											    <option value=""></option>
 											  </select>
 											</div>
 										</div>
 									</div>
-								</a></li>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -134,16 +160,6 @@
 
 					<div class="col-md-12">
 						<div class="right-side-home">
-							<div id="custom-search-input">
-	        					<div class="span12">
-						        <form id="custom-search-form" class="form-search form-horizontal "> {{--custom-search-form--}}
-						            <div class="input-append span12">
-						                <input type="text" class="search-query" name="name" id="name" placeholder="Search Books by Title, Neighborhood or Author" value="{{ isset($_GET['name'])?$_GET['name']:'' }}">
-						                <button type="submit" class="btn"><i class="icon-search"></i></button>
-						            </div>
-						        </form>
-	    						</div>
-							</div>
 							<!-- <div class="row">
 								<div class="col-md-3">
 									<div class="category-book-box">
@@ -438,38 +454,40 @@
             };                
             $('.p-box-lent').equalHeights();
 
-			{{--
-				function loadSubCategories(data)
-	            {
-	                var rows = '';
-	                $.each(data,function(index, value) {
-	                    rows += '<option value="'+value['id']+'">'+value['name']+'</option>';
-	                });
-	                return rows;
-	            }
-	            function loadCategories()
-	            {
-	                $.ajax({
-	                    url: '{{ route('categories') }}',
-	                    type: 'GET',
-	                    cache: true,
-	                    dataType: 'JSON',
-	                    success:function(data){
-	                        var sub_category_id = $('#sub_category_id');
-	                        sub_category_id.chosen('destroy');
-	                        sub_category_id.empty();
-	                        sub_category_id.append('<option value="">All</option>');
+			
+			function loadSubCategories(data) {
+                var rows = '';
+                $.each(data,function(index, value) {
+                    rows += '<option value="'+value['id']+'">'+value['name']+'</option>';
+                });
+                return rows;
+            }
+            function loadCategories () {
+                $.ajax({
+                    url: '{{ route('categories') }}',
+                    type: 'GET',
+                    cache: true,
+                    dataType: 'JSON',
+                    success:function(data){
+                        var sub_category_id = $('#sub_category_id');
+                        sub_category_id.chosen('destroy');
+                        sub_category_id.empty();
+                        sub_category_id.append('<option value="">All</option>');
 
-	                        $.each(data,function(index, value) {
-	                            sub_category_id.append('<optgroup label="'+index+'">'+loadSubCategories(value)+'</optgroup>'); 
-	                        });
-	                        sub_category_id.chosen();
-	                    },
-	                    error:function(){}
-	                }); 
-	            }
-	            loadCategories();
+                        $.each(data,function(index, value) {
+                            sub_category_id.append('<optgroup label="'+index+'">'+loadSubCategories(value)+'</optgroup>'); 
+                        });
+                        sub_category_id.chosen();
 
+                        @if ( isset( $_GET['sub_category_id'] ) && $_GET['sub_category_id'] != NULL  )
+													$('#sub_category_id').val(<?php echo $_GET['sub_category_id'] ?>).trigger('chosen:updated');
+								      	@endif
+                    },
+                    error:function(){}
+                }); 
+            }
+            loadCategories();
+            {{--
 	            function loadCities(data)
 				{
 					var rows = '';
@@ -603,20 +621,49 @@
 
 			--}}
             
-            {{-- 
-	            var name = "null";
-	    		// loadData(0,0,12,name);
-	    
-	            $('.custom-search-form').submit(function(e) {
-	                e.preventDefault();
-	        		name = $('#name').val();
+      {{-- 
+            var name = "null";
+    		// loadData(0,0,12,name);
+    
+            $('.custom-search-form').submit(function(e) {
+                e.preventDefault();
+        		name = $('#name').val();
 
-	        		if(name=='')
-	        			name="null";
+        		if(name=='')
+        			name="null";
 
-	        		loadData(1,0,12,name);
-	            });
-            --}}
+        		loadData(1,0,12,name);
+            });
+      --}}
+
+      	@if ( isset($_GET['category_id']) && $_GET['category_id'] != NULL )
+      		var cid = <?php echo $_GET['category_id'] ?>;
+      		// $('#cids a').children('a') .parent('li').addClass('active');
+  			@else
+  				var cid = '';
+      	@endif
+
+      	$('#cids a').click(function(e) {
+      		e.preventDefault();
+      		cid = $(this).attr('cid');
+      		$('#custom-search-form').trigger('submit');
+      	});
+
+      	$('#sub_category_id').change(function(event) {
+      		cid = '';
+      		$('#custom-search-form').trigger('submit');
+      	});
+
+        $('#custom-search-form').submit(function(e) {
+          e.preventDefault();
+          var name = $('#name').val(),
+          		s_id = $('#sub_category_id').val();
+
+    			if ( cid != '' && cid != null )
+          	location.assign('{{ route('gallery') }}?name='+name+'&category_id='+cid);
+          else
+          	location.assign('{{ route('gallery') }}?name='+name+'&sub_category_id='+s_id);
+        });
 
             $(document).on('click','.borrow_btn',function(e) {
             	var lent_user        = $(this).attr('lent_user'),

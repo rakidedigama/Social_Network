@@ -1600,9 +1600,6 @@ nav.fh5co-nav {
 .left-side-home ul li:nth-last-child(1){
   border: none;
 }
-.right-side-home {
-    background-color: #fff;
-}
 .input-append.span12 {
     width: 100%;
     position: relative;
@@ -2101,6 +2098,10 @@ span.btn-up-mrg {
 }
 .chosen-container.chosen-container-single {
     width: 100% !important;
+    margin-top:-5px;
+}
+ul.mega-ul-lst li:last-child {
+    padding: 8px 10px 10px;
 }
 .chosen-container-single .chosen-single {
     background: #f7f7f7 !important;
@@ -2301,10 +2302,14 @@ ul.mega-ul-lst {
     list-style: none;
     padding-left: 0px;
     margin-bottom: 0px;
+    text-align:center;
+}
+ul.mega-ul-lst li:first-child {
+    border: none;
 }
 ul.mega-ul-lst li {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 10px 10px;
     border-left: 1px solid #fbfbfb42;
 }
 ul.mega-ul-lst li a {
@@ -2318,7 +2323,8 @@ ul.mega-ul-lst li a:hover {
 }
 .cat-lst-bg {
     background-color: #917b54;
-    margin-bottom: 15px;
+        margin-top: 15px;
+    margin-bottom: -15px;
 }
 .mega-ul-lst .form-group {
     margin-bottom: 0px;
@@ -2340,6 +2346,16 @@ ul.mega-ul-lst li a:hover {
 #custom-search-form .search-query {
     font-size: 14px;
 }
+
+ul.mega-ul-lst li a.active {
+  border-bottom: 1px solid #fff;
+}
+
+ul.mega-ul-lst li a:hover.active {
+  text-decoration: none;
+}
+
+
 /*# sourceMappingURL=style.css.map 
 
   font-family: "Poppins", Roboto, sans-serif;
