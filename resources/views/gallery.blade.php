@@ -368,7 +368,7 @@
 														<div class="p-box-lent">
 															
 															<div class="book-img-blck">
-																<div class="p-img-al" style="background-image: url('{{ url('/images/uploads').'/1535437568.jpg' }}')" ></div>
+																<div class="p-img-al" style="background-image: url('{{ url('/images/uploads').'/'.$value->image }}')" ></div>
 															</div>
 															<div class="books-inof">
 																<p>{{ $value->name }}</p>
@@ -472,7 +472,7 @@
                         var sub_category_id = $('#sub_category_id');
                         sub_category_id.chosen('destroy');
                         sub_category_id.empty();
-                        sub_category_id.append('<option value="">All</option>');
+                        sub_category_id.append('<option value="">Select Category</option>');
 
                         $.each(data,function(index, value) {
                             sub_category_id.append('<optgroup label="'+index+'">'+loadSubCategories(value)+'</optgroup>'); 
@@ -590,7 +590,7 @@
 	                                    $this = $(this);
 	                        
 	                                $this.each( function() {
-	                                	console.log('loop');
+	                                	
 	                                    var height = $(this).innerHeight();
 	                        
 	                                    if ( height > maxHeight ) { maxHeight = height; }

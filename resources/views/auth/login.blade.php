@@ -8,7 +8,7 @@
 	
 	<div id="page">
 		@include('layouts.nav', ['active' => 'login'])
-	<div id="fh5co-counter" class="fh5co-counters fh5co-bg-section" style="background-image: url({{ url('/images/BoysWithPhone.jpg') }});">
+	<div id="fh5co-counter" class="fh5co-counters fh5co-bg-section">
 		<div class="container">
 			<div class="row">
 				<div class="login-box">

@@ -14,10 +14,10 @@
 				   		<div class="overlay-gradient"></div>
 				   		<div class="container">
 				   			<div class="row">
-					   			<div class="col-md-8 col-md-offset-2 text-center js-fullheight slider-text">
-					   				<div class="slider-text-inner">
+					   			<div class="col-md-8 col-md-offset-2 text-center  ">
+					   				<div class="slider-text-inner slider-text js-fullheight">
 					   					<h1>Discover</h1>
-											<h2 class="font-roboto-300">Find your favorite book among hundredsof member uploaded collections.</h2>
+											<h2 class="font-roboto-300">Find your favorite book among hundreds of member uploaded collections.</h2>
 										
 					   				</div>
 					   				<div class="sldier-text-right">
@@ -32,8 +32,8 @@
 				   		<div class="overlay-gradient"></div>
 				   		<div class="container">
 				   			<div class="row">
-					   			<div class="col-md-8 col-md-offset-2 text-center js-fullheight slider-text">
-					   				<div class="slider-text-inner">
+					   			<div class="col-md-8 col-md-offset-2 text-center  ">
+					   				<div class="slider-text-inner slider-text js-fullheight">
 					   					<h1>Share</h1>
 										<h2 class="font-roboto-300">
 											Give back to the community by adding the books <br> that you’d like to share.
@@ -51,8 +51,8 @@
 				   		<div class="overlay-gradient"></div>
 				   		<div class="container">
 				   			<div class="row">
-					   			<div class="col-md-8 col-md-offset-2 text-center js-fullheight slider-text">
-					   				<div class="slider-text-inner">
+					   			<div class="col-md-8 col-md-offset-2 text-center ">
+					   				<div class="slider-text-inner js-fullheight slider-text">
 					   					<h1>Connect</h1>
 										<h2 class="font-roboto-300">Meet and make friends with like-minded readers </h2>
 					   				</div>

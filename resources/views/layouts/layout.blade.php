@@ -37,7 +37,7 @@
 	<meta name="twitter:url" content="" />
 	<meta name="twitter:card" content="" />
 
-	<link href="https://fonts.googleapis.com/css?family=Poppins:500|Roboto:300,400|Source+Sans+Pro:700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:500|Roboto:300,400|Source+Sans+Pro:700|Dancing+Script:400,700" rel="stylesheet">
 	
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="{{ url('/css/animate.css') }}">
