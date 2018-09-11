@@ -27,8 +27,9 @@ Route::get('/view-gallery', function (Request $req) {
         ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
         ->join('users', 'products.user_id', '=', 'users.id')
         ->join('cities','users.city_id','cities.id')
-        ->where('products.status','1')->where('products.viewstatus','1');
-   
+        ->where('products.status','1');
+        //->where('products.viewstatus','1')
+        
         if($req->name) {
             $data = $data->where('products.name', 'LIKE', '%'.$req->name.'%')->orWhere('cities.name', 'LIKE', '%'.$req->name.'%')->orWhere('products.author', 'LIKE', '%'.$req->name.'%');
             array_push($search, array('name'=>$req->name));
