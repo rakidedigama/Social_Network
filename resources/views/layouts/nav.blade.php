@@ -8,7 +8,7 @@
 					<div class="col-xs-10 text-right menu-1">
 						<ul>
 							<li class="{{ $active == 'index'?'active':'' }}"><a href="{{ route('index') }}">Home</a></li>
-							<li class="{{ $active == 'gallery'?'active':'' }}"><a href="{{ route('gallery') }}">View Book Gallery</a></li>
+							<li class="{{ $active == 'gallery'?'active':'' }}"><a href="{{ route('gallery') }}">Book Gallery</a></li>
 
 							@guest
 								<li class="{{ $active =='login'?'active':'' }}"><a href="{{ route('login') }}"><span>Login</span></a></li>
@@ -19,7 +19,7 @@
 								<li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" {{-- aria-expanded="false"  aria-haspopup="true" v-pre --}}>
                                     {{-- url('/images/profile-img.png') --}}
-                                    <img src="{{ Auth::user()->pimage!='' ? url('/images/uploads/users/').'/'.Auth::user()->pimage : url('/images/profile-img.png') }}" class="img-circle" height="25" width="25">
+                                    <img src="{{ url('/images/uploads/users/70/').'/'.Auth::user()->pimage }}" class="img-circle" height="25" width="25">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 

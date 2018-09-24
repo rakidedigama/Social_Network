@@ -459,9 +459,9 @@
 .icon-warning:before {
   content: "\e90e";
 }
-.icon-arrow-bold-down:before {
+/*.icon-arrow-bold-down:before {
   content: "\e90f";
-}
+}*/
 .icon-arrow-bold-left:before {
   content: "\e910";
 }

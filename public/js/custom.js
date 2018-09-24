@@ -1,5 +1,19 @@
+function calert(msg,type) {
+	$.iaoAlert({
+		msg: msg,
+		type: type,
+	  	mode: "dark",
+		autoHide: true,
+	  	fadeTime: "500",
+	  	closeButton: true,
+	  	closeOnClick: false,
+	  	position: 'top-right',
+	  	fadeOnHover: true,
+	  	zIndex: '999',
+	  	alertClass: ''
+	})
+}
 function changeImage (url) {
-            
     var fdata = new FormData( $('#user_image_form')[0] ); 
     $.ajax({
         url: url,
@@ -13,20 +27,19 @@ function changeImage (url) {
             if(data['errors']) {
                 $.each(data,function(index, value) {
                     $.each(value,function(index1, el) {
-                        alertMessage(el[0],'error');
-                        // $('#errors').append('<strong>'+el[0]+'</strong>');
+                        calert(el,'error');
                     });
                 });
             }
             else if( data['updated'] == 'true' ) {
-            	alertMessage('Image Updated Successfully.','success');
+            	calert('Image updated successfully.','success');
             }
             else {
-                alertMessage('Error occured while updating image.','error');
+                calert('Error occured while changing image.','error');
             }
         },
         error: function () { 
-            alertMessage('Error occured while updating image.','error');
+            calert('Error occured while changing image.','error');
         }
     });                
 }

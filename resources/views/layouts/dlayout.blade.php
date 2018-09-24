@@ -42,7 +42,8 @@
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="{{ url('/css/animate.css') }}">
 	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="{{ url('/css/icomoon.css') }}">
+	<link rel="stylesheet" href="{{ url('/fonts/icomoon/style.css') }}">
+
 	<!-- Bootstrap  -->
 	<link rel="stylesheet" href="{{ url('/css/bootstrap.css') }}">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -61,7 +62,8 @@
 	<link rel="stylesheet" type="text/css" href="{{ url('/css/chosen.css') }}">
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="{{ url('/css/style.css') }}">
-
+	<!-- iao Alert  -->
+	<link rel="stylesheet" href="{{ url('/css/iao-alert.min.css') }}">
 	<!-- Modernizr JS -->
 	<script src="{{ url('/js/modernizr-2.6.2.min.js') }}"></script>
 	<!-- FOR IE9 below -->
@@ -209,32 +211,24 @@
 		<script type="text/javascript" src="{{ url('/js/chosen/chosen.js') }}"></script>
 		<!--<script type="text/javascript" src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>-->
 		<script type="text/javascript" src="{{ url('/js/masonry.pkgd.min.js') }}"></script>
+		<!-- iao Alert -->
+		<script type="text/javascript" src="{{ url('/js/iao-alert.jquery.min.js') }}"></script>
 		<!-- Main -->
 		<script type="text/javascript" src="{{ url('/js/main.js') }}"></script>
+		<!-- Custom JS -->
+		<script type="text/javascript" src="{{ url('/js/custom.js') }}"></script>
 
-        <script type="text/javascript">
-            //Alert Message FUNCTION
-		    function alertMessage(msg,behave)
-	        {
-	            $('#message').hide();
-	            if(behave == 'success')
-	            {
-	                $('#inner-message').removeClass('alert-danger');
-	                $('#inner-message').addClass('alert-success');
-	            }
-	            else
-	            {
-	                $('#inner-message').removeClass('alert-success');
-	                $('#inner-message').addClass('alert-danger');
-	            }
 
-	            $('#inner-message').find('span').html(msg);
-	            $('#message').show().delay(6000).fadeOut();
-	        }
-        </script>
-        
+		@yield('footer')
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#user_image_form').submit(function(e) {
+			        e.preventDefault();
+			        changeImage('{{ route('change-user-image') }}');
+		        });
+			})
+		</script>
+
 	</body>
 </html>
-
-
-@yield('footer')

@@ -2371,10 +2371,30 @@ ul.mega-ul-lst li a:hover.active {
 .profile-info-box ul li p i.icon-location {
     color: #39FF13;
 }
+.view-book-info {
+    float: left;
+    padding-left: 25px;
+}
 
+.view-book-info p {
+    margin-bottom: 5px;
+}
 /*# sourceMappingURL=style.css.map 
 
   font-family: "Poppins", Roboto, sans-serif;
 
 */
 
+i.size-13 {
+    font-size: 13px;
+}
+i.green-color {
+    color: #39FF13;
+}
+.profile-title{
+text-align: center;
+color: #6c2026;
+}
+.p-box-lent .p-img-al {
+    height: 170px;
+}

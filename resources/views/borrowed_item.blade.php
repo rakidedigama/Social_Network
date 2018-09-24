@@ -1,6 +1,6 @@
 @extends('layouts.dlayout')
 
-@section('pageTitle','Borrowed Items')
+@section('pageTitle','Borrowals')
 
 @section('content')
 
@@ -11,13 +11,74 @@
 		<div class="right-side-home">
 			<div class="product-list">
 				<div class="row" id="rows">
-					{{-- <div class="col-md-4">
-							<div class="p-box-lent">
-							<p class="person-name">Person Name Here</p>
-							<img src="images/Iron.jpg" class="img-responsive">
-							<p>Product Name</p>
-						</div>--}}
-
+					<table id="dataTable" class="table table-striped">
+				    <thead>
+				      <tr>
+				        <th>Date</th>
+				        <th>Thumbnail</th>
+				        <th>Owner</th>
+				        <th>Due Date</th>
+				        <th>Status</th>
+				        <th>Actions</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    	@foreach ($data as $val)
+				    		<tr>
+				    			<td>
+                  	@php
+                  		$date = explode(' ',$val->date_borrowal);
+                  		echo date("d M Y", strtotime($date[0]));
+                  	@endphp
+                  </td>
+					    		<td>
+					    			<a href="{{ route('viewBook',$val->product_id) }}">
+					    				<img src="{{ url('/images/uploads/280').'/'.$val->image }}" height="100" width="100">
+				    				</a>
+                  </td>
+                  <td>
+                  	<a href="{{ route('profile',$val->lent_user) }}">
+                  		{{ $val->lenter }}
+                  	</a>
+                  </td>
+                  <td>
+                  	
+                  </td>
+                  <td>
+                  	@php
+                  		$status = '';
+                  		$disabled = '';
+                  		if ($val->status == 3) {
+	                  		$status = 'Pending';
+	                  		$disabled = '';
+                  		}
+                  		else if ( $val->status == 5 ) {
+                				$status = 'Returned';
+	                  		$disabled = '';
+                  		}
+	                  	else {
+	                  		$status = 'Borrowed';
+	                  		$disabled = 'disabled';
+	                  	}
+	                  	echo $status;
+                  	@endphp
+                  </td>
+                  <td>
+                  	@if ($val->status != 5)
+                  		<button type="button" {{ $disabled }} class="btn btn-success confirm_btn" request_id="{{ $val->request_id }}" >Confirm Borrowal</button>
+                  	@endif
+                  </td>
+                </tr>
+				    	@endforeach
+				    </tbody>
+			    </table>
+			    <div class="row">
+            <div class="col-md-12">
+              <div class="page-nation home-pagina">
+                <?php echo $data->render() ?>         
+              </div>
+            </div>
+          </div>
 				</div>
 			</div>
 		</div>
@@ -27,43 +88,42 @@
 @endsection
 
 @section('footer')
-	<script src="{{ url('/js/userImage.js') }}"></script>
-    <script type="text/javascript">
+   <script type="text/javascript">
         $(document).ready(function(){
 
             function loadData(skip,limit)
             {
             	$('#rows').append('<div class="col-md-12">'+
             		'<img src="{{ url('/images/loader.gif') }}" class="img-circle center-block loader" height="50" width="50" >'+
-        		'</div>');
+    					'</div>');
                 $.ajax({
-                    url: '{{ url('/userborrowedproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
-                    dataType: 'JSON',
-                    cache: true,
-                    success:function(data){
+                  url: '{{ url('/userborrowedproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
+                  dataType: 'JSON',
+                  cache: true,
+                  success:function(data){
 
-                    	if(data['msg'])
-                    	{
-                    		$('.loader').parent('div').remove();
-                    	
-                			$('#rows').append('<div class="col-md-12">'+
-                				'<p class="text text-danger center-block">'+data['msg']+'</p>'+
-            				'</div>');
-                    	}
-                    	else
-                    	{
-	                        $.each(data,function(index, value) {
-	                            $('#rows').append('<div class="col-md-3">'+
-	                                '<div class="p-box-lent borrowed-itm">'+
-	                                    '<p class="person-name">Lender: '+value['lent_name']+'</p>'+
-	                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
-	                                    '<p>'+value['name']+'</p>'+
-	                                '</div>'+
-	                            '</div>'); 
-	                        });
+                  	if(data['msg'])
+                  	{
+                  		$('.loader').parent('div').remove();
+                  	
+              			$('#rows').append('<div class="col-md-12">'+
+              				'<p class="text text-danger center-block">'+data['msg']+'</p>'+
+          				'</div>');
+                  	}
+                  	else
+                  	{
+                      $.each(data,function(index, value) {
+                          $('#rows').append('<div class="col-md-3">'+
+                              '<div class="p-box-lent borrowed-itm">'+
+                                  '<p class="person-name">Lender: '+value['lent_name']+'</p>'+
+                                  '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
+                                  '<p>'+value['name']+'</p>'+
+                              '</div>'+
+                          '</div>'); 
+                      });
 
-	                        //Products Height Code
-					        $.fn.equalHeights = function() {
+                      //Products Height Code
+							        $.fn.equalHeights = function() {
 				                var maxHeight = 0,
 				                    $this = $(this);
 				        
@@ -71,74 +131,56 @@
 				                	console.log('loop');
 				                    var height = $(this).innerHeight();
 				        
-				                    if ( height > maxHeight ) { maxHeight = height; }
-				                });
-				        
-				                return $this.css('height', maxHeight);
-				            };                
-				            $('.p-box-lent').equalHeights();
+			                    if ( height > maxHeight ) { maxHeight = height; }
+			                });
+			        
+			                return $this.css('height', maxHeight);
+						            };                
+						            $('.p-box-lent').equalHeights();
 	                        
-	                        $('.loader').parent('div').remove();
-                        }
-                    },
-                    error:function(){ $('.loader').parent('div').remove(); }
+                      $('.loader').parent('div').remove();
+                    }
+                  },
+                  error:function(){ $('.loader').parent('div').remove(); }
                 }); 
-            }            
-            loadData(0,12);
+            }
 
-			$(".content").mCustomScrollbar({
-				scrollButtons:{
-					enable:true
-				},
-				callbacks:{
-					onScrollStart:function(){ myCallback(this,"#onScrollStart") },
-					onScroll:function(){ myCallback(this,"#onScroll") },
-					onTotalScroll:function(){ 
-						myCallback(this,"#onTotalScroll");
-						var n = $('#rows').children().length;
-				     	loadData(n,3);
-						},
-					onTotalScrollOffset:60,
-					onTotalScrollBack:function(){ myCallback(this,"#onTotalScrollBack") },
-					onTotalScrollBackOffset:50,
-					whileScrolling:function(){ 
-						myCallback(this,"#whileScrolling"); 
-						$("#mcs-top").text(this.mcs.top);
-						$("#mcs-dragger-top").text(this.mcs.draggerTop);
-						$("#mcs-top-pct").text(this.mcs.topPct+"%");
-						$("#mcs-direction").text(this.mcs.direction);
-						$("#mcs-total-scroll-offset").text("60");
-						$("#mcs-total-scroll-back-offset").text("50");
-					},
-					alwaysTriggerOffsets:false
-				}
-			});
-			
-			function myCallback(el,id){
-				if($(id).css("opacity")<1){return;}
-				var span=$(id).find("span");
-				clearTimeout(timeout);
-				span.addClass("on");
-				var timeout=setTimeout(function(){span.removeClass("on")},350);
-			}
-			
-			$(".callbacks a").click(function(e){
-				e.preventDefault();
-				$(this).parent().toggleClass("off");
-				if($(e.target).parent().attr("id")==="alwaysTriggerOffsets"){
-					var opts=$(".content").data("mCS").opt;
-					if(opts.callbacks.alwaysTriggerOffsets){
-						opts.callbacks.alwaysTriggerOffsets=false;
-					}else{
-						opts.callbacks.alwaysTriggerOffsets=true;
-					}
-				}
-			});
+        	$(document).on('click','.confirm_btn',function(e) {
+          	
+          	var request_id = $(this).attr('request_id'),
+          		  status 	   = 4,
+          	 	  btn 	     = $(this);
 
-			$('#user_image_form').submit(function(e) {
-                e.preventDefault();
-                changeImage('{{ route('change-user-image') }}');
-            });
+        		$.ajax({
+        			url: '{{ route('updatereqborrow') }}',
+        			type: 'POST',
+        			dataType: 'JSON',
+        			cache: true,
+        			data: {_token: '{{ csrf_token() }}',request_id:request_id,status:status },
+        			beforeSend: function() {
+        				btn.attr('disabled','disabled');
+        			},
+        			success:function(data){
+        				if( data["error"] ) {
+        					btn.removeAttr('disabled');
+        					calert(data["error"],'error');
+        				}
+        				else if( data["updated"] == "true" ) {	        					
+      						btn.closest('tr').find('td').eq(0).text(data['date_borrowal']);
+      						btn.closest('tr').find('td').eq(4).text('Borrowed');
+      						calert('Borrowal Confirmed.','success');
+        				}
+	    					else {
+	    						btn.removeAttr('disabled');
+	    						calert('Error occured while updating request status.','error');
+	    					}
+        			},
+        			error:function() { 
+        				calert('Error occured while updating request status.','error');
+        				btn.removeAttr('disabled');
+        			}
+        		});
+          });
         });  
     </script>
     

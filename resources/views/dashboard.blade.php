@@ -61,13 +61,6 @@
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-12 btn-center">
-                                    <span class="help-block" id="errors" style="display: none;">
-                                        <strong></strong>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="row form-group">
                                 <div class="col-md-12">
                                     <img src="{{ url('/images/loader.gif') }}" class="img-circle center-block " id="loader" style="display: none;" height="50" width="50" >
                                 </div>
@@ -77,50 +70,16 @@
                                     <button type="submit" class="btn btn-login" id="submit_btn" tabindex="5">Add Item</button>
                                 </div>
                             </div>
-                            
-                        	<!-- BEGIN MESSAGE -->
-                            <div id="fmessage" style="display: none;">
-                                <div style="padding: 5px;">
-                                    <div id="finner-message" class="alert alert-success">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <span></span>
-                                    </div>
-                                </div>
-                            </div>
                         </form>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            
-                            <img id='img-upload' src="{{ url('/images/placeholder-img.jpg') }}" />
+                        <div class="form-group"> 
+                            <img id='img-upload' src="" />
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row" id="rows">
-                
-                {{-- <div class="col-md-4">
-                        <div class="p-box-lent">
-                        <p class="person-name">Category: Name Here</p>
-                        <img src="images/Iron.jpg" class="img-responsive">
-                        <p>Product Name</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                        <div class="p-box-lent">
-                        <p class="person-name">Category: Name Here</p>
-                        <img src="images/Iron.jpg" class="img-responsive">
-                        <p>Product Name</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                        <div class="p-box-lent">
-                        <p class="person-name">Category: Name Here</p>
-                        <img src="images/Iron.jpg" class="img-responsive">
-                        <p>Product Name</p>
-                    </div>
-                </div> --}}
-                
             </div>
         </div>
     </div>
@@ -129,52 +88,24 @@
 @endsection
 
 @section('footer')
-    <script src="{{ url('/js/userImage.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            
-            //Alert Message FUNCTION
-		    function alertMessage1(msg,behave)
-	        {
-	            $('#fmessage').hide();
-	            if(behave == 'success')
-	            {
-	                $('#finner-message').removeClass('alert-danger');
-	                $('#finner-message').addClass('alert-success');
-	            }
-	            else
-	            {
-	                $('#finner-message').removeClass('alert-success');
-	                $('#finner-message').addClass('alert-danger');
-	            }
-
-	            $('#finner-message').find('span').html(msg);
-	            $('#fmessage').show().delay(6000).fadeOut();
-	        }
-            
-            function blshow()
-            {
+            function blshow() {
                 $('#loader').show();
                 $('#submit_btn').attr('disabled', 'disabled');
             }
-
-            function blhide()
-            {
+            function blhide() {
                 $('#loader').hide();
                 $('#submit_btn').removeAttr('disabled');
             }
-
-            function loadSubCategories(data)
-            {
+            function loadSubCategories(data) {
                 var rows = '';
                 $.each(data,function(index, value) {
                     rows += '<option value="'+value['id']+'">'+value['name']+'</option>';
                 });
                 return rows;
             }
-            
-            function loadCategories()
-            {
+            function loadCategories() {
                 $.ajax({
                     url: '{{ route('categories') }}',
                     type: 'GET',
@@ -196,34 +127,32 @@
             }
             loadCategories();
 
-            function loadData()
-            {
+            function loadData() {
                 $.ajax({
                     url:'{{ url('userproducts/'.Auth::user()->id.'/3') }}',
                     type: 'GET',
                     cache: true,
                     dataType: 'JSON',
-                    success:function(data){
-
+                    success:function(data) {
                         $('#rows').html('');
                         $.each(data,function(index, value) {
                             $('#rows').append('<div class="col-md-3">'+
                                 '<div class="p-box-lent dasboard-boxes">'+
                                     '<p class="person-name">Category: '+value['category_name']+'</p>'+
-                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
+                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads/280') }}/'+value['image']+'\')\"></div>'+
                                     '<p>'+value['name']+'</p>'+
                                 '</div>'+
                             '</div>'); 
                         });
                     },
-                    error:function(){}
+                    error:function() {
+
+                    }
                 }); 
             }            
             loadData();
 
-            function add()
-            {
-                blshow();
+            function add() {
                 var fdata = new FormData( $('#pform')[0] ); 
                 $.ajax({
                     url: '{{ route('addproduct') }}',
@@ -233,29 +162,30 @@
                     data: fdata,
                     contentType: false,
                     processData: false,
+                    beforeSend:function(){
+                        blshow();
+                    },
                     success:function(data){
-                        if(data['errors'])
-                        {
-                            $('#errors').show().html('');
+                        if(data['errors']) {
                             $.each(data,function(index, value) {
                                 $.each(value,function(index1, el) {
-                                    $('#errors').append('<strong>'+el[0]+'</strong>');
+                                    calert(el,'error');
                                 });
                             });
                         }
-                        else
-                        {
-                            alertMessage1('Added Successfully.','success');
+                        else {
+                            calert('Added Successfully.','success');
                             $('#name,#author,#imgInp').val('');
                             $("#urlname").val(" ");
                             $("#img-upload").attr("src","{{url('/images/placeholder-img.jpg')}}");
                             $('#sub_category_id').val('').trigger('chosen:updated');
                             loadData();
                         }
-                        blhide();
                     },
-                    error: function () { 
-                        alertMessage1('Error occured while adding product.','error');
+                    error:function(){ 
+                        calert('Error occured while adding product.','error');
+                    },
+                    complete:function(){
                         blhide();
                     }
                 });                
@@ -265,12 +195,6 @@
                 e.preventDefault();
                 add();
             });
-
-            $('#user_image_form').submit(function(e) {
-                e.preventDefault();
-                changeImage('{{ route('change-user-image') }}');
-            });
-
         });  
     </script>
     

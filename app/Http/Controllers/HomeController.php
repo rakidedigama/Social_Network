@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Auth;
-use App\User;
 use App\City;
 use App\Product;
+use App\Product_Request;
+use App\User;
+use Auth;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -18,7 +19,6 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware('goodUser');
     }
 
     /**
@@ -26,35 +26,70 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function getCity() {
+        $city = City::select('name')->where('id', Auth::user()->city_id )->get()->first();
+        return $city->name;
+    }
+
+    // Dashboard
     public function index()
     {
-        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
-        return view('dashboard')->with('city',$city[0]['name']);
+        return view('dashboard')->with('city',$this->getCity());
     }
 
+    // Owned Items
     public function owneditem()
     {
-        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
-        return view('owned_item')->with('city',$city[0]['name']);
+        $data = Product::select('products.id','products.image','products.user_id','products.created_at as date')
+        ->where('products.status','1')->where('products.user_id',Auth::user()->id)->orderBy('products.id','DESC')->paginate(10);
+
+        return view('owned_item')->with(['city'=>$this->getCity(),'data'=>$data]);
     }
 
-    public function lentitem()
-    {
-        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
-        $total_products = Product::where('status',1)->where('id', Auth::user()->id )->get();
-        return view('lent_item')->with('city',$city[0]['name'],'total_products',$total_products);
+    // Sent Requests
+    public function sentReq() {
+        $data = Product_Request::select('product__requests.created_at as date','product__requests.status','product__requests.product_id','products.image','users.name as user','product__requests.lent_user')
+        ->join('products','product__requests.product_id','products.id')
+        ->join('users','product__requests.lent_user','users.id')
+        ->where('products.status','1')->where('product__requests.borrow_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
+
+        return view('sent_requests')->with(['city'=>$this->getCity(),'data'=>$data]);
     }
 
-    public function borroweditem()
-    {
-        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
-        return view('borrowed_item')->with('city',$city[0]['name']);
-    }
-
+    // Received Requests
     public function borrowreq()
     {
-        $city = City::select('name')->where('id', Auth::user()->city_id )->get();
-        return view('borrowreq')->with('city',$city[0]['name']);
+        $data = Product_Request::select('products.image','users.name as borrower','product__requests.id','product__requests.status','product__requests.borrow_user','product__requests.created_at as date','product__requests.product_id')
+        ->join('products','products.id','product__requests.product_id')
+        ->join('users','users.id','product__requests.borrow_user')
+        ->where('products.status','1')->where('product__requests.lent_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
+              
+        return view('borrowreq')->with(['city'=>$this->getCity(),'data'=>$data]);
+    }
+
+    // Rentals
+    public function lentitem()
+    {
+        $data = Product_Request::select('products.image','users.name as borrower','product__requests.borrow_user','product__requests.id as request_id','product__requests.date_borrowal','product__requests.due_date','product__requests.product_id','product__requests.status')
+        ->join('products','products.id','product__requests.product_id')
+        ->join('users','users.id','product__requests.borrow_user')
+        ->where('products.status','1')->whereNotIn('product__requests.status',[0,1,2])
+        ->where('product__requests.lent_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
+
+        return view('lent_item')->with(['city'=>$this->getCity(),'data'=>$data]);
+    }
+
+    // Borrowals
+    public function borroweditem()
+    {
+        $data = Product_Request::select('products.image','users.name as lenter','product__requests.lent_user','product__requests.id as request_id','product__requests.date_borrowal','product__requests.due_date','product__requests.product_id','product__requests.status')
+        ->join('products','products.id','product__requests.product_id')
+        ->join('users','users.id','product__requests.lent_user')
+        ->where('products.status','1')->whereNotIn('product__requests.status',[0,1,2])
+        ->where('product__requests.borrow_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
+              
+        return view('borrowed_item')->with(['city'=>$this->getCity(),'data'=>$data]);
     }
 
 }

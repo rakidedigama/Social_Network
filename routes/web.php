@@ -1,9 +1,4 @@
 <?php
-
-use App\Category;
-use App\Product;
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,67 +10,35 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
-
-Route::get('/view-gallery', function (Request $req) {
-    $search['name'] = '';
-    $search['category_id'] = '';
-    $search['sub_category_id'] = '';
-    $data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id','users.name as owner_name','cities.name as city')
-        ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
-        ->join('users', 'products.user_id', '=', 'users.id')
-        ->join('cities','users.city_id','cities.id')
-        ->where('products.status','1');
-        //->where('products.viewstatus','1')
-        
-        if($req->name) {
-            $data = $data->where('products.name', 'LIKE', '%'.$req->name.'%')->orWhere('cities.name', 'LIKE', '%'.$req->name.'%')->orWhere('products.author', 'LIKE', '%'.$req->name.'%');
-            array_push($search, array('name'=>$req->name));
-        }
-
-        if ( $req->category_id ) 
-            $data = $data->where('sub_categories.category_id', $req->category_id );
-
-        else if ( $req->sub_category_id ) 
-            $data = $data->where('sub_categories.id', $req->sub_category_id );
-
-        
-        $data=$data->orderBy('id','DESC')->paginate(16);
-
-        // For Search Query
-        if ( $req->category_id ) 
-            $data->appends(['category_id' => $req->category_id]);
-
-        else if ( $req->sub_category_id ) 
-            $data->appends(['sub_category_id' => $req->sub_category_id]);
-
-        if ( $req->name ) 
-            $data->appends(['name' => $req->name]);
-        
-
-        if( !$data->first() ) {
-            if ( $req->name || $req->category_id || $req->sub_category_id ) {
-                $data['msg'] = 'Sorry No Data Found.';
-                if ( $req->page )
-                	return abort(404);
-            }
-            else
-            	return abort(404);
-        }
-
-    $categories = Category::all();
-    return view('gallery')->with(['data'=>$data,'categories'=>$categories]);
-})->name('gallery');
-
+/*
+|--------------------------------------------------------------------------
+| Front End Views
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/', 'ViewController@index')->name('index');
+Route::get('/view-gallery', 'ViewController@gallery')->name('gallery');
+Route::get('/view-book/{id}', 'ViewController@viewBook')->name('viewBook');
+Route::get('/profile/{id}', 'ViewController@profile')->name('profile');
+/*
+|--------------------------------------------------------------------------
+| Authentications Routes
+|--------------------------------------------------------------------------
+|
+*/
 Auth::routes();
-
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+|
+*/
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
-Route::get('/owneditem', 'HomeController@owneditem')->name('owneditem');
-Route::get('/lentitem', 'HomeController@lentitem')->name('lentitem');
-Route::get('/borroweditem', 'HomeController@borroweditem')->name('borroweditem');
-Route::get('/borrowreq', 'HomeController@borrowreq')->name('borrowreq');
+Route::get('/owned-items', 'HomeController@owneditem')->name('owneditem');
+Route::get('/sent-requests', 'HomeController@sentReq')->name('sentReq');
+Route::get('/received-requests', 'HomeController@borrowreq')->name('borrowreq');
+Route::get('/rentals', 'HomeController@lentitem')->name('lentitem');
+Route::get('/borrowals', 'HomeController@borroweditem')->name('borroweditem');
 
 /*
 |--------------------------------------------------------------------------
@@ -104,7 +67,6 @@ Route::get('/subcategories/{id}','subCategoryController@subCategories');
 |
 */
 Route::post('/change-user-image','UserController@ChangeImage')->name('change-user-image');
-
 /*
 |--------------------------------------------------------------------------
 | Product
@@ -114,10 +76,10 @@ Route::post('/change-user-image','UserController@ChangeImage')->name('change-use
 Route::get('/products/{skip}/{limit}/{name}','ProductController@getProducts');
 Route::get('/userproducts/{id}','ProductController@getProductsUser');
 Route::get('/userproducts/{id}/{limit}','ProductController@getProductsUserLimit');
-Route::get('/userproducts/{id}/{skip}/{limit}','ProductController@getProductsUserSkipLimit');
-Route::get('/userborrowrequest/{id}/{skip}/{limit}','ProductController@getBorrowRequestProducts');
+//Route::get('/userproducts/{id}/{skip}/{limit}','ProductController@getProductsUserSkipLimit');
+//Route::get('/userborrowrequest/{id}/{skip}/{limit}','ProductController@getBorrowRequestProducts');
 Route::get('/userlentproducts/{id}/{skip}/{limit}','ProductController@getLentProducts');
-Route::get('/userborrowedproducts/{id}/{skip}/{limit}','ProductController@getBorrowedProducts');
+// Route::get('/userborrowedproducts/{id}/{skip}/{limit}','ProductController@getBorrowedProducts');
 Route::post('/addproduct','ProductController@addProduct')->name('addproduct')->middleware('auth');
 Route::post('/deleteproduct','ProductController@delProduct')->name('deleteproduct')->middleware('auth');
 

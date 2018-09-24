@@ -74,10 +74,15 @@ class ProductController extends Controller
             'name'=>'required|string|max:60|min:3',
             'author'=>'required|string|max:60|min:3',
             'sub_category_id'=>'required|integer',
-            'image'=>'required|mimes:jpeg,jpg,png'  
+            'image'=>'required|mimes:jpeg,jpg,png|dimensions:min_width=80,min_height=120|max:5120'  
+        ];
+        $cMessages = [
+            'mimes' => 'Sorry! We don\'t support that file format right now.',
+            'dimensions' => 'Oops... that image is too small. Pick one that is at least 80x120 pixels.',
+            'max' => 'The image may not be greater than 5 MB.'
         ];
 
-        $validator = Validator::make(Input::all(),$rules);
+        $validator = Validator::make(Input::all(),$rules,$cMessages);
 
         if( $validator->fails() )
             return response::json(array('errors'=>$validator->getMessageBag()->toarray()));
@@ -88,46 +93,57 @@ class ProductController extends Controller
             $product->author = $req->author;
             $product->sub_category_id = $req->sub_category_id;
             $product->user_id = Auth::user()->id;
-            
-            $old_product_count = Product::where('status',1)->where('user_id',Auth::user()->id)->get()->count();
-
-            if( $old_product_count == 2 )
-            {
-                $old_products = Product::select('id','viewstatus')->where('status',1)->where('user_id',Auth::user()->id)->get();
-                foreach ($old_products as $key => $value) {
-                    $uproducts = Product::find($value['id']);
-                    $uproducts->viewstatus = 1;
-                    $uproducts->save();
-                }
-                $product->viewstatus = 1;
-            }
-            else if( $old_product_count > 2 )
-                $product->viewstatus = 1;
 
             //File Storage
             if( $image = $req->file('image') )
             {
                 $path = public_path().'/images/uploads/';
-                $filename = time().'.'.$image->getClientOriginalExtension();
+                $filename = 'ii_'.Auth::user()->id.'_'.time().'.'.$image->getClientOriginalExtension();
                 
-                $image_resize = Image::make($image->getRealPath());
-                $size = $image_resize->filesize();
-                if( $size>250000 )
-                {
-                    $image_resize->resize(1000,1000, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                    $image_resize->resizeCanvas(1000, 1000, 'center', false, array(255, 255, 255, 0));
-                    $image_resize->save($path.$filename);
-                }
-                else
-                    $image->move($path,$filename);   
-
+                $this->resizeImage($image,$path,$filename);
+                                
                 $product->image = $filename;
                 $product->save();
             }
             return $product;
         }
+    }
+
+    public function resizeImage($image,$path,$filename) {
+
+        $image_resize = Image::make($image->getRealPath());
+
+        // backup status
+        $image_resize->backup();
+        $width = $image_resize->width();
+        $height = $image_resize->height();
+        $size = $image_resize->filesize();
+        
+        // For 200x200
+        if( $width > 80 && $height > 120 ) {
+            $fitRatio = 0;
+            if( $width < 280 )
+                $fitRatio = $width;
+            else if( $height < 280 )
+                $fitRatio = $height;
+            else
+                $fitRatio = 280;
+
+            // $image_resize->resize($fitRatio,$fitRatio, function ($constraint) {
+            //     $constraint->aspectRatio();
+            // });
+            // $image_resize->resizeCanvas($fitRatio, $fitRatio, 'center', false, array(255, 255, 255, 0));            
+            $image_resize->fit($fitRatio);
+            $image_resize->save($path.'/280/'.$filename);
+        }
+        else 
+            $image->move($path.'/280/',$filename);
+
+        // reset image (return to backup state)
+        // $image_resize->reset();
+        // For 70x70
+        // $image_resize->fit(70);
+        // $image_resize->save($path.'/70/'.$filename);
     }
 
     public function getBorrowRequestProducts($id,$skip,$limit)
