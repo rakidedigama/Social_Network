@@ -18,6 +18,7 @@ class CreateProductRequestsTable extends Migration
             $table->integer('lent_user')->unsigned();
             $table->integer('borrow_user')->unsigned();
             $table->integer('product_id')->index();
+            $table->mediumInteger('bdays')->unsigned();
             $table->tinyInteger('status')->default('0');
             $table->string('date_borrowal','30')->nullable();
             $table->string('due_date','30')->nullable();

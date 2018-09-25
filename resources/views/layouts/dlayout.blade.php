@@ -80,38 +80,6 @@
 
 	    <div id="fh5co-counter" class="fh5co-counters fh5co-bg-section" style="background-image: url({{ url('/images/Background.jpg') }});">
 	        <div class="container">
-	            <!-- <div class="row" style="margin-bottom: 15px;">
-	                <div class="col-md-3">
-	                    
-	                </div>
-	                <div class="col-md-9">
-	                    <div class="profile-info-box">
-	                        <h3>User Personal details</h3>
-	                        <ul>
-	                            <li>
-	                                <ul>
-	                                    <li>
-	                                        <p><i class="icon-man"></i>Name: <span>{{Auth::user()->name}}</span></p>
-	                                    </li>
-	                                    <li>
-	                                        <p><i class="icon-email"></i>Email: <span>{{ Auth::user()->email }}</span></p>
-	                                    </li>
-	                                </ul>
-	                            </li>
-	                            <li>
-	                                <ul>
-	                                    <li>
-	                                        <p><i class="icon-location"></i>Location: <span>{{ $city }}</span></p>
-	                                    </li>
-	                                    <li>
-	                                        <p><i class="icon-phone"></i>Phone: <span>+{{ Auth::user()->phone }}</span></p>
-	                                    </li>
-	                                </ul>
-	                            </li>
-	                        </ul>
-	                    </div>
-	                </div>
-	            </div> -->
 	            <div class="row">	                
 	                @yield('content')
 	            </div>

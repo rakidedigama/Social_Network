@@ -32,10 +32,17 @@ class HomeController extends Controller
         return $city->name;
     }
 
+    public function getRepo() {
+        $repo['books'] = Product::where('user_id',Auth::user()->id)->where('status',1)->count();
+        $repo['lent'] = Product_Request::where('lent_user',Auth::user()->id)->where('status',4)->count();
+        $repo['borrow'] = Product_Request::where('borrow_user',Auth::user()->id)->where('status',4)->count();
+        return $repo;
+    }
+
     // Dashboard
     public function index()
     {
-        return view('dashboard')->with('city',$this->getCity());
+        return view('dashboard')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo()]);
     }
 
     // Owned Items
@@ -44,7 +51,7 @@ class HomeController extends Controller
         $data = Product::select('products.id','products.image','products.user_id','products.created_at as date')
         ->where('products.status','1')->where('products.user_id',Auth::user()->id)->orderBy('products.id','DESC')->paginate(10);
 
-        return view('owned_item')->with(['city'=>$this->getCity(),'data'=>$data]);
+        return view('owned_item')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
     }
 
     // Sent Requests
@@ -54,7 +61,7 @@ class HomeController extends Controller
         ->join('users','product__requests.lent_user','users.id')
         ->where('products.status','1')->where('product__requests.borrow_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
 
-        return view('sent_requests')->with(['city'=>$this->getCity(),'data'=>$data]);
+        return view('sent_requests')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
     }
 
     // Received Requests
@@ -65,7 +72,7 @@ class HomeController extends Controller
         ->join('users','users.id','product__requests.borrow_user')
         ->where('products.status','1')->where('product__requests.lent_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
               
-        return view('borrowreq')->with(['city'=>$this->getCity(),'data'=>$data]);
+        return view('borrowreq')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
     }
 
     // Rentals
@@ -77,7 +84,7 @@ class HomeController extends Controller
         ->where('products.status','1')->whereNotIn('product__requests.status',[0,1,2])
         ->where('product__requests.lent_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
 
-        return view('lent_item')->with(['city'=>$this->getCity(),'data'=>$data]);
+        return view('lent_item')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
     }
 
     // Borrowals
@@ -89,7 +96,7 @@ class HomeController extends Controller
         ->where('products.status','1')->whereNotIn('product__requests.status',[0,1,2])
         ->where('product__requests.borrow_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
               
-        return view('borrowed_item')->with(['city'=>$this->getCity(),'data'=>$data]);
+        return view('borrowed_item')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
     }
 
 }

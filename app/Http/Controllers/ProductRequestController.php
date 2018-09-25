@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Product_Request;
 use App\Product;
+use App\Product_Request;
 use Auth;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Validator;
 
 class ProductRequestController extends Controller
 {
@@ -18,24 +19,38 @@ class ProductRequestController extends Controller
     public function borrowReq(Request $req)
     {
     	$json['inserted'] = 'false';
-
-        $id = Auth::user()->id;
-        $countData = Product::where('user_id',$id)->where('status',1)->get()->count(); 
-        
-        if($countData < 2)
-            $json['errorr'] = 'First add some items to send the request.';
+        $rules = [
+            'lent_user' => 'required|numeric|not_in:0',
+            'product_id' => 'required|numeric|not_in:0',
+            'bdays' => 'required|numeric|not_in:0'
+        ];
+        $cAttributes = [
+            'lent_user' => "Owner's",
+            'product_id' => "Product's",
+            'bdays' => "Borrow days"
+        ];
+        $validator = Validator::make(Input::all(),$rules,[],$cAttributes);
+        if( $validator->fails() )
+            $json['error'] = $validator->errors()->first();
         else {
-        	$checkData = Product_Request::where('borrow_user',Auth::user()->id)->where('lent_user',$req->lent_user)->where('product_id',$req->product_id)->where('status','!=',5)->get()->first();
-        	if($checkData)
-        		$json['error'] = 'Request Already Sent.';
-        	else {
-    	    	$data = new Product_Request();
-    			$data->borrow_user = Auth::user()->id;
-    	    	$data->lent_user   = $req->lent_user;
-    			$data->product_id  = $req->product_id; 
-    	    	$data->save(); 
-    	    	$json['inserted'] = 'true';
-        	}
+            $id = Auth::user()->id;
+            $countData = Product::where('user_id',$id)->where('status',1)->get()->count(); 
+            if($countData < 2)
+                $json['error'] = 'At least add two items to send the request.';
+            else {
+                $checkData = Product_Request::where('borrow_user',$id)->where('lent_user',$req->lent_user)->where('product_id',$req->product_id)->where('status','!=',5)->get()->first();
+                if($checkData)
+                    $json['error'] = 'Request Already Sent.';
+                else {
+                    $data = new Product_Request();
+                    $data->borrow_user = $id;
+                    $data->lent_user   = $req->lent_user;
+                    $data->product_id  = $req->product_id;
+                    $data->bdays = $req->bdays;
+                    $data->save(); 
+                    $json['inserted'] = 'true';
+                }
+            }
         }
     	return response()->json($json);
     }

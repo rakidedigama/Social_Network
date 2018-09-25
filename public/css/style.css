@@ -1820,7 +1820,7 @@ p.person-name i {
     border: solid 1px #f7f7f7;
     background-color: #f7f7f7;
 }
-button.btn.btn-primary.borrow_btn {
+button.btn.btn-primary.borrow_modal_btn {
     margin-top: 6px;
     border-radius: 4px;
     padding: 6px 35px;

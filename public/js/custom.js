@@ -9,7 +9,7 @@ function calert(msg,type) {
 	  	closeOnClick: false,
 	  	position: 'top-right',
 	  	fadeOnHover: true,
-	  	zIndex: '999',
+	  	zIndex: "10000",
 	  	alertClass: ''
 	})
 }

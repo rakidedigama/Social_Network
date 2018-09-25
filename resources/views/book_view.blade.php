@@ -27,9 +27,12 @@
 					<div class="view-book-info">
 						<p>{{ $book->name }}</p>
 						<p>By: <span>{{ $book->author }}</span></p>
-						<p>Lending Duration : 2 weeks</p>
+						<p>Lending Duration : {{ $lending_duration.' Days' }}</p> 
+						{{-- $lending_duration.' Days' 
+							->format('%y years, %m months and %d days')
+						--}}
 						<p>Rental Count : {{ $book->rental_count }}</p>
-						<p>Requests count : {{ $rr }}</p>
+						<p>Requests count : {{ $req_count }}</p>
 					</div>
 				</div>
 			</div>

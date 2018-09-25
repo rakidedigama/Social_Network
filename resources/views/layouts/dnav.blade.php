@@ -18,8 +18,8 @@
 	    <p>User Personal details</p>
 	    <ul>
             <li>
-                <p><i class="icon-man"></i> <span>{{Auth::user()->name}} 
-                10 <i class="icon-drop-up-arrow size-13 green-color"></i> 1 <i class="icon-drop-down-arrow size-13 brown-color"></i> 5</span></p>
+                <p><i class="icon-man"></i> <span>{{ Auth::user()->name .' '. $repo['books'] }} 
+                 <i class="icon-drop-up-arrow size-13 green-color"></i> {{ $repo['lent'] }} <i class="icon-drop-down-arrow size-13 brown-color"></i> {{ $repo['borrow'] }}</span></p>
             </li>
             <li>
                 <p><i class="icon-location"></i> <span>{{ $city }}</span></p>

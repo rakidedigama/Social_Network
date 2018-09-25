@@ -6,6 +6,7 @@ use App\Category;
 use App\Product;
 use App\Product_Request;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ViewController extends Controller
@@ -67,13 +68,20 @@ class ViewController extends Controller
 		if( !is_numeric($id) )
 			return abort(404);
 
-	    $book = Product::select('products.id','products.name','products.author','products.image','products.rental_count','users.name as user','cities.name as city')
+	    $book = Product::select('products.id','products.name','products.author','products.image','products.rental_count','users.name as user','users.id as user_id','cities.name as city')
 	    ->join('users','products.user_id','users.id')
 	    ->join('cities','users.city_id','cities.id')
 	    ->where('products.id',$id)->where('products.status',1)->get()->first();
 	    if( $book ) {
-	    	$rr = Product_Request::where('product_id',$book->id)->count();
-	    	return view('book_view')->with(['book'=>$book,'rr'=>$rr]);
+	    	$req_count = Product_Request::where('product_id',$book->id)->count();
+	    	$ld = Product_Request::select('bdays')->where('product_id',$book->id)->whereIn('status',[3,4])->orderBy('id','DESC')->first();
+	    	if( $ld ) {
+	    		$lending_duration = $ld->bdays;
+	    		// $lending_duration = Carbon::
+	    	}
+    		else
+	    		$lending_duration = 0;
+	    	return view('book_view')->with(['book'=>$book,'req_count'=>$req_count,'lending_duration'=>$lending_duration]);
 	    }
 	    else
 	    	return abort(404);
