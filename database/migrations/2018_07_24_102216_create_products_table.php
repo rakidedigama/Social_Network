@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('viewstatus')->default('1');
             $table->tinyInteger('status')->default('1');
             $table->integer('rental_count')->unsigned()->default('0');
+            $table->mediumInteger('lending_duration')->unsigned();
             $table->timestamps();
         });
     }

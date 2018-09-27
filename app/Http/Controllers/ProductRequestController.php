@@ -21,13 +21,11 @@ class ProductRequestController extends Controller
     	$json['inserted'] = 'false';
         $rules = [
             'lent_user' => 'required|numeric|not_in:0',
-            'product_id' => 'required|numeric|not_in:0',
-            'bdays' => 'required|numeric|not_in:0'
+            'product_id' => 'required|numeric|not_in:0'
         ];
         $cAttributes = [
             'lent_user' => "Owner's",
             'product_id' => "Product's",
-            'bdays' => "Borrow days"
         ];
         $validator = Validator::make(Input::all(),$rules,[],$cAttributes);
         if( $validator->fails() )
@@ -46,7 +44,6 @@ class ProductRequestController extends Controller
                     $data->borrow_user = $id;
                     $data->lent_user   = $req->lent_user;
                     $data->product_id  = $req->product_id;
-                    $data->bdays = $req->bdays;
                     $data->save(); 
                     $json['inserted'] = 'true';
                 }

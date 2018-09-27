@@ -34,13 +34,17 @@
 	                  	@endphp
 	                  </td>
 	                  <td>
-	                  	
+	                  	{{ $val->rental_count }}
 	                  </td>
 	                  <td>
-	                  	
+	                  	{{ $val->requests }}
 	                  </td>
 	                  <td>
-	                  	
+	                  	@if ($val->viewstatus == 1)
+                        <span class="text text-success">Available</span>
+                      @else
+                        <span class="text text-danger">Not Available</span>
+                      @endif
 	                  </td>
                   </tr>
 					    	@endforeach

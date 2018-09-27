@@ -70,10 +70,12 @@ class ProductController extends Controller
 
     public function addProduct(Request $req)
     {
+        $json['inserted'] = 'false';
         $rules = [
             'name'=>'required|string|max:60|min:3',
             'author'=>'required|string|max:60|min:3',
-            'sub_category_id'=>'required|integer',
+            'sub_category_id'=>'required|integer|not_in:0',
+            'lending_duration' => 'required|numeric|not_in:0',
             'image'=>'required|mimes:jpeg,jpg,png|dimensions:min_width=80,min_height=120|max:5120'  
         ];
         $cMessages = [
@@ -81,31 +83,35 @@ class ProductController extends Controller
             'dimensions' => 'Oops... that image is too small. Pick one that is at least 80x120 pixels.',
             'max' => 'The image may not be greater than 5 MB.'
         ];
+        $cAttributes = [
+            'name' => "Name",
+            'author' => "Author",
+            'sub_category_id' => 'Category',
+            'lending_duration' => "Lending Duration",
+            'image' => 'Image'
+        ];
 
-        $validator = Validator::make(Input::all(),$rules,$cMessages);
+        $validator = Validator::make(Input::all(),$rules,$cMessages,$cAttributes);
 
         if( $validator->fails() )
             return response::json(array('errors'=>$validator->getMessageBag()->toarray()));
-        else
-        {
+        else {
             $product = new Product();
             $product->name = $req->name;
             $product->author = $req->author;
             $product->sub_category_id = $req->sub_category_id;
+            $product->lending_duration = $req->lending_duration;
             $product->user_id = Auth::user()->id;
 
-            //File Storage
-            if( $image = $req->file('image') )
-            {
+            if( $image = $req->file('image') ) {
                 $path = public_path().'/images/uploads/';
                 $filename = 'ii_'.Auth::user()->id.'_'.time().'.'.$image->getClientOriginalExtension();
-                
                 $this->resizeImage($image,$path,$filename);
-                                
                 $product->image = $filename;
                 $product->save();
+                $json['inserted'] = 'true';
             }
-            return $product;
+            return json_encode($json);
         }
     }
 

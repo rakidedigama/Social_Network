@@ -195,6 +195,22 @@
 			        e.preventDefault();
 			        changeImage('{{ route('change-user-image') }}');
 		        });
+		        setInterval(function(){
+		        	$.ajax({
+			        	url:'{{ route('checknoti') }}',
+			        	dataType:'JSON',
+			        	cache:true,
+			        	success:function(data){
+			        		if( data['receivedRequests'] == 0 ) 
+			        			$('#recRequests').children('span').text('');
+			        		else 
+			        			$('#recRequests').children('span').text(data['receivedRequests'])
+			        	},
+			        	error:function(){
+			        		$('#recRequests').children('span').text('');
+			        	}
+			        });
+		        },10000);
 			})
 		</script>
 

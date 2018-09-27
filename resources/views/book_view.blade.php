@@ -27,10 +27,14 @@
 					<div class="view-book-info">
 						<p>{{ $book->name }}</p>
 						<p>By: <span>{{ $book->author }}</span></p>
-						<p>Lending Duration : {{ $lending_duration.' Days' }}</p> 
-						{{-- $lending_duration.' Days' 
-							->format('%y years, %m months and %d days')
-						--}}
+						<p>Lending Duration : 
+							@php
+								$days = $book->lending_duration;
+								$weeks = floor($days / 7);
+								$dayRemainder = $days % 7;
+								echo $weeks.' Weeks '.$dayRemainder.' Days';
+							@endphp
+						</p>
 						<p>Rental Count : {{ $book->rental_count }}</p>
 						<p>Requests count : {{ $req_count }}</p>
 					</div>

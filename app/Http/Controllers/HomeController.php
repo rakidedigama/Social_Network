@@ -8,6 +8,7 @@ use App\Product_Request;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -39,6 +40,24 @@ class HomeController extends Controller
         return $repo;
     }
 
+    public function checkNotifications() {
+        $id = Auth::user()->id;
+        $json['receivedRequests'] = Product_Request::where('lent_user',$id)->where('status',0)->where('viewstatus',0)->count();
+        return json_encode($json);
+    }
+
+    public function setNotifications() {
+        $json['updated'] = 'false';
+        $receivedRequests = Product_Request::select('id','viewstatus')->where('lent_user',Auth::user()->id)->where('status',0)->where('viewstatus',0)->get();
+        foreach ($receivedRequests as $val) {
+            $pr = Product_Request::find($val->id);
+            $pr->viewstatus = 1;
+            $pr->save();
+        }
+        $json['updated'] = 'true';
+        return json_encode($json);
+    }
+
     // Dashboard
     public function index()
     {
@@ -48,7 +67,9 @@ class HomeController extends Controller
     // Owned Items
     public function owneditem()
     {
-        $data = Product::select('products.id','products.image','products.user_id','products.created_at as date')
+        $data = Product::select('products.id','products.image','products.user_id','products.rental_count','products.viewstatus','products.created_at as date',DB::raw('count(product__requests.id) as requests') )
+        ->leftJoin('product__requests','products.id','product__requests.product_id')
+        ->groupBy('products.id')
         ->where('products.status','1')->where('products.user_id',Auth::user()->id)->orderBy('products.id','DESC')->paginate(10);
 
         return view('owned_item')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
@@ -65,18 +86,18 @@ class HomeController extends Controller
     }
 
     // Received Requests
-    public function borrowreq()
+    public function receivedReq()
     {
         $data = Product_Request::select('products.image','users.name as borrower','product__requests.id','product__requests.status','product__requests.borrow_user','product__requests.created_at as date','product__requests.product_id')
         ->join('products','products.id','product__requests.product_id')
         ->join('users','users.id','product__requests.borrow_user')
         ->where('products.status','1')->where('product__requests.lent_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
               
-        return view('borrowreq')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
+        return view('received_requests')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
     }
 
     // Rentals
-    public function lentitem()
+    public function rentals()
     {
         $data = Product_Request::select('products.image','users.name as borrower','product__requests.borrow_user','product__requests.id as request_id','product__requests.date_borrowal','product__requests.due_date','product__requests.product_id','product__requests.status')
         ->join('products','products.id','product__requests.product_id')
@@ -84,11 +105,11 @@ class HomeController extends Controller
         ->where('products.status','1')->whereNotIn('product__requests.status',[0,1,2])
         ->where('product__requests.lent_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
 
-        return view('lent_item')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
+        return view('rentals')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
     }
 
     // Borrowals
-    public function borroweditem()
+    public function borrowals()
     {
         $data = Product_Request::select('products.image','users.name as lenter','product__requests.lent_user','product__requests.id as request_id','product__requests.date_borrowal','product__requests.due_date','product__requests.product_id','product__requests.status')
         ->join('products','products.id','product__requests.product_id')
@@ -96,7 +117,7 @@ class HomeController extends Controller
         ->where('products.status','1')->whereNotIn('product__requests.status',[0,1,2])
         ->where('product__requests.borrow_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
               
-        return view('borrowed_item')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
+        return view('borrowals')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);
     }
 
 }

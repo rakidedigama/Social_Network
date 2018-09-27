@@ -43,3 +43,19 @@ function changeImage (url) {
         }
     });                
 }
+function setNotifications(url,token) {
+    $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: 'JSON',
+        data: {_token: token},
+        cache:true
+    })
+    .done(function() {
+        
+    })
+    .fail(function() {
+        calert("Something went wrong!","error");
+        setNotifications(url,token);
+    });    
+}

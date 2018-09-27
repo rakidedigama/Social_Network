@@ -36,10 +36,11 @@ Auth::routes();
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 Route::get('/owned-items', 'HomeController@owneditem')->name('owneditem');
 Route::get('/sent-requests', 'HomeController@sentReq')->name('sentReq');
-Route::get('/received-requests', 'HomeController@borrowreq')->name('borrowreq');
-Route::get('/rentals', 'HomeController@lentitem')->name('lentitem');
-Route::get('/borrowals', 'HomeController@borroweditem')->name('borroweditem');
-
+Route::get('/received-requests', 'HomeController@receivedReq')->name('receivedReq');
+Route::get('/rentals', 'HomeController@rentals')->name('rentals');
+Route::get('/borrowals', 'HomeController@borrowals')->name('borrowals');
+Route::get('/check-notifications', 'HomeController@checkNotifications')->name('checknoti');
+Route::post('/set-notifications', 'HomeController@setNotifications')->name('setnoti');
 /*
 |--------------------------------------------------------------------------
 | Country,City
@@ -73,12 +74,12 @@ Route::post('/change-user-image','UserController@ChangeImage')->name('change-use
 |--------------------------------------------------------------------------
 |
 */
-Route::get('/products/{skip}/{limit}/{name}','ProductController@getProducts');
-Route::get('/userproducts/{id}','ProductController@getProductsUser');
-Route::get('/userproducts/{id}/{limit}','ProductController@getProductsUserLimit');
+// Route::get('/products/{skip}/{limit}/{name}','ProductController@getProducts');
+// Route::get('/userproducts/{id}','ProductController@getProductsUser');
+// Route::get('/userproducts/{id}/{limit}','ProductController@getProductsUserLimit');
 //Route::get('/userproducts/{id}/{skip}/{limit}','ProductController@getProductsUserSkipLimit');
 //Route::get('/userborrowrequest/{id}/{skip}/{limit}','ProductController@getBorrowRequestProducts');
-Route::get('/userlentproducts/{id}/{skip}/{limit}','ProductController@getLentProducts');
+// Route::get('/userlentproducts/{id}/{skip}/{limit}','ProductController@getLentProducts');
 // Route::get('/userborrowedproducts/{id}/{skip}/{limit}','ProductController@getBorrowedProducts');
 Route::post('/addproduct','ProductController@addProduct')->name('addproduct')->middleware('auth');
 Route::post('/deleteproduct','ProductController@delProduct')->name('deleteproduct')->middleware('auth');

@@ -49,11 +49,20 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-12">
+                                    <label for="">Lending Duration</label>
+                                    <div class="input-group">
+                                      <input type="text" name="lending_duration" id="lending_duration" class="form-control" required tabindex="4" placeholder="7">
+                                      <span class="input-group-addon">Days</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
                                 <label>Upload Image</label>
                                 <div class="input-group">
                                     <span class="input-group-btn">
                                         <span class="btn btn-default btn-file">
-                                            Browse… <input type="file" accept="image/png, image/jpeg" id="imgInp" name="image" required tabindex="4">
+                                            Browse… <input type="file" accept="image/png, image/jpeg" id="imgInp" name="image" required tabindex="5">
                                         </span>
                                     </span>
                                     <input id='urlname'type="text" class="form-control" readonly>
@@ -61,13 +70,11 @@
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-12">
-                                    <img src="{{ url('/images/loader.gif') }}" class="img-circle center-block " id="loader" style="display: none;" height="50" width="50" >
-                                </div>
-                            </div>
-                            <div class="row form-group">
                                 <div class="col-md-12 btn-center">
-                                    <button type="submit" class="btn btn-login" id="submit_btn" tabindex="5">Add Item</button>
+                                    <button type="submit" class="btn btn-login" id="submit_btn" tabindex="6">
+                                        Add Item
+                                        <img src="{{ url('/images/loader.gif') }}" class="img-circle center-block " id="loader" style="display: none;" height="20" width="20" >
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -173,14 +180,16 @@
                                 });
                             });
                         }
-                        else {
-                            calert('Added Successfully.','success');
-                            $('#name,#author,#imgInp').val('');
-                            $("#urlname").val(" ");
-                            $("#img-upload").attr("src","{{url('/images/placeholder-img.jpg')}}");
+                        else if ( data['inserted'] == 'true' ) {
+                            $('#pform').trigger('reset');
+                            {{-- url('/images/placeholder-img.jpg') --}} 
+                            $("#img-upload").attr("src","");
                             $('#sub_category_id').val('').trigger('chosen:updated');
                             loadData();
+                            calert('Added Successfully.','success');
                         }
+                        else
+                            calert('Error occured while adding product.','error');    
                     },
                     error:function(){ 
                         calert('Error occured while adding product.','error');

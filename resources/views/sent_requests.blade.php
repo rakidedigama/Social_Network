@@ -37,12 +37,14 @@
 	                  </td>
 	                  <td>
                       @php
-                        if( $val->status == 1 )
-                          echo 'accepted';
+                        if( $val->status == 1 || $val->status == 3 || $val->status == 4 )
+                          echo 'Accepted';
                         else if( $val->status == 2 )
-                          echo 'rejected';
+                          echo 'Rejected';
+                      	else if( $val->status == 5 )
+                      		echo 'Returned';
                         else
-                          echo 'pending';
+                          echo 'Pending';
                       @endphp
 	                  </td>
                   </tr>

@@ -79,38 +79,11 @@
 												
 												@foreach ($data as $value)
 													@php 
-														$code = $modal = '';
+														$code = '';
 														if ( $user = Auth::user() ) {
 															if ( $value->user_id != $user->id ) {
 
-																$code ='<button type="button" class="btn btn-primary borrow_modal_btn" style="margin-left:28%;" data-toggle="modal" data-target="#borrowModal'.$value->id.'" >Borrow</button>'; 
-
-																$modal = '<div class="modal fade" id="borrowModal'.$value->id.'" tabindex="-1" role="dialog" aria-labelledby="borrowModalLabel'.$value->id.'" aria-hidden="true">'.
-																	  '<div class="modal-dialog" role="document">'.
-																	    '<div class="modal-content">'.
-																	      '<div class="modal-header">'.
-																	        '<h5 class="modal-title" id="borrowModalLabel'.$value->id.'"></h5>'.
-																	        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'.
-																	          '<span aria-hidden="true">&times;</span>'.
-																	        '</button>'.
-																	      '</div>'.
-																	    	'<div class="modal-body">'.
-
-																        	'<div class="form-group">'.
-														                '<div class="input-group date">'.
-                                                '<input class="form-control" type="text" id="bdays'.$value->id.'" placeholder="eg: 7" />'.
-                                                '<span class="input-group-addon">Days</span>'.
-                                            '</div>'.
-															            '</div>'.
-																        
-																	    	'</div>'.
-																				'<div class="modal-footer">'.
-																					'<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'.
-																					'<button type="button" class="btn btn-primary borrow_btn" lent_user="'.$value->user_id.'" product_id="'.$value->id.'" >Borrow</button>'.
-																				'</div>'.
-																	    '</div>'.
-																	  '</div>'.
-																'</div>';
+																$code ='<button type="button" class="btn btn-primary borrow_btn" style="margin-left:28%;" lent_user="'.$value->user_id.'" product_id="'.$value->id.'">Borrow</button>'; 
 															}
 														}
 													@endphp
@@ -133,7 +106,6 @@
 																<?php echo $code ?>
 															</div>
 														</div>
-														<?php echo $modal ?>
 													</div> 
 												@endforeach
 
@@ -244,7 +216,6 @@
 			$(document).on('click','.borrow_btn',function(e) {
 				var lent_user = $(this).attr('lent_user'),
 					product_id = $(this).attr('product_id'),
-					bdays = $('#bdays'+product_id),
           borrowBtn = $(this);
 
 				$.ajax({
@@ -252,7 +223,7 @@
 					type: 'POST',
 					cache: true,
 					dataType: 'JSON',
-					data: {_token: '{{ csrf_token() }}',lent_user:lent_user,product_id:product_id,bdays:bdays.val() },
+					data: {_token: '{{ csrf_token() }}',lent_user:lent_user,product_id:product_id },
           beforeSend:function(){
             borrowBtn.attr('disabled','disabled');
           },
