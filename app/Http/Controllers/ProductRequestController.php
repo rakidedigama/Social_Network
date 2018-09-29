@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Product_Request;
+use App\Rating;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -102,5 +103,59 @@ class ProductRequestController extends Controller
             $json['error'] = 'Request not found.';
 
     	return response()->json($json); 
+    }
+
+    public function checkRequest($request_id) {
+    	$borrow_user = Auth::user()->id;
+    	$data['msg'] = NULL;
+    	$data['valid_request'] = Product_Request::where('id',$request_id)->where('borrow_user',$borrow_user)->where('status',5)->get()->first();
+    	if(!$data['valid_request']) {
+    		$data['msg'] = 'Sorry request not found.';
+    		return $data;
+    	}
+		$data['old_review'] = Rating::where('request_id',$request_id)->where('borrow_user',$borrow_user)->get()->first();
+		if( $data['old_review'] )
+			$data['msg'] = 'already reviewed.';
+		return $data;
+    }
+
+    public function review(Request $req) {
+    	$json['inserted'] = 'false';
+        $rules = [
+        	'request_id' => 'required|numeric|not_in:0',
+            'rate' => 'required|numeric|between:1,5',
+            'review' => [ 
+            	'required',
+            	'string',
+            	function ($attribute, $value, $fail) {
+		            if(count(explode(' ', $value)) > 50){
+	                	$fail($attribute.' may not be greater than 50 words.');
+		            }
+        		}, 
+        	],
+        ];
+        $cAttributes = [
+        	'request_id' => 'Request id',
+            'rate' => "Rate",
+            'review' => "Review",
+        ];
+        $validator = Validator::make(Input::all(),$rules,[],$cAttributes);
+        if( $validator->fails() )
+            $json['error'] = $validator->errors()->first();
+        else {
+        	$data = $this->checkRequest($req->request_id); 
+        	if( $data['msg'] != NULL )
+        		$json['error'] = $data['msg'];
+        	else {
+        		$rating = new Rating();
+        		$rating->rating = $req->rate;
+        		$rating->borrow_user = Auth::user()->id;
+        		$rating->request_id = $req->request_id;
+        		$rating->review = $req->review;
+        		$rating->save();
+        		$json['inserted'] = 'true';
+        	}
+        }
+        return json_encode($json);
     }
 }

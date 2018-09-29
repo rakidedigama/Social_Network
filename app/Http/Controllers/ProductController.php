@@ -75,7 +75,7 @@ class ProductController extends Controller
             'name'=>'required|string|max:60|min:3',
             'author'=>'required|string|max:60|min:3',
             'sub_category_id'=>'required|integer|not_in:0',
-            'lending_duration' => 'required|numeric|not_in:0',
+            'lending_duration' => 'required|numeric|between:2,8',
             'image'=>'required|mimes:jpeg,jpg,png|dimensions:min_width=80,min_height=120|max:5120'  
         ];
         $cMessages = [

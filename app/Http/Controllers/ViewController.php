@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Product;
 use App\Product_Request;
+use App\Rating;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Auth;
 
 class ViewController extends Controller
 {
@@ -74,14 +76,19 @@ class ViewController extends Controller
 	    ->where('products.id',$id)->where('products.status',1)->get()->first();
 	    if( $book ) {
 	    	$req_count = Product_Request::where('product_id',$book->id)->count();
-	    	return view('book_view')->with(['book'=>$book,'req_count'=>$req_count]);
+	    	$ratings = Rating::select('ratings.review','ratings.rating','users.name as borrower')
+	    		->join('users','ratings.borrow_user','users.id')
+	    		->join('product__requests','ratings.request_id','product__requests.id')
+	    		->where('product__requests.product_id',$book->id)
+	    		->orderBy('ratings.id','DESC')->get();
+	    	return view('book_view')->with(['book'=>$book,'req_count'=>$req_count,'ratings'=>$ratings]);
 	    }
 	    else
 	    	return abort(404);
 	}
 
 	public function profile($id,Request $req) {
-		$user = User::select('users.id','users.name','users.pimage','cities.name as city')
+		$user = User::select('users.id','users.name','users.email','users.phone','users.pimage','cities.name as city')
 		->join('cities','users.city_id','cities.id')
 		->where('users.id',$id)->get()->first();
 
@@ -95,6 +102,8 @@ class ViewController extends Controller
             if ( $req->page )
             	return abort(404);
         }
-		return view('profile')->with(['user'=>$user,'books'=>$books]);
+        if(Auth::check())
+        	$isLended = Product_Request::where('lent_user',$id)->where('borrow_user',Auth::user()->id)->whereIn('status',[3,4])->get()->first();
+		return view('profile')->with(['user'=>$user,'books'=>$books,'isLended'=>$isLended]);
 	}
 }

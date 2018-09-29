@@ -64,6 +64,7 @@
 	<link rel="stylesheet" href="{{ url('/css/style.css') }}">
 	<!-- iao Alert  -->
 	<link rel="stylesheet" href="{{ url('/css/iao-alert.min.css') }}">
+	@yield('header')
 	<!-- Modernizr JS -->
 	<script src="{{ url('/js/modernizr-2.6.2.min.js') }}"></script>
 	<!-- FOR IE9 below -->

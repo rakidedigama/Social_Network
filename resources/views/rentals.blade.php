@@ -57,8 +57,7 @@
 	                  		$disabled = 'disabled';
                   		}
 	                  	else {
-	                  		$status = '';
-	                  		$disabled = '';
+	                  		$status = $disabled = '';
 	                  	}
 	                  	echo $status;
                   	@endphp
@@ -88,101 +87,102 @@
 @endsection
 
 @section('footer')
-    <script type="text/javascript">
-        $(document).ready(function(){
+  <script type="text/javascript">
+    $(document).ready(function(){
+      function loadData(skip,limit)
+      {
+      	$('#rows').append('<div class="col-md-12">'+
+      		'<img src="{{ url('/images/loader.gif') }}" class="img-circle center-block loader" height="50" width="50" >'+
+  		  '</div>');
+          $.ajax({
+              url: '{{ url('userlentproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
+              dataType: 'JSON',
+              cache: true,
+              success:function(data){
 
-            function loadData(skip,limit)
-            {
-            	$('#rows').append('<div class="col-md-12">'+
-            		'<img src="{{ url('/images/loader.gif') }}" class="img-circle center-block loader" height="50" width="50" >'+
-        		  '</div>');
-                $.ajax({
-                    url: '{{ url('userlentproducts/'.Auth::user()->id) }}/'+skip+'/'+limit,
-                    dataType: 'JSON',
-                    cache: true,
-                    success:function(data){
+              	if(data['msg'])
+              	{
+              		$('.loader').parent('div').remove();
+              	
+          			$('#rows').append('<div class="col-md-12">'+
+          				'<p class="text text-danger center-block">'+data['msg']+'</p>'+
+      				'</div>');
+              	}
+              	else
+              	{
+                    $.each(data,function(index, value) {
+                        $('#rows').append('<div class="col-md-3">'+
+                            '<div class="p-box-lent lent-books">'+
+                                '<p class="person-name">Borrower: '+value['borrower_name']+'</p>'+
+                                '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
+                                '<p>'+value['name']+'</p>'+
+                            '</div>'+
+                        '</div>'); 
+                    });
 
-                    	if(data['msg'])
-                    	{
-                    		$('.loader').parent('div').remove();
-                    	
-                			$('#rows').append('<div class="col-md-12">'+
-                				'<p class="text text-danger center-block">'+data['msg']+'</p>'+
-            				'</div>');
-                    	}
-                    	else
-                    	{
-	                        $.each(data,function(index, value) {
-	                            $('#rows').append('<div class="col-md-3">'+
-	                                '<div class="p-box-lent lent-books">'+
-	                                    '<p class="person-name">Borrower: '+value['borrower_name']+'</p>'+
-	                                    '<div class="p-img-al" style=\"background-image: url(\'{{ url('/images/uploads') }}/'+value['image']+'\')\"></div>'+
-	                                    '<p>'+value['name']+'</p>'+
-	                                '</div>'+
-	                            '</div>'); 
-	                        });
+                    //Products Height Code
+		        $.fn.equalHeights = function() {
+	                var maxHeight = 0,
+	                    $this = $(this);
+	        
+	                $this.each( function() {
+	                	console.log('loop');
+	                    var height = $(this).innerHeight();
+	        
+	                    if ( height > maxHeight ) { maxHeight = height; }
+	                });
+	        
+	                return $this.css('height', maxHeight);
+	            };                
+	            $('.p-box-lent').equalHeights();
+                    
+                    $('.loader').parent('div').remove();
+                  }
+              },
+              error:function(){ $('.loader').parent('div').remove(); }
+          }); 
+      }
 
-	                        //Products Height Code
-					        $.fn.equalHeights = function() {
-				                var maxHeight = 0,
-				                    $this = $(this);
-				        
-				                $this.each( function() {
-				                	console.log('loop');
-				                    var height = $(this).innerHeight();
-				        
-				                    if ( height > maxHeight ) { maxHeight = height; }
-				                });
-				        
-				                return $this.css('height', maxHeight);
-				            };                
-				            $('.p-box-lent').equalHeights();
-	                        
-	                        $('.loader').parent('div').remove();
-                        }
-                    },
-                    error:function(){ $('.loader').parent('div').remove(); }
-                }); 
-            }
+      $(document).on('click','.returned_btn',function(e) {
+      	
+      	var request_id = $(this).attr('request_id'),
+      		  status 	   = 5,
+      	 	  btn 	     = $(this);
 
-          $(document).on('click','.returned_btn',function(e) {
-          	
-          	var request_id = $(this).attr('request_id'),
-          		  status 	   = 5,
-          	 	  btn 	     = $(this);
+    		$.ajax({
+    			url: '{{ route('updatereqborrow') }}',
+    			type: 'POST',
+    			dataType: 'JSON',
+    			cache: true,
+    			data: {_token: '{{ csrf_token() }}',request_id:request_id,status:status },
+    			beforeSend: function() {
+    				btn.attr('disabled','disabled');
+    			},
+    			success:function(data){
+    				if( data["error"] ) {
+    					btn.removeAttr('disabled');
+    					calert(data["error"],'error');
+    				}
+    				else if( data["updated"] == "true" ) {	        					
+  						// btn.closest('tr').find('td').eq(0).text(data['date_borrowal']);
+  						btn.closest('tr').find('td').eq(4).text('Returned');
+  						btn.fadeOut('fast');
+  						calert('Successfully Returned.','success');
+    				}
+  					else {
+  						btn.removeAttr('disabled');
+  						calert('Error occured while updating request status.','error');
+  					}
+    			},
+    			error:function() { 
+    				calert('Error occured while updating request status.','error');
+    				btn.removeAttr('disabled');
+    			}
+    		});
+      });
 
-        		$.ajax({
-        			url: '{{ route('updatereqborrow') }}',
-        			type: 'POST',
-        			dataType: 'JSON',
-        			cache: true,
-        			data: {_token: '{{ csrf_token() }}',request_id:request_id,status:status },
-        			beforeSend: function() {
-        				btn.attr('disabled','disabled');
-        			},
-        			success:function(data){
-        				if( data["error"] ) {
-        					btn.removeAttr('disabled');
-        					calert(data["error"],'error');
-        				}
-        				else if( data["updated"] == "true" ) {	        					
-      						// btn.closest('tr').find('td').eq(0).text(data['date_borrowal']);
-      						btn.closest('tr').find('td').eq(4).text('Returned');
-      						btn.fadeOut('fast');
-      						calert('Successfully Returned.','success');
-        				}
-	    					else {
-	    						btn.removeAttr('disabled');
-	    						calert('Error occured while updating request status.','error');
-	    					}
-        			},
-        			error:function() { 
-        				calert('Error occured while updating request status.','error');
-        				btn.removeAttr('disabled');
-        			}
-        		});
-          });
-        });  
-    </script>
+
+    });  
+  </script>
     
 @endsection

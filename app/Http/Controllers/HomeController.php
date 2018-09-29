@@ -111,10 +111,13 @@ class HomeController extends Controller
     // Borrowals
     public function borrowals()
     {
-        $data = Product_Request::select('products.image','users.name as lenter','product__requests.lent_user','product__requests.id as request_id','product__requests.date_borrowal','product__requests.due_date','product__requests.product_id','product__requests.status')
+        $data = Product_Request::select('products.image','products.name','products.author','users.name as lenter','product__requests.lent_user','product__requests.id as request_id','product__requests.date_borrowal','product__requests.due_date','product__requests.product_id','product__requests.status',DB::raw('count(ratings.id) as ratings'))
         ->join('products','products.id','product__requests.product_id')
         ->join('users','users.id','product__requests.lent_user')
+        ->leftJoin('ratings','product__requests.id','ratings.request_id')
         ->where('products.status','1')->whereNotIn('product__requests.status',[0,1,2])
+        ->groupBy('product__requests.id')
+        // ->where('ratings.borrow_user',Auth::user()->id)
         ->where('product__requests.borrow_user',Auth::user()->id)->orderBy('product__requests.id','DESC')->paginate(10);
               
         return view('borrowals')->with(['city'=>$this->getCity(),'repo'=>$this->getRepo(),'data'=>$data]);

@@ -52,7 +52,7 @@
                                     <label for="">Lending Duration</label>
                                     <div class="input-group">
                                       <input type="text" name="lending_duration" id="lending_duration" class="form-control" required tabindex="4" placeholder="7">
-                                      <span class="input-group-addon">Days</span>
+                                      <span class="input-group-addon">Weeks</span>
                                     </div>
                                 </div>
                             </div>

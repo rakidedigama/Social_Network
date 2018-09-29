@@ -24,6 +24,14 @@
 		            <li>
 		                <p><i class="icon-location"></i> <span>{{ $user->city }}</span></p>
 		            </li>
+		            @if($isLended)
+			            <li>
+			            	<p><i class="icon-email"></i><span>{{ $user->email }}</span></p>
+			            </li>
+			            <li>
+			            	<p><i class="icon-phone"></i><span>{{ $user->phone }}</span></p>
+			            </li>
+		            @endif
 			    </ul>
 			</div>
 		</div>

@@ -76,7 +76,7 @@ Route::post('/change-user-image','UserController@ChangeImage')->name('change-use
 */
 // Route::get('/products/{skip}/{limit}/{name}','ProductController@getProducts');
 // Route::get('/userproducts/{id}','ProductController@getProductsUser');
-// Route::get('/userproducts/{id}/{limit}','ProductController@getProductsUserLimit');
+Route::get('/userproducts/{id}/{limit}','ProductController@getProductsUserLimit');
 //Route::get('/userproducts/{id}/{skip}/{limit}','ProductController@getProductsUserSkipLimit');
 //Route::get('/userborrowrequest/{id}/{skip}/{limit}','ProductController@getBorrowRequestProducts');
 // Route::get('/userlentproducts/{id}/{skip}/{limit}','ProductController@getLentProducts');
@@ -92,3 +92,4 @@ Route::post('/deleteproduct','ProductController@delProduct')->name('deleteproduc
 */
 Route::post('/reqborrow', 'ProductRequestController@borrowReq')->name('reqborrow');
 Route::post('/updatereqborrow', 'ProductRequestController@updateBorrowReq')->name('updatereqborrow');
+Route::post('/review-book', 'ProductRequestController@review')->name('review');
