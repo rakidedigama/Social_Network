@@ -51,7 +51,7 @@
                                 <div class="col-md-12">
                                     <label for="">Lending Duration</label>
                                     <div class="input-group">
-                                      <input type="text" name="lending_duration" id="lending_duration" class="form-control" required tabindex="4" placeholder="7">
+                                      <input type="text" name="lending_duration" id="lending_duration" class="form-control" required tabindex="4">
                                       <span class="input-group-addon">Weeks</span>
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@
             }
             loadCategories();
 
-            function loadData() {
+            {{--function loadData() {
                 $.ajax({
                     url:'{{ url('userproducts/'.Auth::user()->id.'/3') }}',
                     type: 'GET',
@@ -156,8 +156,8 @@
 
                     }
                 }); 
-            }            
-            loadData();
+            }
+            loadData();--}}
 
             function add() {
                 var fdata = new FormData( $('#pform')[0] ); 
@@ -185,7 +185,7 @@
                             {{-- url('/images/placeholder-img.jpg') --}} 
                             $("#img-upload").attr("src","");
                             $('#sub_category_id').val('').trigger('chosen:updated');
-                            loadData();
+                            // loadData();
                             calert('Added Successfully.','success');
                         }
                         else

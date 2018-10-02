@@ -11,7 +11,7 @@
 		<div class="right-side-home">
 			<div class="product-list">
 				<div class="row" id="rows">
-					<table id="dataTable" class="table table-striped">
+					<table id="dataTable" class="table">
 				    <thead>
 				      <tr>
 				        <th>Date</th>
@@ -22,7 +22,18 @@
 				    </thead>
 				    <tbody>
 				    	@foreach ($data as $val)
-				    		<tr>
+				    		<tr class="
+                  @if($val->status == 1)
+                    active
+                  @elseif($val->status == 2)
+                    danger
+                  @elseif($val->status == 3)
+                    success
+                  @elseif($val->status == 0)
+                  @else
+                    info
+                  @endif" 
+                  >
 				    			<td>
                   	@php
                   		$date = explode(' ',$val->date);
@@ -184,15 +195,18 @@
         					calert(data["error"],'error');
         				else if( data["updated"] == "true" ) {	        					
         					if(status == 1) {
-        						btn.closest('td').find('.reject_btn').attr('disabled','disabled');
+        						btn.closest('tr').addClass('active');
+                    btn.closest('td').find('.reject_btn').attr('disabled','disabled');
         						btn.closest('td').find('.lend_btn').removeAttr('disabled');
         						calert('Request Accepted Successfully.','success');
         					}
                   else if( status == 3 ) {
+                    btn.closest('tr').addClass('success');
                     btn.closest('tr').find('td').eq(3).text('Accepted');
         						calert('Lent Successfully.','success');	
         					}
         					else {
+                    btn.closest('tr').addClass('danger');
                     btn.closest('tr').find('td').eq(3).text('Rejected');
         						calert('Request Rejected.','success');
         					}

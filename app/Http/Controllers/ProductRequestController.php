@@ -78,12 +78,6 @@ class ProductRequestController extends Controller
                 else {
                     $data->status = $req->status;
                     if($data->status == 3 || $data->status == 4 || $data->status == 5 ) {
-                        if($data->status == 3 || $data->status == 4 ) {
-                            $data->date_borrowal = date('Y-m-d H:i:s');
-                            $date = explode(' ',$data->date_borrowal);
-                            $json['date_borrowal'] = date("d M Y", strtotime($date[0]));
-                        }
-
                         $prod = Product::find($data->product_id);
                         if($data->status == 4)
                             $prod->rental_count +=1;
@@ -92,6 +86,16 @@ class ProductRequestController extends Controller
                         else
                             $prod->viewstatus = 0;
                         $prod->save();
+
+                        if($data->status == 3 || $data->status == 4 ) {
+                            $data->date_borrowal = date('Y-m-d H:i:s');
+                            $ld = (string) $prod->lending_duration;
+                            $data->due_date = date("Y-m-d H:i:s", strtotime("+".$ld." week", strtotime($data->date_borrowal)) );
+                            $bdate = explode(' ',$data->date_borrowal);
+                            $ddate = explode(' ',$data->due_date);
+                            $json['date_borrowal'] = date("d M Y", strtotime($bdate[0]));
+                            $json['due_date'] = date("d M Y", strtotime($ddate[0]));
+                        }
                     }
                     $data->save();
                     $json['updated'] = 'true';
@@ -127,11 +131,12 @@ class ProductRequestController extends Controller
             'review' => [ 
             	'required',
             	'string',
-            	function ($attribute, $value, $fail) {
-		            if(count(explode(' ', $value)) > 50){
-	                	$fail($attribute.' may not be greater than 50 words.');
-		            }
-        		}, 
+                'max:500',
+          //   	function ($attribute, $value, $fail) {
+		        //     if(count(explode(' ', $value)) > 50){
+	         //        	$fail($attribute.' may not be greater than 50 words.');
+		        //     }
+        		// }, 
         	],
         ];
         $cAttributes = [

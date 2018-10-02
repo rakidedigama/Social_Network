@@ -27,8 +27,8 @@
 				    		<tr>
 				    			<td>
                   	@php
-                  		$date = explode(' ',$val->date_borrowal);
-                  		echo date("d M Y", strtotime($date[0]));
+                  		$bdate = explode(' ',$val->date_borrowal);
+                  		echo date("d M Y", strtotime($bdate[0]));
                   	@endphp
                   </td>
 					    		<td>
@@ -42,7 +42,10 @@
                   	</a>
                   </td>
                   <td>
-                  	
+                    @php
+                      $ddate = explode(' ',$val->due_date);
+                      echo date("d M Y", strtotime($ddate[0]));
+                    @endphp
                   </td>
                   <td>
                   	@php
@@ -216,6 +219,7 @@
     				}
     				else if( data["updated"] == "true" ) {	        					
   						btn.closest('tr').find('td').eq(0).text(data['date_borrowal']);
+              btn.closest('tr').find('td').eq(3).text(data['due_date']);
   						btn.closest('tr').find('td').eq(4).text('Borrowed');
   						calert('Borrowal Confirmed.','success');
     				}

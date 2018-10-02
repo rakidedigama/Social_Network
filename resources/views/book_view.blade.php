@@ -42,11 +42,11 @@
 				</div>
 				<div class="col-md-4">
 					<div class="view-book-info">
-						<h5>Reviews</h5>
+						<h5>Reviews({{count($ratings)}})</h5>
 						@foreach ($ratings as $val)
 							<select class="rate">
 								@for ($i = 1; $i <= 5 ; $i++)
-									<option value="{{ $i }}" {{$i===$val->rating?'selected':''}}>{{ $i }}</option>
+									<option value="{{ $i }}" {{$i==$val->rating?'selected':''}}>{{ $i }}</option>
 								@endfor
 							</select>
 							<p>"{{$val->review}}" - by {{$val->borrower}}</p>
