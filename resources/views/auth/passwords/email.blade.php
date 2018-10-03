@@ -8,7 +8,7 @@
     
     <div id="page">
         @include('layouts.nav', ['active' => 'forgot_pass'])
-    <div id="fh5co-counter" class="fh5co-counters fh5co-bg-section" style="background-image: url({{ url('/images/BoysWithPhone.jpg') }});">
+    <div id="fh5co-counter" class="fh5co-counters fh5co-bg-section">
         <div class="container">
             <div class="row">
                 <div class="login-box">
@@ -24,10 +24,8 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                            <div class="col-md-12">
+                                <input id="email" type="email" class="form-control" placeholder="E-Mail Address" autofocus name="email" value="{{ old('email') }}" required>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -37,11 +35,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
+                        <div class="row form-group">
+                            <div class="col-md-12 btn-center">
+                                <button type="submit" class="btn btn-login">Send Password Reset Link</button>
                             </div>
                         </div>
                     </form>
