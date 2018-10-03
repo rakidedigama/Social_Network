@@ -27,8 +27,10 @@
 				    		<tr>
 				    			<td>
                   	@php
-                  		$bdate = explode(' ',$val->date_borrowal);
-                  		echo date("d M Y", strtotime($bdate[0]));
+                      if($val->date_borrowal!=NULL && $val->date_borrowal!="") {
+                    		$bdate = explode(' ',$val->date_borrowal);
+                    		echo date("d M Y", strtotime($bdate[0]));
+                      } 
                   	@endphp
                   </td>
 					    		<td>
@@ -43,8 +45,10 @@
                   </td>
                   <td>
                   	@php
-                      $ddate = explode(' ',$val->due_date);
-                      echo date("d M Y", strtotime($ddate[0]));
+                      if($val->due_date!=NULL && $val->due_date!="") {
+                        $ddate = explode(' ',$val->due_date);
+                        echo date("d M Y", strtotime($ddate[0]));
+                      }
                     @endphp
                   </td>
                   <td>

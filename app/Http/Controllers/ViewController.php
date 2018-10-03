@@ -7,9 +7,10 @@ use App\Product;
 use App\Product_Request;
 use App\Rating;
 use App\User;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\DB;
 
 class ViewController extends Controller
 {
@@ -21,10 +22,12 @@ class ViewController extends Controller
 	    $search['name'] = '';
 	    $search['category_id'] = '';
 	    $search['sub_category_id'] = '';
-	    $data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id','users.name as owner_name','cities.name as city')
+	    $data = Product::select('products.id','products.name','products.sub_category_id','products.image','products.user_id','sub_categories.name as category_name','users.city_id','users.name as owner_name','users.up_points','users.down_points','cities.name as city',DB::raw('count(productss.id) as total_products'))
 	        ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
 	        ->join('users', 'products.user_id', '=', 'users.id')
 	        ->join('cities','users.city_id','cities.id')
+	        ->leftJoin('products as productss','products.user_id','productss.user_id')
+	        ->groupBy('products.id')
 	        ->where('products.status','1')->where('products.viewstatus','1');
 	        if($req->name) {
 	            $data = $data->where('products.name', 'LIKE', '%'.$req->name.'%')->orWhere('cities.name', 'LIKE', '%'.$req->name.'%')->orWhere('products.author', 'LIKE', '%'.$req->name.'%');
@@ -88,8 +91,10 @@ class ViewController extends Controller
 	}
 
 	public function profile($id,Request $req) {
-		$user = User::select('users.id','users.name','users.email','users.phone','users.pimage','cities.name as city')
+		$user = User::select('users.id','users.name','users.up_points','users.down_points','users.email','users.phone','users.pimage','cities.name as city',DB::raw('count(products.id) as total_products'))
 		->join('cities','users.city_id','cities.id')
+		->leftJoin('products','products.user_id','users.id')
+        ->groupBy('users.id')
 		->where('users.id',$id)->get()->first();
 
 		if( empty($user) )

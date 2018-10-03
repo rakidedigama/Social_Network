@@ -196,7 +196,7 @@
 			        e.preventDefault();
 			        changeImage('{{ route('change-user-image') }}');
 		        });
-		        setInterval(function(){
+		        function checkNotify(){
 		        	$.ajax({
 			        	url:'{{ route('checknoti') }}',
 			        	dataType:'JSON',
@@ -211,7 +211,9 @@
 			        		$('#recRequests').children('span').text('');
 			        	}
 			        });
-		        },10000);
+		        }
+		        checkNotify();
+		        setInterval(checkNotify,10000);
 			})
 		</script>
 

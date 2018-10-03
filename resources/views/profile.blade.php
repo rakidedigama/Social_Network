@@ -18,8 +18,8 @@
 			    <p>User Personal details</p>
 			    <ul>
 		            <li>
-		                <p><i class="icon-man"></i> <span>{{ $user->name }} 
-		                10 <i class="icon-drop-up-arrow size-13 green-color"></i> 1 <i class="icon-drop-down-arrow size-13 brown-color"></i> 5</span></p>
+		                <p><i class="icon-man"></i> <span>{{ $user->name.' '.$user->total_products }} 
+		                <i class="icon-drop-up-arrow size-13 green-color"></i> {{ $user->up_points }} <i class="icon-drop-down-arrow size-13 brown-color"></i> {{ $user->down_points }} </span></p>
 		            </li>
 		            <li>
 		                <p><i class="icon-location"></i> <span>{{ $user->city }}</span></p>

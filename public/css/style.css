@@ -1736,6 +1736,9 @@ p.person-name i {
     margin-right: 4px;
     color: #39FF14;
 }
+p.person-name i.brown-color {
+  color: #dd3836;
+}
 .p-box-lent {
     border: solid 1px #e6e5e55e;;
     padding: 0px;
@@ -2390,6 +2393,9 @@ i.size-13 {
 }
 i.green-color {
     color: #39FF13;
+}
+i.brown-color {
+  color: #dd3836;
 }
 .profile-title{
 text-align: center;

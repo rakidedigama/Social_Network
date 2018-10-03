@@ -98,7 +98,7 @@
 															<div class="books-inof">
 																<p>{{ $value->name }}</p>
 																<a href="{{ route('profile',$value->user_id) }}">
-																	<p class="person-name"><i class="icon-man"></i> {{ $value->owner_name }} </p>
+																	<p class="person-name"><i class="icon-man"></i>{{ $value->owner_name.' '.$value->total_products }} <i class="icon-drop-up-arrow size-13 green-color"></i> {{ $value->up_points }} <i class="icon-drop-down-arrow size-13 brown-color"></i> {{ $value->down_points }} </p>
 																</a>
 																<p class="person-name"><i class="icon-location"></i> {{ $value->city }} </p>
 															</div>

@@ -35,8 +35,8 @@ class HomeController extends Controller
 
     public function getRepo() {
         $repo['books'] = Product::where('user_id',Auth::user()->id)->where('status',1)->count();
-        $repo['lent'] = Product_Request::where('lent_user',Auth::user()->id)->where('status',4)->count();
-        $repo['borrow'] = Product_Request::where('borrow_user',Auth::user()->id)->where('status',4)->count();
+        $repo['up_points'] = Auth::user()->up_points;
+        $repo['down_points'] = Auth::user()->down_points;
         return $repo;
     }
 

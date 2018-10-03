@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->integer('city_id')->unsigned();
             $table->string('gender','7');
             $table->string('pimage','120')->nullable();
+            $table->integer('up_points')->unsigned()->default(0);
+            $table->integer('down_points')->unsigned()->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

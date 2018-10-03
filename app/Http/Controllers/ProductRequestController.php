@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Product_Request;
 use App\Rating;
+use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -45,7 +46,12 @@ class ProductRequestController extends Controller
                     $data->borrow_user = $id;
                     $data->lent_user   = $req->lent_user;
                     $data->product_id  = $req->product_id;
-                    $data->save(); 
+                    $data->save();
+                    
+                    //Reputation Points
+                    $lentUser = User::find($req->lent_user);
+                    $lentUser->up_points += 5;
+                    $lentUser->save();
                     $json['inserted'] = 'true';
                 }
             }
@@ -72,34 +78,50 @@ class ProductRequestController extends Controller
             else if ( $data->status == 5 )
                 $json['error'] = 'Returned requests can not be updated.';
             else {
-                $old_req = Product_Request::where('product_id',$data->product_id)->where('id','!=',$data->id)->where('status','!=',0)->get()->first();
+                $old_req = Product_Request::where('product_id',$data->product_id)->where('id','!=',$data->id)->whereNotIn('status',[0,2,5])->get()->first();
                 if( $old_req )
                     $json['error'] = 'Book is already rented.';
                 else {
                     $data->status = $req->status;
-                    if($data->status == 3 || $data->status == 4 || $data->status == 5 ) {
-                        $prod = Product::find($data->product_id);
-                        if($data->status == 4)
-                            $prod->rental_count +=1;
-                        else if($data->status == 5)
-                            $prod->viewstatus = 1;
+                    $prod = Product::find($data->product_id);
+                    $lentUser = User::find($data->lent_user);
+                    $borrowUser = User::find($data->borrow_user);
+                    if($data->status == 1) {
+                        $borrowUser->down_points += 5;
+                    }
+                    else if($data->status == 3) {  
+                        $lentUser->up_points += 5;
+                        $prod->viewstatus = 0;
+                    }
+                    else if($data->status == 4) {
+                        if($prod->rental_count == 0)
+                            $lentUser->up_points += 35;
                         else
-                            $prod->viewstatus = 0;
-                        $prod->save();
-
-                        if($data->status == 3 || $data->status == 4 ) {
-                            $data->date_borrowal = date('Y-m-d H:i:s');
-                            $ld = (string) $prod->lending_duration;
-                            $data->due_date = date("Y-m-d H:i:s", strtotime("+".$ld." week", strtotime($data->date_borrowal)) );
-                            $bdate = explode(' ',$data->date_borrowal);
-                            $ddate = explode(' ',$data->due_date);
-                            $json['date_borrowal'] = date("d M Y", strtotime($bdate[0]));
-                            $json['due_date'] = date("d M Y", strtotime($ddate[0]));
+                            $lentUser->up_points += 15;
+                        $borrowUser->down_points += 5;
+                        $prod->rental_count +=1;
+                        //Borrowal/Due Date
+                        $data->date_borrowal = date('Y-m-d H:i:s');
+                        $ld = (string) $prod->lending_duration;
+                        $data->due_date = date("Y-m-d H:i:s", strtotime("+".$ld." week", strtotime($data->date_borrowal)) );
+                        $bdate = explode(' ',$data->date_borrowal);
+                        $ddate = explode(' ',$data->due_date);
+                        $json['date_borrowal'] = date("d M Y", strtotime($bdate[0]));
+                        $json['due_date'] = date("d M Y", strtotime($ddate[0]));
+                    }
+                    else if($data->status == 5) {
+                        $prod->viewstatus = 1;
+                        $cdate = date('Y-m-d H:i:s');
+                        if($cdate <= $data->due_date) {
+                            $lentUser->up_points += 5;
+                            $borrowUser->down_points += 15;
                         }
                     }
+                    $prod->save();
+                    $lentUser->save();
+                    $borrowUser->save();
                     $data->save();
                     $json['updated'] = 'true';
-
                 }
             }
         }
@@ -158,6 +180,11 @@ class ProductRequestController extends Controller
         		$rating->request_id = $req->request_id;
         		$rating->review = $req->review;
         		$rating->save();
+
+                //Reputation Points
+                $borrowUser = User::find(Auth::user()->id);
+                $borrowUser->down_points += 10;
+                $borrowUser->save();
         		$json['inserted'] = 'true';
         	}
         }

@@ -1,5 +1,4 @@
 <div class="col-md-3">
-	<!-- <img src="{{ url('/images/profile-img.png') }}" class="img-responsive"> -->
 	<div class="pro-dash-img" id="img-upload-bg" style="background-image: url('{{ url('/images/uploads/users/200').'/'.Auth::user()->pimage }}') "  >
 	</div>
     <form id="user_image_form" method="post">
@@ -19,7 +18,7 @@
 	    <ul>
             <li>
                 <p><i class="icon-man"></i> <span>{{ Auth::user()->name .' '. $repo['books'] }} 
-                 <i class="icon-drop-up-arrow size-13 green-color"></i> {{ $repo['lent'] }} <i class="icon-drop-down-arrow size-13 brown-color"></i> {{ $repo['borrow'] }}</span></p>
+                 <i class="icon-drop-up-arrow size-13 green-color"></i> {{ $repo['up_points'] }} <i class="icon-drop-down-arrow size-13 brown-color"></i> {{ $repo['down_points'] }}</span></p>
             </li>
             <li>
                 <p><i class="icon-location"></i> <span>{{ $city }}</span></p>
@@ -34,7 +33,6 @@
             <a href="{{ route('receivedReq') }}" class="btn btn-profile-menu {{ $active=='borrowreq'?'active':'' }}" id="recRequests">Received Requests <span class="badge"></span></a>
             <a href="{{ route('rentals') }}" class="btn btn-profile-menu {{ $active=='lent_item'?'active':'' }}">Rentals</a>
             <a href="{{ route('borrowals') }}" class="btn btn-profile-menu {{ $active=='borrowed_item'?'active':'' }}"> Borrowals</a>
-            
         </div>
     </div>
 </div>
